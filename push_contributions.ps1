@@ -1,5 +1,8 @@
 # push_contributions.ps1
-$totalCommits = 80
+# Generate 578 contributions for 2026 plus 80 additional contributions
+$baseContributions2026 = 578
+$extraContributions = 80
+$totalCommits = $baseContributions2026 + $extraContributions
 $batchSize = 10
 $repoPath = "c:\Hackahon project\Pixie\PIXIE"
 
@@ -25,4 +28,4 @@ for ($i = 2; $i -le $totalCommits; $i++) {
 
 # Final push if not already pushed
 git push origin main
-Write-Host "Completed 80 commits and pushed to GitHub."
+Write-Host "Completed $totalCommits commits and pushed to GitHub."
