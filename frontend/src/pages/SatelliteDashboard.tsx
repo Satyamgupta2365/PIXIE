@@ -76,6 +76,44 @@ export default function SatelliteDashboard() {
   const mapX = cur ? ((cur.longitude + 180) / 360) * 100 : 50;
   const mapY = cur ? ((90 - cur.latitude) / 180) * 100 : 50;
 
+  // Predict future orbital track mathematically for the visual effect
+  // Ground track on equirectangular map is roughly a sine wave: lat = inclination * sin(lng_offset)
+  const inclMap: Record<string, number> = { iss: 51.6, hubble: 28.5, noaa19: 81.0 };
+  const getPredictedTrack = () => {
+    if (!cur) return '';
+    const incl = inclMap[sat.key] || 50;
+    // Calculate the phase shift so the sine wave passes exactly through the current lat/lng
+    // lat = incl * sin((lng - phase) * PI/180)
+    // sin((lng - phase)*PI/180) = lat / incl
+    let ratio = cur.latitude / incl;
+    if (ratio > 1) ratio = 1;
+    if (ratio < -1) ratio = -1;
+    
+    // We have to figure out if it's going north or south. 
+    // If history exists, use it to determine derivative (ascending/descending node)
+    let isAscending = true;
+    if (history.length > 1) {
+      const prev = history[history.length - 2];
+      if (cur.latitude < prev.lat) isAscending = false;
+    }
+
+    let angle = Math.asin(ratio) * (180 / Math.PI);
+    if (!isAscending) {
+      angle = 180 - angle;
+    }
+
+    const phase = cur.longitude - angle;
+
+    const points = [];
+    for (let lng = -180; lng <= 180; lng += 2) {
+      const lat = incl * Math.sin((lng - phase) * (Math.PI / 180));
+      const px = ((lng + 180) / 360) * 1000;
+      const py = ((90 - lat) / 180) * 500;
+      points.push(`${px},${py}`);
+    }
+    return points.join(' ');
+  };
+
   return (
     <div className="h-screen w-screen bg-[#080c14] text-white overflow-hidden flex flex-col font-sans">
 
@@ -203,11 +241,20 @@ export default function SatelliteDashboard() {
                 {/* Tropic of Capricorn */}
                 <line x1="0" y1="322" x2="1000" y2="322" stroke="rgba(59,130,246,0.12)" strokeWidth="0.5" strokeDasharray="4 6"/>
 
-                {/* Ground track trail */}
+                {/* Projected orbital track (sine wave) */}
+                {cur && (
+                  <polyline
+                    points={getPredictedTrack()}
+                    fill="none" stroke="rgba(34,211,238,0.2)" strokeWidth="1.5" strokeDasharray="10 5"
+                    strokeLinecap="round"
+                  />
+                )}
+
+                {/* Ground track trail (historical) */}
                 {history.length > 1 && (
                   <polyline
                     points={history.map(p => `${((p.lng+180)/360)*1000},${((90-p.lat)/180)*500}`).join(' ')}
-                    fill="none" stroke="rgba(34,211,238,0.8)" strokeWidth="2.5" strokeDasharray="5 3"
+                    fill="none" stroke="rgba(34,211,238,0.8)" strokeWidth="2.5"
                     strokeLinecap="round"
                   />
                 )}
