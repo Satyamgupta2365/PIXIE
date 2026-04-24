@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Satellite, Activity, Globe2, Shield, Radio, Zap, Signal, Thermometer, Battery, Crosshair } from 'lucide-react';
+import { ArrowLeft, Satellite, Activity, Globe2, Shield, Radio, Zap, Signal, Thermometer, Battery, Crosshair, Search, Plus, Loader2 } from 'lucide-react';
 
-const SATELLITES = [
-  { key: 'iss',    id: 25544, name: 'ISS (ZARYA)',           orbit: 'LEO', type: 'Space Station' },
-  { key: 'hubble', id: 20580, name: 'Hubble Telescope',      orbit: 'LEO', type: 'Space Telescope' },
-  { key: 'noaa19', id: 33591, name: 'NOAA-19',               orbit: 'SSO', type: 'Weather Satellite' },
+const INITIAL_SATELLITES = [
+  { key: 'iss',    id: 25544, name: 'ISS (ZARYA)',           orbit: 'LEO', type: 'Space Station', inclination: 51.6 },
+  { key: 'hubble', id: 20580, name: 'Hubble Telescope',      orbit: 'LEO', type: 'Space Telescope', inclination: 28.5 },
+  { key: 'noaa19', id: 33591, name: 'NOAA-19',               orbit: 'SSO', type: 'Weather Satellite', inclination: 99.0 },
 ];
 
 const AI_LOGS = [
@@ -19,43 +19,57 @@ const AI_LOGS = [
 
 export default function SatelliteDashboard() {
   const navigate = useNavigate();
+  const [fleet, setFleet] = useState(INITIAL_SATELLITES);
   const [selIdx, setSelIdx] = useState(0);
   const [positions, setPositions] = useState<Record<string, any>>({});
   const [passes, setPasses] = useState<any[]>([]);
   const [history, setHistory] = useState<{ lat: number; lng: number }[]>([]);
   const [logIdx, setLogIdx] = useState(0);
   const [loading, setLoading] = useState(true);
+  
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const sat = SATELLITES[selIdx];
+  const sat = fleet[selIdx];
 
   // Fetch fleet positions every 5s
   useEffect(() => {
     const fetchFleet = async () => {
+      // Create a dict of new positions by fetching individually, since the backend /fleet might just have hardcoded ones
+      // Actually, we can fetch all individually from N2YO to support dynamic fleet
       try {
-        const res = await fetch('/api/satellite/fleet');
-        if (!res.ok) throw new Error('API error');
-        const data = await res.json();
-        setPositions(data);
+        const newPos: Record<string, any> = { ...positions };
+        for (const s of fleet) {
+          try {
+            const res = await fetch(`/api/satellite/position/${s.id}`);
+            if (res.ok) {
+              const data = await res.json();
+              newPos[s.key] = { ...data, orbit: s.orbit, type: s.type };
+            }
+          } catch (e) {
+            // fallback for ISS
+            if (s.id === 25544) {
+              const r2 = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+              const d2 = await r2.json();
+              newPos[s.key] = { ...newPos[s.key], latitude: d2.latitude, longitude: d2.longitude, altitude_km: d2.altitude, azimuth: 0, elevation: 0 };
+            }
+          }
+        }
+        setPositions(newPos);
         setLoading(false);
-        const cur = data[sat.key];
+        const cur = newPos[sat.key];
         if (cur?.latitude != null) {
           setHistory(h => [...h.slice(-50), { lat: cur.latitude, lng: cur.longitude }]);
         }
-      } catch {
-        // fallback: use wheretheiss.at for ISS only
-        try {
-          const r2 = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
-          const d2 = await r2.json();
-          setPositions(prev => ({ ...prev, iss: { latitude: d2.latitude, longitude: d2.longitude, altitude_km: d2.altitude, azimuth: 0, elevation: 0 } }));
-          setHistory(h => [...h.slice(-50), { lat: d2.latitude, lng: d2.longitude }]);
-        } catch {}
+      } catch (e) {
         setLoading(false);
       }
     };
     fetchFleet();
     const t = setInterval(fetchFleet, 5000);
     return () => clearInterval(t);
-  }, [sat.key]);
+  }, [fleet, sat.key]);
 
   // Fetch visual passes on satellite change
   useEffect(() => {
@@ -64,7 +78,41 @@ export default function SatelliteDashboard() {
       .then(r => r.json())
       .then(d => setPasses(d.passes || []))
       .catch(() => setPasses([]));
-  }, [selIdx]);
+  }, [sat.id]);
+
+  // Search effect
+  useEffect(() => {
+    if (searchQuery.length < 3) {
+      setSearchResults([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const res = await fetch(`/api/satellite/search?query=${encodeURIComponent(searchQuery)}`);
+        const data = await res.json();
+        setSearchResults(data);
+      } catch (e) {
+        setSearchResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const handleAddSatellite = (s: any) => {
+    const key = `sat_${s.id}`;
+    if (!fleet.some(f => f.id === s.id)) {
+      const newFleet = [...fleet, { key, id: s.id, name: s.name, orbit: s.orbit || 'LEO', type: s.type || 'Satellite', inclination: s.inclination || 50.0 }];
+      setFleet(newFleet);
+      setSelIdx(newFleet.length - 1);
+    } else {
+      setSelIdx(fleet.findIndex(f => f.id === s.id));
+    }
+    setSearchQuery('');
+    setSearchResults([]);
+  };
 
   // AI log rotation
   useEffect(() => {
@@ -142,21 +190,58 @@ export default function SatelliteDashboard() {
 
         {/* LEFT */}
         <div className="flex flex-col gap-3 min-h-0 overflow-y-auto">
-          <div className="text-[10px] text-white/30 uppercase tracking-widest px-1 flex items-center gap-2">
+          
+          {/* SEARCH BAR */}
+          <div className="relative">
+            <div className="relative flex items-center bg-white/[0.03] border border-white/10 rounded-xl overflow-hidden backdrop-blur-md focus-within:border-cyan-500/50 transition-colors">
+              <Search className="w-4 h-4 text-white/40 ml-3" />
+              <input 
+                type="text" 
+                placeholder="Search catalog (e.g. STARLINK)..." 
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-full bg-transparent border-none text-xs text-white placeholder-white/30 p-3 focus:outline-none"
+              />
+              {isSearching && <Loader2 className="w-4 h-4 text-cyan-400 mr-3 animate-spin" />}
+            </div>
+            
+            {/* Search Results Dropdown */}
+            <AnimatePresence>
+              {searchResults.length > 0 && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                  className="absolute z-50 top-full left-0 right-0 mt-2 bg-[#080c14]/95 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl max-h-[300px] overflow-y-auto"
+                >
+                  {searchResults.map(s => (
+                    <button key={s.id} onClick={() => handleAddSatellite(s)}
+                      className="w-full text-left px-4 py-3 hover:bg-white/5 border-b border-white/5 last:border-0 flex items-center justify-between group">
+                      <div>
+                        <div className="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">{s.name}</div>
+                        <div className="text-[10px] text-white/40 font-mono">NORAD: {s.id}</div>
+                      </div>
+                      <Plus className="w-4 h-4 text-white/20 group-hover:text-cyan-400" />
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="text-[10px] text-white/30 uppercase tracking-widest px-1 flex items-center gap-2 mt-2">
             <Radio className="w-3 h-3" /> Active Fleet
           </div>
 
           {/* Satellite Selector */}
           <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-3 backdrop-blur-md">
-            {SATELLITES.map((s, i) => (
-              <button key={s.key} onClick={() => setSelIdx(i)}
-                className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all mb-1 last:mb-0 ${selIdx === i ? 'bg-blue-500/15 border border-blue-500/40' : 'hover:bg-white/5 border border-transparent'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${selIdx === i ? 'bg-blue-500/20' : 'bg-white/5'}`}>
-                  <Satellite className={`w-4 h-4 ${selIdx === i ? 'text-blue-400' : 'text-white/40'}`} />
+            {fleet.map((s, i) => (
+              <button key={s.key} onClick={() => { setSelIdx(i); setHistory([]); }}
+                className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all mb-1 last:mb-0 ${selIdx === i ? 'bg-cyan-500/15 border border-cyan-500/40' : 'hover:bg-white/5 border border-transparent'}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${selIdx === i ? 'bg-cyan-500/20' : 'bg-white/5'}`}>
+                  <Satellite className={`w-4 h-4 ${selIdx === i ? 'text-cyan-400' : 'text-white/40'}`} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className={`text-xs font-bold truncate ${selIdx === i ? 'text-white' : 'text-white/60'}`}>{s.name}</div>
-                  <div className="text-[10px] text-white/30 font-mono">{s.orbit} · {s.type}</div>
+                  <div className="text-[10px] text-white/30 font-mono">NORAD: {s.id}</div>
                 </div>
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shrink-0" />
               </button>

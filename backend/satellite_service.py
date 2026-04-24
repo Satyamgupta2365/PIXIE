@@ -18,10 +18,50 @@ OBS_ALT = 0
 
 # Well-known satellite IDs
 SATELLITE_CATALOG = {
-    "iss":     {"id": 25544, "name": "ISS (ZARYA)",          "type": "Space Station",     "orbit": "LEO"},
-    "hubble":  {"id": 20580, "name": "Hubble Space Telescope","type": "Space Telescope",   "orbit": "LEO"},
-    "noaa19":  {"id": 33591, "name": "NOAA 19",               "type": "Weather Satellite",  "orbit": "SSO"},
+    "iss":     {"id": 25544, "name": "ISS (ZARYA)",          "type": "Space Station",     "orbit": "LEO", "inclination": 51.6},
+    "hubble":  {"id": 20580, "name": "Hubble Space Telescope","type": "Space Telescope",   "orbit": "LEO", "inclination": 28.5},
+    "noaa19":  {"id": 33591, "name": "NOAA 19",               "type": "Weather Satellite",  "orbit": "SSO", "inclination": 99.0},
 }
+
+CELESTRAK_CACHE = []
+
+async def fetch_celestrak_active():
+    """Fetch the active satellite catalog from CelesTrak and cache it in memory."""
+    global CELESTRAK_CACHE
+    if CELESTRAK_CACHE:
+        return CELESTRAK_CACHE
+    
+    url = "https://celestrak.org/NORAD/elements/gp.php?GROUP=active&FORMAT=json"
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            resp = await client.get(url)
+            data = resp.json()
+            CELESTRAK_CACHE = [
+                {
+                    "id": sat["NORAD_CAT_ID"],
+                    "name": sat["OBJECT_NAME"],
+                    "orbit": "Unknown",
+                    "type": "Satellite",
+                    "inclination": sat.get("INCLINATION", 50.0)
+                }
+                for sat in data if "NORAD_CAT_ID" in sat and "OBJECT_NAME" in sat
+            ]
+            return CELESTRAK_CACHE
+    except Exception as e:
+        print(f"Error fetching CelesTrak data: {e}")
+        return []
+
+async def search_satellites(query: str) -> list:
+    """Search for satellites by name in the active catalog."""
+    query = query.lower().strip()
+    if not query:
+        return []
+    
+    catalog = await fetch_celestrak_active()
+    results = [sat for sat in catalog if query in sat["name"].lower()]
+    # Return top 20 matches to avoid huge payloads
+    return results[:20]
+
 
 
 async def get_position(sat_id: int, seconds: int = 1) -> Dict[str, Any]:

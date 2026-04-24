@@ -344,6 +344,14 @@ async def satellite_fleet():
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"N2YO API error: {str(e)}")
 
+@app.get("/satellite/search")
+async def satellite_search(query: str):
+    """Search for satellites by name in the active Celestrak catalog."""
+    try:
+        return await satellite_service.search_satellites(query)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")
+
 
 @app.get("/satellite/position/{sat_id}")
 async def satellite_position(sat_id: int, seconds: int = 1):
