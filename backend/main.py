@@ -15,6 +15,8 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
 
+from backend import satellite_service
+
 from backend.environment import PIXELEnvironment
 
 
@@ -330,6 +332,53 @@ def grader(task_id: str):
 def grader_default():
     """Grade the default (easy) task."""
     return grader("easy")
+
+
+# ── Satellite Routes (N2YO) ───────────────────────────────────────────────────
+
+@app.get("/satellite/fleet")
+async def satellite_fleet():
+    """Real-time positions for ISS, Hubble, and NOAA-19 from N2YO."""
+    try:
+        return await satellite_service.get_fleet_positions()
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"N2YO API error: {str(e)}")
+
+
+@app.get("/satellite/position/{sat_id}")
+async def satellite_position(sat_id: int, seconds: int = 1):
+    """Real-time position for any satellite by NORAD ID."""
+    try:
+        return await satellite_service.get_position(sat_id, seconds)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"N2YO API error: {str(e)}")
+
+
+@app.get("/satellite/tle/{sat_id}")
+async def satellite_tle(sat_id: int):
+    """Two-Line Elements for any satellite by NORAD ID."""
+    try:
+        return await satellite_service.get_tle(sat_id)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"N2YO API error: {str(e)}")
+
+
+@app.get("/satellite/passes/{sat_id}")
+async def satellite_passes(sat_id: int, days: int = 2, min_visibility: int = 60):
+    """Upcoming visual passes for a satellite."""
+    try:
+        return await satellite_service.get_visual_passes(sat_id, days, min_visibility)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"N2YO API error: {str(e)}")
+
+
+@app.get("/satellite/above")
+async def satellites_above(radius: int = 70, category: int = 0):
+    """All satellites above observer within given search radius."""
+    try:
+        return await satellite_service.get_above(radius, category)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"N2YO API error: {str(e)}")
 
 
 # ── Entry point ──────────────────────────────────────────────────────────────
