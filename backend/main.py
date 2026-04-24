@@ -352,6 +352,14 @@ async def satellite_search(query: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")
 
+@app.get("/satellite/popular")
+async def satellite_popular():
+    """Get a list of ~50 popular satellites for the dashboard."""
+    try:
+        return await satellite_service.get_popular_satellites()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching popular satellites: {str(e)}")
+
 
 @app.get("/satellite/position/{sat_id}")
 async def satellite_position(sat_id: int, seconds: int = 1):

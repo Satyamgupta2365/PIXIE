@@ -62,6 +62,42 @@ async def search_satellites(query: str) -> list:
     # Return top 20 matches to avoid huge payloads
     return results[:20]
 
+async def get_popular_satellites() -> list:
+    """Return a curated list of ~50 popular/interesting satellites."""
+    catalog = await fetch_celestrak_active()
+    if not catalog:
+        return list(SATELLITE_CATALOG.values())
+        
+    # We want a mix of ISS, Hubble, Starlinks, OneWeb, GPS, GOES, etc.
+    keywords = ["ISS (ZARYA)", "HUBBLE", "NOAA", "STARLINK", "ONEWEB", "GPS", "GALILEO", "METEOSAT", "GOES", "IRIDIUM", "TERRA", "AQUA", "SUOMI"]
+    
+    results = []
+    # Always include our base catalog first
+    for sat in SATELLITE_CATALOG.values():
+        results.append(sat)
+        
+    added_ids = {s["id"] for s in results}
+    
+    for sat in catalog:
+        if len(results) >= 60:
+            break
+        if sat["id"] in added_ids:
+            continue
+            
+        name_upper = sat["name"].upper()
+        for kw in keywords:
+            if kw in name_upper:
+                # To prevent ONLY starlinks, limit starlinks
+                if "STARLINK" in name_upper and sum(1 for r in results if "STARLINK" in r["name"].upper()) > 15:
+                    continue
+                if "ONEWEB" in name_upper and sum(1 for r in results if "ONEWEB" in r["name"].upper()) > 10:
+                    continue
+                results.append(sat)
+                added_ids.add(sat["id"])
+                break
+                
+    return results
+
 
 
 async def get_position(sat_id: int, seconds: int = 1) -> Dict[str, Any]:

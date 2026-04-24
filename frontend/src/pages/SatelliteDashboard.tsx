@@ -19,9 +19,9 @@ const AI_LOGS = [
 
 export default function SatelliteDashboard() {
   const navigate = useNavigate();
-  const [fleet, setFleet] = useState(INITIAL_SATELLITES);
+  const [fleet, setFleet] = useState<any[]>(INITIAL_SATELLITES);
   const [selIdx, setSelIdx] = useState(0);
-  const [positions, setPositions] = useState<Record<string, any>>({});
+  const [cur, setCur] = useState<any>(null);
   const [passes, setPasses] = useState<any[]>([]);
   const [history, setHistory] = useState<{ lat: number; lng: number }[]>([]);
   const [logIdx, setLogIdx] = useState(0);
@@ -33,43 +33,62 @@ export default function SatelliteDashboard() {
 
   const sat = fleet[selIdx];
 
-  // Fetch fleet positions every 5s
+  // Fetch initial popular fleet
   useEffect(() => {
-    const fetchFleet = async () => {
-      // Create a dict of new positions by fetching individually, since the backend /fleet might just have hardcoded ones
-      // Actually, we can fetch all individually from N2YO to support dynamic fleet
+    fetch('/api/satellite/popular')
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          // ensure keys exist
+          const mapped = data.map((d: any) => ({
+            ...d,
+            key: d.key || `sat_${d.id}`,
+            orbit: d.orbit || 'LEO',
+            type: d.type || 'Satellite'
+          }));
+          setFleet(mapped);
+        }
+      })
+      .catch(console.error);
+  }, []);
+
+  // Fetch ACTIVE satellite position every 5s
+  useEffect(() => {
+    if (!sat) return;
+    const fetchPos = async () => {
       try {
-        const newPos: Record<string, any> = { ...positions };
-        for (const s of fleet) {
-          try {
-            const res = await fetch(`/api/satellite/position/${s.id}`);
-            if (res.ok) {
-              const data = await res.json();
-              newPos[s.key] = { ...data, orbit: s.orbit, type: s.type };
-            }
-          } catch (e) {
-            // fallback for ISS
-            if (s.id === 25544) {
-              const r2 = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
-              const d2 = await r2.json();
-              newPos[s.key] = { ...newPos[s.key], latitude: d2.latitude, longitude: d2.longitude, altitude_km: d2.altitude, azimuth: 0, elevation: 0 };
-            }
+        const res = await fetch(`/api/satellite/position/${sat.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setCur({ ...data, orbit: sat.orbit, type: sat.type });
+          if (data.latitude != null) {
+            setHistory(h => [...h.slice(-50), { lat: data.latitude, lng: data.longitude }]);
           }
         }
-        setPositions(newPos);
         setLoading(false);
-        const cur = newPos[sat.key];
-        if (cur?.latitude != null) {
-          setHistory(h => [...h.slice(-50), { lat: cur.latitude, lng: cur.longitude }]);
-        }
       } catch (e) {
+        // fallback for ISS
+        if (sat.id === 25544) {
+          try {
+            const r2 = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+            const d2 = await r2.json();
+            setCur({ latitude: d2.latitude, longitude: d2.longitude, altitude_km: d2.altitude, azimuth: 0, elevation: 0 });
+            setHistory(h => [...h.slice(-50), { lat: d2.latitude, lng: d2.longitude }]);
+          } catch {}
+        }
         setLoading(false);
       }
     };
-    fetchFleet();
-    const t = setInterval(fetchFleet, 5000);
+    
+    // Clear history when switching satellites
+    setHistory([]);
+    setLoading(true);
+    setCur(null);
+    
+    fetchPos();
+    const t = setInterval(fetchPos, 5000);
     return () => clearInterval(t);
-  }, [fleet, sat.key]);
+  }, [sat?.id]);
 
   // Fetch visual passes on satellite change
   useEffect(() => {
@@ -125,20 +144,13 @@ export default function SatelliteDashboard() {
   const mapY = cur ? ((90 - cur.latitude) / 180) * 100 : 50;
 
   // Predict future orbital track mathematically for the visual effect
-  // Ground track on equirectangular map is roughly a sine wave: lat = inclination * sin(lng_offset)
-  const inclMap: Record<string, number> = { iss: 51.6, hubble: 28.5, noaa19: 81.0 };
   const getPredictedTrack = () => {
-    if (!cur) return '';
-    const incl = inclMap[sat.key] || 50;
-    // Calculate the phase shift so the sine wave passes exactly through the current lat/lng
-    // lat = incl * sin((lng - phase) * PI/180)
-    // sin((lng - phase)*PI/180) = lat / incl
+    if (!cur || cur.latitude == null) return '';
+    const incl = sat?.inclination || 50;
     let ratio = cur.latitude / incl;
     if (ratio > 1) ratio = 1;
     if (ratio < -1) ratio = -1;
     
-    // We have to figure out if it's going north or south. 
-    // If history exists, use it to determine derivative (ascending/descending node)
     let isAscending = true;
     if (history.length > 1) {
       const prev = history[history.length - 2];
@@ -227,14 +239,14 @@ export default function SatelliteDashboard() {
             </AnimatePresence>
           </div>
 
-          <div className="text-[10px] text-white/30 uppercase tracking-widest px-1 flex items-center gap-2 mt-2">
-            <Radio className="w-3 h-3" /> Active Fleet
+          <div className="text-[10px] text-white/30 uppercase tracking-widest px-1 flex items-center gap-2 mt-2 shrink-0">
+            <Radio className="w-3 h-3" /> Active Fleet ({fleet.length})
           </div>
 
           {/* Satellite Selector */}
-          <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-3 backdrop-blur-md">
+          <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-3 backdrop-blur-md overflow-y-auto flex-1 min-h-[300px]">
             {fleet.map((s, i) => (
-              <button key={s.key} onClick={() => { setSelIdx(i); setHistory([]); }}
+              <button key={`${s.id}-${i}`} onClick={() => setSelIdx(i)}
                 className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all mb-1 last:mb-0 ${selIdx === i ? 'bg-cyan-500/15 border border-cyan-500/40' : 'hover:bg-white/5 border border-transparent'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${selIdx === i ? 'bg-cyan-500/20' : 'bg-white/5'}`}>
                   <Satellite className={`w-4 h-4 ${selIdx === i ? 'text-cyan-400' : 'text-white/40'}`} />
