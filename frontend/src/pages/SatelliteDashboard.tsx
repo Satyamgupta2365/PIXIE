@@ -186,6 +186,14 @@ export default function SatelliteDashboard() {
                 {[...Array(19)].map((_,i) => <line key={`v${i}`} x1={i*56} y1="0" x2={i*56} y2="500" stroke="rgba(59,130,246,0.08)" strokeWidth="0.5"/>)}
                 {[...Array(9)].map((_,i) => <line key={`h${i}`} x1="0" y1={i*62.5} x2="1000" y2={i*62.5} stroke="rgba(59,130,246,0.08)" strokeWidth="0.5"/>)}
 
+                {/* ── High-Res Map SVG ── */}
+                <image 
+                  href="/world.svg" 
+                  x="0" y="0" width="1000" height="500" 
+                  preserveAspectRatio="none"
+                  style={{ opacity: 0.8 }}
+                />
+
                 {/* Equator */}
                 <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(59,130,246,0.35)" strokeWidth="1" strokeDasharray="8 4"/>
                 {/* Prime meridian */}
@@ -194,24 +202,6 @@ export default function SatelliteDashboard() {
                 <line x1="0" y1="178" x2="1000" y2="178" stroke="rgba(59,130,246,0.12)" strokeWidth="0.5" strokeDasharray="4 6"/>
                 {/* Tropic of Capricorn */}
                 <line x1="0" y1="322" x2="1000" y2="322" stroke="rgba(59,130,246,0.12)" strokeWidth="0.5" strokeDasharray="4 6"/>
-
-                {/* ── Continents (improved shapes) ── */}
-                {/* North America */}
-                <polygon points="80,80 160,60 220,90 240,140 200,180 180,220 120,240 80,200 60,160 70,110" fill="rgba(56,189,248,0.18)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
-                {/* South America */}
-                <polygon points="180,270 220,260 250,280 260,340 240,400 200,420 170,390 160,340 165,295" fill="rgba(56,189,248,0.15)" stroke="rgba(56,189,248,0.35)" strokeWidth="1"/>
-                {/* Europe */}
-                <polygon points="460,80 520,70 560,90 570,130 540,150 500,160 460,140 440,110" fill="rgba(56,189,248,0.18)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
-                {/* Africa */}
-                <polygon points="470,170 530,155 570,180 590,240 580,320 550,370 510,380 470,350 450,290 450,220 460,185" fill="rgba(56,189,248,0.15)" stroke="rgba(56,189,248,0.35)" strokeWidth="1"/>
-                {/* Asia */}
-                <polygon points="560,60 700,50 800,80 850,130 830,180 780,200 720,190 660,170 610,150 570,120 555,90" fill="rgba(56,189,248,0.18)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
-                {/* South/Southeast Asia */}
-                <polygon points="650,185 720,175 760,200 750,240 700,250 660,235 640,210" fill="rgba(56,189,248,0.14)" stroke="rgba(56,189,248,0.3)" strokeWidth="1"/>
-                {/* Australia */}
-                <polygon points="740,300 820,285 870,310 880,360 850,400 790,410 745,380 720,340" fill="rgba(56,189,248,0.15)" stroke="rgba(56,189,248,0.35)" strokeWidth="1"/>
-                {/* Greenland */}
-                <ellipse cx="300" cy="85" rx="40" ry="30" fill="rgba(56,189,248,0.12)" stroke="rgba(56,189,248,0.25)" strokeWidth="0.8"/>
 
                 {/* Ground track trail */}
                 {history.length > 1 && (
