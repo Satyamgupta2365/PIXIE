@@ -166,7 +166,7 @@ export default function SatelliteDashboard() {
 
         {/* CENTER: Map */}
         <div className="flex flex-col gap-4 min-h-0">
-          <div className="bg-white/[0.03] border border-white/10 rounded-2xl backdrop-blur-md overflow-hidden relative flex-1">
+          <div className="bg-[#040d1a] border border-blue-500/20 rounded-2xl overflow-hidden relative flex-1">
             {/* Corner marks */}
             {['tl','tr','bl','br'].map(c => (
               <div key={c} className={`absolute w-6 h-6 z-10 ${c.includes('t') ? 'top-0 border-t-2' : 'bottom-0 border-b-2'} ${c.includes('l') ? 'left-0 border-l-2 rounded-tl-2xl' : 'right-0 border-r-2 rounded-tr-2xl'} border-blue-500/40`} />
@@ -176,40 +176,80 @@ export default function SatelliteDashboard() {
               Ground Track · {sat.name}
             </div>
 
-            {/* SVG map */}
-            <div className="absolute inset-0 opacity-25">
-              <svg viewBox="0 0 1000 500" className="w-full h-full">
-                {[...Array(10)].map((_,i) => <line key={`v${i}`} x1={i*111} y1="0" x2={i*111} y2="500" stroke="rgba(59,130,246,0.3)" strokeWidth="0.5"/>)}
-                {[...Array(5)].map((_,i) => <line key={`h${i}`} x1="0" y1={i*125} x2="1000" y2={i*125} stroke="rgba(59,130,246,0.3)" strokeWidth="0.5"/>)}
-                <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(59,130,246,0.6)" strokeWidth="1" strokeDasharray="8 4"/>
-                <line x1="500" y1="0" x2="500" y2="500" stroke="rgba(59,130,246,0.6)" strokeWidth="1" strokeDasharray="8 4"/>
-                {/* Continents blobs */}
-                <ellipse cx="200" cy="180" rx="80" ry="90" fill="rgba(59,130,246,0.15)"/>
-                <ellipse cx="240" cy="320" rx="70" ry="80" fill="rgba(59,130,246,0.12)"/>
-                <ellipse cx="480" cy="150" rx="120" ry="80" fill="rgba(59,130,246,0.15)"/>
-                <ellipse cx="550" cy="280" rx="60" ry="100" fill="rgba(59,130,246,0.12)"/>
-                <ellipse cx="750" cy="200" rx="80" ry="70" fill="rgba(59,130,246,0.15)"/>
-                <ellipse cx="780" cy="320" rx="60" ry="80" fill="rgba(59,130,246,0.10)"/>
-                <ellipse cx="880" cy="150" rx="50" ry="60" fill="rgba(59,130,246,0.12)"/>
-                {/* Ground track */}
+            {/* SVG map — visible world map */}
+            <div className="absolute inset-0">
+              <svg viewBox="0 0 1000 500" className="w-full h-full" style={{ background: '#020b18' }}>
+                {/* Ocean background */}
+                <rect width="1000" height="500" fill="#020b18"/>
+
+                {/* Grid lines */}
+                {[...Array(19)].map((_,i) => <line key={`v${i}`} x1={i*56} y1="0" x2={i*56} y2="500" stroke="rgba(59,130,246,0.08)" strokeWidth="0.5"/>)}
+                {[...Array(9)].map((_,i) => <line key={`h${i}`} x1="0" y1={i*62.5} x2="1000" y2={i*62.5} stroke="rgba(59,130,246,0.08)" strokeWidth="0.5"/>)}
+
+                {/* Equator */}
+                <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(59,130,246,0.35)" strokeWidth="1" strokeDasharray="8 4"/>
+                {/* Prime meridian */}
+                <line x1="500" y1="0" x2="500" y2="500" stroke="rgba(59,130,246,0.35)" strokeWidth="1" strokeDasharray="8 4"/>
+                {/* Tropic of Cancer */}
+                <line x1="0" y1="178" x2="1000" y2="178" stroke="rgba(59,130,246,0.12)" strokeWidth="0.5" strokeDasharray="4 6"/>
+                {/* Tropic of Capricorn */}
+                <line x1="0" y1="322" x2="1000" y2="322" stroke="rgba(59,130,246,0.12)" strokeWidth="0.5" strokeDasharray="4 6"/>
+
+                {/* ── Continents (improved shapes) ── */}
+                {/* North America */}
+                <polygon points="80,80 160,60 220,90 240,140 200,180 180,220 120,240 80,200 60,160 70,110" fill="rgba(56,189,248,0.18)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
+                {/* South America */}
+                <polygon points="180,270 220,260 250,280 260,340 240,400 200,420 170,390 160,340 165,295" fill="rgba(56,189,248,0.15)" stroke="rgba(56,189,248,0.35)" strokeWidth="1"/>
+                {/* Europe */}
+                <polygon points="460,80 520,70 560,90 570,130 540,150 500,160 460,140 440,110" fill="rgba(56,189,248,0.18)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
+                {/* Africa */}
+                <polygon points="470,170 530,155 570,180 590,240 580,320 550,370 510,380 470,350 450,290 450,220 460,185" fill="rgba(56,189,248,0.15)" stroke="rgba(56,189,248,0.35)" strokeWidth="1"/>
+                {/* Asia */}
+                <polygon points="560,60 700,50 800,80 850,130 830,180 780,200 720,190 660,170 610,150 570,120 555,90" fill="rgba(56,189,248,0.18)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
+                {/* South/Southeast Asia */}
+                <polygon points="650,185 720,175 760,200 750,240 700,250 660,235 640,210" fill="rgba(56,189,248,0.14)" stroke="rgba(56,189,248,0.3)" strokeWidth="1"/>
+                {/* Australia */}
+                <polygon points="740,300 820,285 870,310 880,360 850,400 790,410 745,380 720,340" fill="rgba(56,189,248,0.15)" stroke="rgba(56,189,248,0.35)" strokeWidth="1"/>
+                {/* Greenland */}
+                <ellipse cx="300" cy="85" rx="40" ry="30" fill="rgba(56,189,248,0.12)" stroke="rgba(56,189,248,0.25)" strokeWidth="0.8"/>
+
+                {/* Ground track trail */}
                 {history.length > 1 && (
                   <polyline
                     points={history.map(p => `${((p.lng+180)/360)*1000},${((90-p.lat)/180)*500}`).join(' ')}
-                    fill="none" stroke="rgba(34,211,238,0.6)" strokeWidth="2" strokeDasharray="4 2"
+                    fill="none" stroke="rgba(34,211,238,0.8)" strokeWidth="2.5" strokeDasharray="5 3"
+                    strokeLinecap="round"
                   />
                 )}
               </svg>
             </div>
 
-            {/* Satellite reticle */}
+            {/* Satellite reticle — large, glowing, clearly visible */}
             {cur && (
-              <motion.div className="absolute z-20" style={{ left: `${mapX}%`, top: `${mapY}%` }}
-                animate={{ left: `${mapX}%`, top: `${mapY}%` }} transition={{ type: 'spring', stiffness: 40, damping: 20 }}>
+              <motion.div
+                className="absolute z-30"
+                style={{ left: `${mapX}%`, top: `${mapY}%` }}
+                animate={{ left: `${mapX}%`, top: `${mapY}%` }}
+                transition={{ type: 'spring', stiffness: 40, damping: 20 }}
+              >
                 <div className="relative -translate-x-1/2 -translate-y-1/2">
-                  <div className="absolute -inset-3 rounded-full border border-cyan-400/40 animate-ping" />
-                  <Satellite className="w-5 h-5 text-cyan-300 drop-shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
-                  <div className="absolute top-7 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm border border-cyan-500/40 px-2 py-0.5 rounded text-[9px] font-mono text-cyan-400 whitespace-nowrap">
-                    {cur.latitude?.toFixed(2)}° / {cur.longitude?.toFixed(2)}°
+                  {/* Outer glow ring */}
+                  <div className="absolute -inset-6 rounded-full bg-cyan-400/10 animate-pulse" />
+                  {/* Pulsing ring 1 */}
+                  <div className="absolute -inset-5 rounded-full border-2 border-cyan-400/60 animate-ping" style={{ animationDuration: '1.5s' }} />
+                  {/* Pulsing ring 2 */}
+                  <div className="absolute -inset-3 rounded-full border border-cyan-400/40 animate-ping" style={{ animationDuration: '2s' }} />
+                  {/* Static crosshair lines */}
+                  <div className="absolute left-1/2 top-0 -translate-x-px w-px h-full bg-cyan-400/60 -translate-y-8" style={{ height: '70px', top: '-35px' }} />
+                  <div className="absolute top-1/2 left-0 -translate-y-px h-px w-full bg-cyan-400/60" style={{ width: '70px', left: '-35px' }} />
+                  {/* Satellite icon */}
+                  <div className="relative z-10 w-8 h-8 rounded-full bg-cyan-400/30 border-2 border-cyan-300 flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.8)]">
+                    <Satellite className="w-4 h-4 text-cyan-100" />
+                  </div>
+                  {/* Coordinates label */}
+                  <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm border border-cyan-500/60 px-3 py-1 rounded-lg text-[10px] font-mono text-cyan-300 whitespace-nowrap shadow-[0_0_10px_rgba(34,211,238,0.3)]">
+                    📡 {sat.name}<br/>
+                    <span className="text-white/70">{cur.latitude?.toFixed(3)}° / {cur.longitude?.toFixed(3)}°</span>
                   </div>
                 </div>
               </motion.div>
@@ -217,8 +257,10 @@ export default function SatelliteDashboard() {
 
             {/* Footprint */}
             {cur && (
-              <div className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-500/15 bg-cyan-500/5 pointer-events-none z-10"
-                style={{ left: `${mapX}%`, top: `${mapY}%`, width: '180px', height: '180px' }} />
+              <div
+                className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-500/30 bg-cyan-500/5 pointer-events-none z-20"
+                style={{ left: `${mapX}%`, top: `${mapY}%`, width: '220px', height: '220px' }}
+              />
             )}
 
             <div className="absolute bottom-4 left-6 right-6 flex items-center justify-between z-20">
