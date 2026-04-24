@@ -348,8 +348,8 @@ export default function GlobeScrollDemo() {
       description: "Experience the next leap in deep space exploration. PIXEL is an advanced, fully autonomous system designed to navigate, survive, and thrive on the Martian surface without human intervention.",
       align: "left" as const,
       actions: [
-        { label: "Discover the Mission", variant: "primary" as const, onClick: () => navigate("/missions") },
-        { label: "View Specs", variant: "secondary" as const, onClick: () => navigate("/missions/falcon-9") },
+        { label: "Enter Operations Hub", variant: "primary" as const, onClick: () => navigate("/operations") },
+        { label: "View Specs", variant: "secondary" as const, onClick: () => navigate("/operations") },
       ]
     },
     {
@@ -422,10 +422,10 @@ export default function GlobeScrollDemo() {
             Igniting the future of autonomous space exploration. All systems go.
           </p>
           <button 
-            onClick={() => navigate('/missions')}
+            onClick={() => navigate('/operations')}
             className="px-8 py-4 bg-white text-black font-bold uppercase tracking-wider rounded-full hover:bg-gray-200 transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.3)]"
           >
-            Initialize Launch
+            Access Operations Hub
           </button>
         </div>
       </section>
