@@ -392,43 +392,6 @@ export default function GlobeScrollDemo() {
         sections={demoSections}
         className="bg-transparent"
       />
-
-      {/* Final Rocket Launch Section */}
-      <section className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-black border-t border-white/10">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 hover:scale-105"
-          style={{ backgroundImage: "url('/rocket-launch.png')" }}
-        />
-        
-        {/* Gradient Overlays for blending */}
-        <div className="absolute inset-0 z-10 bg-gradient-to-b from-black via-transparent to-transparent opacity-80" />
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/20 to-transparent" />
-        
-        {/* Top Left Logo */}
-        <div className="absolute top-8 sm:top-12 left-8 sm:left-12 z-20">
-          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase flex items-center gap-2">
-            PIXEL
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse mb-1"></span>
-          </h2>
-        </div>
-        
-        {/* Content Overlay */}
-        <div className="relative z-20 mt-auto mb-16 sm:mb-24 text-center px-4">
-          <h3 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight drop-shadow-lg">
-            Phase 1: Launch Intelligence
-          </h3>
-          <p className="text-white/80 max-w-xl mx-auto text-lg sm:text-xl font-light mb-8 drop-shadow-md">
-            Igniting the future of autonomous space exploration. All systems go.
-          </p>
-          <button 
-            onClick={() => navigate('/operations')}
-            className="px-8 py-4 bg-white text-black font-bold uppercase tracking-wider rounded-full hover:bg-gray-200 transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.3)]"
-          >
-            Access Operations Hub
-          </button>
-        </div>
-      </section>
     </div>
   );
 }

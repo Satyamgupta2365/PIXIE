@@ -9,6 +9,7 @@ import TrainingResultsPage from './pages/TrainingResultsPage';
 import PastLaunchesPage from './pages/PastLaunchesPage';
 import OperationsHubPage from './pages/OperationsHubPage';
 import SatelliteDashboard from './pages/SatelliteDashboard';
+import RoverDashboard from './pages/RoverDashboard';
 
 export default function App() {
   return (
@@ -22,7 +23,7 @@ export default function App() {
         <Route path="/training" element={<TrainingResultsPage />} />
         <Route path="/launches" element={<PastLaunchesPage />} />
         <Route path="/satellites" element={<SatelliteDashboard />} />
-        <Route path="/rovers" element={<div className="min-h-screen bg-black text-white p-8">Rover Management Coming Soon</div>} />
+        <Route path="/rovers" element={<RoverDashboard />} />
       </Routes>
     </BrowserRouter>
   );
