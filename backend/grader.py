@@ -4,7 +4,7 @@ Each grader returns a score strictly between 0.0 and 1.0 (exclusive),
 as required by the OpenEnv Phase 2 validator.
 """
 
-from app.models import StateResult
+from backend.models import StateResult
 
 # OpenEnv requires scores strictly in (0, 1) — never exactly 0.0 or 1.0
 # Use a margin that ensures scores are clearly within bounds

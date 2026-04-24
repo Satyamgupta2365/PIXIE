@@ -1,4 +1,4 @@
-from app.models import ScienceTask, TaskType
+from backend.models import ScienceTask, TaskType
 from typing import List, Dict, Any
 
 

@@ -1,64 +1,64 @@
-name: mars-rover-task-scheduler
+name: pixel-mars-rover
 version: "1.0.0"
 description: >
-  An OpenEnv environment where an AI agent acts as mission control for a Mars rover,
-  scheduling science tasks across Martian sols while managing battery levels, daylight
-  windows, dust storms, and system anomalies. Inspired by real NASA Perseverance
-  rover operations at Jezero Crater.
+  PIXEL — An OpenEnv-compatible Mars Rover RL environment where an LLM agent
+  controls a rover using natural language, managing battery, science collection,
+  weather conditions, anomalies, and communication windows across 100 Martian sols.
 
 author: Satyam Gupta
 tags:
   - openenv
   - space
-  - scheduling
+  - mars
+  - reinforcement-learning
+  - natural-language
   - resource-management
-  - real-world
-  - nasa
   - robotics
 
 tasks:
   - id: easy
-    name: Single Sol Optimization
+    name: Standard Mars Mission
     difficulty: easy
     description: >
-      Schedule one Martian day of rover activities. Battery starts at 600Wh,
-      daylight lasts 12 hours. Maximize science return without depleting battery below 100Wh.
+      Survive 100 Martian sols with favorable conditions. Manage battery,
+      collect science, and handle occasional weather changes and anomalies.
 
   - id: medium
-    name: Dust Storm Survival Mission
+    name: Dust Storm Survival
     difficulty: medium
     description: >
-      Plan 5 Martian sols during a regional dust storm that cuts solar efficiency by 60%.
-      Battery management becomes critical. Prioritize survival and key science.
-      Communications window opens mid-mission at Sol 3.
+      Navigate through frequent dust storms that cut solar efficiency.
+      Battery management becomes critical. Prioritize survival and science.
 
   - id: hard
-    name: Anomaly Recovery and Science Maximization
+    name: Extreme Conditions Challenge
     difficulty: hard
     description: >
-      Mid-mission a motor anomaly disables navigation. Diagnose, enter safe mode,
-      recover, then maximize remaining science over 7 sols with degraded capabilities.
+      Survive extreme Mars conditions with frequent anomalies, dust storms,
+      and limited comm windows. Every decision counts.
 
 observation_space:
-  sol: integer  # Current Martian day
-  battery_level: float  # Wh, range 0–1000
-  daylight_remaining: float  # Hours of daylight left this sol
-  comms_window_open: boolean
-  comms_window_hours_remaining: float
-  solar_efficiency: float  # 0.0–1.0
-  available_tasks: list[ScienceTask]
-  completed_tasks: list[string]
-  total_science_collected: float
-  anomaly_active: boolean
-  anomaly_type: string | null
-  dust_storm_active: boolean
-  mission_sol_limit: integer
+  sol: integer                          # Current Mars day (0-100)
+  battery: float                        # 0.0 to 1.0
+  science_collected: float              # Cumulative science points
+  tasks_available: list[string]         # e.g. ["drill", "image", "soil_sample"]
+  weather: string                       # "clear" | "dust_storm" | "low_visibility"
+  anomaly_active: boolean               # Random fault triggered
+  comm_window_open: boolean             # Can transmit data to Earth
+  solar_efficiency: float               # 0.0 to 1.0, drops during dust storm
+  mission_phase: string                 # "surface_ops" | "crisis" | "charging"
 
 action_space:
-  task_id: string  # ID from available_tasks, or "wait" / "charge"
-  notes: string  # optional agent reasoning
+  action: string                        # Natural language command
+  valid_intents:
+    - drill
+    - image
+    - soil_sample
+    - charge
+    - safe_mode
+    - transmit
 
-reward_range: [0.01, 0.99]
+reward_range: [-1.0, 1.0]
 
 endpoints:
   reset: POST /reset/{task_id}
@@ -66,8 +66,7 @@ endpoints:
   state: GET /state/{task_id}
   tasks: GET /tasks
   grader: POST /grader/{task_id}
-  baseline: POST /baseline
-  nasa: GET /nasa
+  health: GET /health
 
 docker:
   base_image: python:3.11-slim
