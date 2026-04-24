@@ -139,7 +139,6 @@ export default function SatelliteDashboard() {
     return () => clearInterval(t);
   }, []);
 
-  const cur = positions[sat.key];
   const mapX = cur ? ((cur.longitude + 180) / 360) * 100 : 50;
   const mapY = cur ? ((90 - cur.latitude) / 180) * 100 : 50;
 
