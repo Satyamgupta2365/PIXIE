@@ -6,6 +6,7 @@ import MissionSelectPage from './pages/MissionSelectPage';
 import MissionDetailsDashboard from './pages/MissionDetailsDashboard';
 import LiveLaunchDashboard from './pages/LiveLaunchDashboard';
 import TrainingResultsPage from './pages/TrainingResultsPage';
+import PastLaunchesPage from './pages/PastLaunchesPage';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/missions/:id" element={<MissionDetailsDashboard />} />
         <Route path="/launch/:id" element={<LiveLaunchDashboard />} />
         <Route path="/training" element={<TrainingResultsPage />} />
+        <Route path="/launches" element={<PastLaunchesPage />} />
       </Routes>
     </BrowserRouter>
   );

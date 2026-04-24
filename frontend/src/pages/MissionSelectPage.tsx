@@ -90,6 +90,21 @@ export default function MissionSelectPage() {
             </motion.div>
           ))}
         </div>
+
+        {/* Launch Archive Link */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="text-center mt-12"
+        >
+          <button
+            onClick={() => navigate('/launches')}
+            className="px-6 py-3 bg-white/5 border border-white/10 rounded-full text-white/60 hover:text-white hover:border-white/30 transition-all text-sm uppercase tracking-widest font-semibold hover:bg-white/10"
+          >
+            View Launch Archive →
+          </button>
+        </motion.div>
       </div>
     </div>
   );

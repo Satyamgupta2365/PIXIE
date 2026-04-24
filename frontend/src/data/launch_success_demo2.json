@@ -1,0 +1,179 @@
+{
+  "mission": {
+    "id": "demo-2",
+    "name": "SpaceX Crew Dragon Demo-2",
+    "designation": "SpX-DM2",
+    "status": "SUCCESS",
+    "organization": "NASA / SpaceX",
+    "vehicle": "Falcon 9 Block 5",
+    "spacecraft": "Crew Dragon Endeavour (C206)",
+    "booster": "B1058.1",
+    "mission_type": "Crewed Test Flight",
+    "objective": "First crewed orbital flight of the Crew Dragon spacecraft; first crewed launch from U.S. soil since Space Shuttle Atlantis STS-135 in July 2011.",
+    "destination": "International Space Station (ISS)",
+    "target_orbit": "~200 km circular Low Earth Orbit (LEO)",
+    "crew": [
+      { "name": "Douglas G. Hurley", "role": "Commander", "agency": "NASA", "previous_flights": 2 },
+      { "name": "Robert L. Behnken", "role": "Joint Operations Commander", "agency": "NASA", "previous_flights": 2 }
+    ],
+    "launch_date_utc": "2020-05-30T19:22:45Z",
+    "launch_date_local": "2020-05-30T15:22:45-04:00",
+    "launch_site": {
+      "name": "Kennedy Space Center",
+      "pad": "Launch Complex 39A (LC-39A)",
+      "location": "Merritt Island, Florida, USA",
+      "latitude": 28.6084,
+      "longitude": -80.6043
+    },
+    "landing": {
+      "booster_landing": true,
+      "landing_type": "Autonomous Spaceport Drone Ship",
+      "ship_name": "Of Course I Still Love You",
+      "landing_location": "Atlantic Ocean, ~630 km downrange"
+    },
+    "mission_duration_days": 63,
+    "splashdown_date_utc": "2020-08-02T18:48:00Z",
+    "splashdown_location": "Gulf of Mexico, near Pensacola, Florida"
+  },
+
+  "weather_at_launch": {
+    "temperature_celsius": 26.7,
+    "temperature_fahrenheit": 80,
+    "humidity_percent": 72,
+    "wind_speed_kmh": 14.5,
+    "wind_direction": "SSW",
+    "cloud_coverage_percent": 40,
+    "precipitation_probability_percent": 50,
+    "visibility_km": 16,
+    "sea_state": "Moderate",
+    "pressure_hpa": 1015.2,
+    "go_no_go": "GO",
+    "notes": "First attempt on May 27 was scrubbed due to weather T-17 minutes. Conditions cleared for May 30 second attempt."
+  },
+
+  "vehicle_specs": {
+    "total_height_m": 70,
+    "diameter_m": 3.7,
+    "mass_at_liftoff_kg": 549054,
+    "first_stage": {
+      "engines": 9,
+      "engine_type": "Merlin 1D+",
+      "thrust_sea_level_kn": 7607,
+      "thrust_vacuum_kn": 8227,
+      "propellant": "RP-1 / LOX",
+      "burn_time_s": 162,
+      "fuel_mass_kg": 411000
+    },
+    "second_stage": {
+      "engines": 1,
+      "engine_type": "Merlin 1D+ Vacuum",
+      "thrust_vacuum_kn": 981,
+      "propellant": "RP-1 / LOX",
+      "burn_time_s": 397,
+      "fuel_mass_kg": 107500
+    },
+    "fairing_type": "Crew Dragon integrated nose cone",
+    "launch_escape_system": "SuperDraco (8 engines, 71 kN each)"
+  },
+
+  "pre_launch_timeline": [
+    { "time": "T-06:00:00", "event": "Launch team begins countdown operations", "status": "NOMINAL" },
+    { "time": "T-04:15:00", "event": "Dragon spacecraft power-up and systems checkout", "status": "NOMINAL" },
+    { "time": "T-03:22:00", "event": "RP-1 (kerosene) fueling begins on first stage", "status": "NOMINAL" },
+    { "time": "T-02:30:00", "event": "Crew walkout from Neil Armstrong Operations Building", "status": "NOMINAL" },
+    { "time": "T-02:00:00", "event": "Crew arrives at LC-39A, enters Crew Access Arm", "status": "NOMINAL" },
+    { "time": "T-01:30:00", "event": "Crew ingress into Dragon Endeavour", "status": "NOMINAL" },
+    { "time": "T-01:00:00", "event": "Communication checks and seat rotation verification", "status": "NOMINAL" },
+    { "time": "T-00:45:00", "event": "SpaceX Launch Director verifies go for propellant loading", "status": "NOMINAL" },
+    { "time": "T-00:42:00", "event": "Crew Access Arm retracts to launch position", "status": "NOMINAL" },
+    { "time": "T-00:37:00", "event": "LOX loading begins on first stage", "status": "NOMINAL" },
+    { "time": "T-00:35:00", "event": "LOX loading begins on second stage", "status": "NOMINAL" },
+    { "time": "T-00:30:00", "event": "Dragon escape system armed", "status": "NOMINAL" },
+    { "time": "T-00:20:00", "event": "RP-1 loading complete on both stages", "status": "NOMINAL" },
+    { "time": "T-00:16:00", "event": "LOX loading reaches flight level on first stage", "status": "NOMINAL" },
+    { "time": "T-00:10:00", "event": "Flight computers transition to startup mode", "status": "NOMINAL" },
+    { "time": "T-00:07:00", "event": "Falcon 9 engine chill sequence begins (precooling turbopumps)", "status": "NOMINAL" },
+    { "time": "T-00:05:00", "event": "SpaceX Launch Director confirms GO for launch", "status": "GO" },
+    { "time": "T-00:03:00", "event": "NASA Launch Director confirms GO for launch", "status": "GO" },
+    { "time": "T-00:01:00", "event": "Flight computer enters terminal count; propellant pressurization", "status": "NOMINAL" },
+    { "time": "T-00:00:45", "event": "LOX topping complete, tanks at flight pressure", "status": "NOMINAL" },
+    { "time": "T-00:00:30", "event": "Final range clearance confirmed", "status": "GO" },
+    { "time": "T-00:00:10", "event": "Strongback retracts to launch position", "status": "NOMINAL" },
+    { "time": "T-00:00:03", "event": "Engine ignition sequence start (staggered ignition)", "status": "NOMINAL" },
+    { "time": "T-00:00:00", "event": "LIFTOFF — Falcon 9 lifts off from LC-39A", "status": "NOMINAL" }
+  ],
+
+  "flight_telemetry": [
+    { "time_s": 0, "event": "Liftoff", "altitude_km": 0.0, "velocity_kmh": 0, "acceleration_g": 1.0, "downrange_km": 0.0, "fuel_percent": 100.0, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 0, "temperature_ext_c": 27, "status": "NOMINAL" },
+    { "time_s": 10, "event": "Pitch program initiated", "altitude_km": 0.3, "velocity_kmh": 180, "acceleration_g": 1.2, "downrange_km": 0.02, "fuel_percent": 98.8, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 2.1, "temperature_ext_c": 25, "status": "NOMINAL" },
+    { "time_s": 20, "event": "Roll program complete", "altitude_km": 1.1, "velocity_kmh": 450, "acceleration_g": 1.4, "downrange_km": 0.1, "fuel_percent": 97.5, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 8.5, "temperature_ext_c": 19, "status": "NOMINAL" },
+    { "time_s": 30, "event": "Throttle nominal", "altitude_km": 2.5, "velocity_kmh": 780, "acceleration_g": 1.6, "downrange_km": 0.4, "fuel_percent": 96.2, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 16.2, "temperature_ext_c": 10, "status": "NOMINAL" },
+    { "time_s": 40, "event": "Approaching transonic", "altitude_km": 4.5, "velocity_kmh": 1080, "acceleration_g": 1.8, "downrange_km": 0.8, "fuel_percent": 95.0, "phase": "ASCENT", "thrust_kn": 7200, "dynamic_pressure_kpa": 24.8, "temperature_ext_c": -2, "status": "NOMINAL" },
+    { "time_s": 50, "event": "Transonic regime", "altitude_km": 6.8, "velocity_kmh": 1260, "acceleration_g": 1.9, "downrange_km": 1.5, "fuel_percent": 93.7, "phase": "ASCENT", "thrust_kn": 6800, "dynamic_pressure_kpa": 30.1, "temperature_ext_c": -15, "status": "NOMINAL" },
+    { "time_s": 58, "event": "Supersonic — Mach 1", "altitude_km": 8.2, "velocity_kmh": 1224, "acceleration_g": 2.0, "downrange_km": 2.2, "fuel_percent": 92.7, "phase": "ASCENT", "thrust_kn": 6500, "dynamic_pressure_kpa": 33.5, "temperature_ext_c": -25, "status": "NOMINAL" },
+    { "time_s": 61, "event": "MAX-Q — Maximum Dynamic Pressure", "altitude_km": 9.0, "velocity_kmh": 1350, "acceleration_g": 2.0, "downrange_km": 2.5, "fuel_percent": 92.3, "phase": "MAX-Q", "thrust_kn": 6200, "dynamic_pressure_kpa": 35.7, "temperature_ext_c": -30, "status": "NOMINAL" },
+    { "time_s": 70, "event": "Throttle up after Max-Q", "altitude_km": 12.0, "velocity_kmh": 1620, "acceleration_g": 2.2, "downrange_km": 4.0, "fuel_percent": 90.8, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 28.4, "temperature_ext_c": -40, "status": "NOMINAL" },
+    { "time_s": 80, "event": "Nominal ascent", "altitude_km": 16.5, "velocity_kmh": 2070, "acceleration_g": 2.4, "downrange_km": 6.5, "fuel_percent": 89.0, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 18.2, "temperature_ext_c": -52, "status": "NOMINAL" },
+    { "time_s": 90, "event": "Exiting lower atmosphere", "altitude_km": 22.0, "velocity_kmh": 2610, "acceleration_g": 2.6, "downrange_km": 10.0, "fuel_percent": 87.0, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 8.5, "temperature_ext_c": -55, "status": "NOMINAL" },
+    { "time_s": 100, "event": "Approaching stratopause", "altitude_km": 28.5, "velocity_kmh": 3200, "acceleration_g": 2.8, "downrange_km": 15.0, "fuel_percent": 84.8, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 3.1, "temperature_ext_c": -45, "status": "NOMINAL" },
+    { "time_s": 110, "event": "Mesosphere entry", "altitude_km": 36.0, "velocity_kmh": 3850, "acceleration_g": 3.0, "downrange_km": 22.0, "fuel_percent": 82.5, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 1.2, "temperature_ext_c": -30, "status": "NOMINAL" },
+    { "time_s": 120, "event": "Approaching Kármán line regime", "altitude_km": 45.0, "velocity_kmh": 4600, "acceleration_g": 3.2, "downrange_km": 30.0, "fuel_percent": 80.0, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 0.3, "temperature_ext_c": -10, "status": "NOMINAL" },
+    { "time_s": 130, "event": "First stage fuel depletion approaching", "altitude_km": 54.0, "velocity_kmh": 5400, "acceleration_g": 3.5, "downrange_km": 40.0, "fuel_percent": 77.2, "phase": "ASCENT", "thrust_kn": 7607, "dynamic_pressure_kpa": 0.05, "temperature_ext_c": 5, "status": "NOMINAL" },
+    { "time_s": 140, "event": "Throttle-down for g-load management", "altitude_km": 62.0, "velocity_kmh": 6100, "acceleration_g": 3.8, "downrange_km": 50.0, "fuel_percent": 74.5, "phase": "ASCENT", "thrust_kn": 5500, "dynamic_pressure_kpa": 0.01, "temperature_ext_c": 10, "status": "NOMINAL" },
+    { "time_s": 150, "event": "Approaching MECO", "altitude_km": 70.0, "velocity_kmh": 6600, "acceleration_g": 4.0, "downrange_km": 58.0, "fuel_percent": 72.0, "phase": "ASCENT", "thrust_kn": 5200, "dynamic_pressure_kpa": 0.001, "temperature_ext_c": 12, "status": "NOMINAL" },
+    { "time_s": 158, "event": "MECO — Main Engine Cutoff", "altitude_km": 75.0, "velocity_kmh": 6800, "acceleration_g": 0.0, "downrange_km": 65.0, "fuel_percent": 70.8, "phase": "COAST", "thrust_kn": 0, "dynamic_pressure_kpa": 0, "temperature_ext_c": 14, "status": "NOMINAL" },
+    { "time_s": 160, "event": "STAGE SEPARATION", "altitude_km": 76.0, "velocity_kmh": 6780, "acceleration_g": 0.0, "downrange_km": 66.0, "fuel_percent": 70.8, "phase": "SEPARATION", "thrust_kn": 0, "dynamic_pressure_kpa": 0, "temperature_ext_c": 14, "status": "NOMINAL" },
+    { "time_s": 168, "event": "Second engine ignition (SES-1)", "altitude_km": 80.0, "velocity_kmh": 6750, "acceleration_g": 0.8, "downrange_km": 70.0, "fuel_percent": 70.8, "phase": "SECOND_STAGE_BURN", "thrust_kn": 981, "dynamic_pressure_kpa": 0, "temperature_ext_c": -270, "status": "NOMINAL" },
+    { "time_s": 200, "event": "Second stage acceleration nominal", "altitude_km": 105.0, "velocity_kmh": 9500, "acceleration_g": 1.0, "downrange_km": 110.0, "fuel_percent": 65.0, "phase": "SECOND_STAGE_BURN", "thrust_kn": 981, "dynamic_pressure_kpa": 0, "temperature_ext_c": -270, "status": "NOMINAL" },
+    { "time_s": 250, "event": "Orbital regime approach", "altitude_km": 135.0, "velocity_kmh": 14000, "acceleration_g": 1.2, "downrange_km": 220.0, "fuel_percent": 55.0, "phase": "SECOND_STAGE_BURN", "thrust_kn": 981, "dynamic_pressure_kpa": 0, "temperature_ext_c": -270, "status": "NOMINAL" },
+    { "time_s": 300, "event": "Approaching orbital velocity", "altitude_km": 160.0, "velocity_kmh": 20000, "acceleration_g": 1.4, "downrange_km": 400.0, "fuel_percent": 44.0, "phase": "SECOND_STAGE_BURN", "thrust_kn": 981, "dynamic_pressure_kpa": 0, "temperature_ext_c": -270, "status": "NOMINAL" },
+    { "time_s": 400, "event": "Near-orbital velocity", "altitude_km": 185.0, "velocity_kmh": 25500, "acceleration_g": 1.6, "downrange_km": 700.0, "fuel_percent": 30.0, "phase": "SECOND_STAGE_BURN", "thrust_kn": 981, "dynamic_pressure_kpa": 0, "temperature_ext_c": -270, "status": "NOMINAL" },
+    { "time_s": 500, "event": "Orbit insertion approaching", "altitude_km": 195.0, "velocity_kmh": 27500, "acceleration_g": 1.8, "downrange_km": 1100.0, "fuel_percent": 18.0, "phase": "SECOND_STAGE_BURN", "thrust_kn": 981, "dynamic_pressure_kpa": 0, "temperature_ext_c": -270, "status": "NOMINAL" },
+    { "time_s": 530, "event": "SECO — Second Engine Cutoff", "altitude_km": 200.0, "velocity_kmh": 28000, "acceleration_g": 0.0, "downrange_km": 1300.0, "fuel_percent": 14.5, "phase": "ORBIT_INSERTION", "thrust_kn": 0, "dynamic_pressure_kpa": 0, "temperature_ext_c": -270, "status": "NOMINAL" },
+    { "time_s": 728, "event": "Dragon separation from second stage", "altitude_km": 201.0, "velocity_kmh": 28000, "acceleration_g": 0.0, "downrange_km": 1600.0, "fuel_percent": 14.5, "phase": "SEPARATION", "thrust_kn": 0, "dynamic_pressure_kpa": 0, "temperature_ext_c": -270, "status": "NOMINAL" }
+  ],
+
+  "major_events": [
+    { "time_s": 0, "label": "LIFTOFF", "description": "All 9 Merlin 1D+ engines at full thrust. Falcon 9 clears the tower." },
+    { "time_s": 61, "label": "MAX-Q", "description": "Vehicle experiences peak aerodynamic stress at 35.7 kPa. Engines throttled to reduce structural load." },
+    { "time_s": 158, "label": "MECO", "description": "First stage main engine cutoff after 158 seconds of burn. Vehicle at 75 km altitude, 6800 km/h." },
+    { "time_s": 160, "label": "STAGE SEPARATION", "description": "Pneumatic pushers separate the first and second stages." },
+    { "time_s": 168, "label": "SES-1", "description": "Second stage Merlin Vacuum engine ignites for orbital insertion burn." },
+    { "time_s": 530, "label": "SECO", "description": "Second engine cutoff. Dragon Endeavour is in a stable 200 km orbit at 28,000 km/h." },
+    { "time_s": 728, "label": "DRAGON SEPARATION", "description": "Crew Dragon Endeavour separates from the second stage. Autonomous orbital maneuvering begins." }
+  ],
+
+  "booster_recovery": {
+    "entry_burn_start_s": 390,
+    "entry_burn_engines": 3,
+    "landing_burn_start_s": 498,
+    "landing_burn_engines": 1,
+    "touchdown_s": 510,
+    "landing_velocity_ms": 2.1,
+    "landing_accuracy_m": 1.5,
+    "result": "SUCCESS",
+    "landing_platform": "Of Course I Still Love You",
+    "downrange_km": 630
+  },
+
+  "ai_analysis": {
+    "pixel_assessment": "MISSION SUCCESS — All parameters within optimal bounds throughout the flight.",
+    "planner_agent": {
+      "trajectory_score": 0.97,
+      "assessment": "Gravity turn executed with textbook precision. Pitch program aligned within 0.02° of nominal trajectory. Orbital insertion achieved with less than 0.5 km deviation from target orbit.",
+      "recommendation": "No intervention required. Mission profile optimal."
+    },
+    "resource_agent": {
+      "fuel_efficiency_score": 0.94,
+      "assessment": "First stage propellant consumption was nominal. Second stage retained 14.5% residual propellant — sufficient for contingency deorbit burn. Overall fuel efficiency exceeded predictions by 2.1%.",
+      "recommendation": "Fuel margins healthy. Recovery propellant allocation for booster landing was sufficient."
+    },
+    "risk_agent": {
+      "risk_score": 0.12,
+      "assessment": "Weather scrub on May 27 was the correct call — electric field mill readings exceeded launch commit criteria. May 30 conditions were marginal but within all 11 weather constraints. No structural or thermal anomalies detected. Launch Escape System remained armed but was never activated.",
+      "recommendation": "Zero anomalies detected. Risk classification: MINIMAL."
+    },
+    "overall_verdict": "GO — MISSION NOMINAL",
+    "what_pixel_would_have_done": "PIXEL's autonomous council would have independently confirmed the GO decision. The Planner Agent's trajectory optimization matched the actual flight path within 0.3% deviation. The Risk Agent would have also recommended the May 27 scrub, as atmospheric electrical potential exceeded safe thresholds. No autonomous intervention was needed — this mission represents the ideal baseline for PIXEL training reward calibration."
+  }
+}
