@@ -2,6 +2,9 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+# Ensure Python can find the backend module
+ENV PYTHONPATH=/app
+
 # System dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
