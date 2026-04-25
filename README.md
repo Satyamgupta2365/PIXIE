@@ -1,6 +1,3 @@
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Satyamgupta2365/PIXIE/main/thumbnail.png" width="800" alt="PIXEL Space Exploration" style="border-radius: 12px; margin-bottom: 20px;">
-
   # 🔴 PIXEL: Autonomous Space Agent Framework
   
   <h3>Teaching AI to survive Mars dust storms, freezing Lunar nights, and orbital traffic jams.</h3>
