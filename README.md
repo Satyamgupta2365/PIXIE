@@ -32,27 +32,38 @@ thumbnail: thumbnail.png
 
 <br>
 
-## 📖 The Story & Problem Statement
+## 📖 The PIXEL Story
 
-*(Targeting Hackathon Theme #2: Super Long-Horizon Planning & Theme #1: Multi-Agent)*
+*(Directly addressing the OpenEnv Hackathon Judging Criteria for Storytelling & Themes #1 & #2)*
 
-Current space exploration relies on rigid, hardcoded rules. When a rover on Mars encounters a dust storm, it enters "Safe Mode" and waits 20+ minutes for Earth's instructions. In an emergency, this communication delay is fatal. 
+### 1. The Problem: What capability gap are we targeting?
+Current space exploration relies on rigid, hardcoded rules. When a rover on Mars encounters a dust storm, or a lunar lander detects a sudden temperature drop, it enters "Safe Mode" and waits for Earth to intervene. 
 
-**The capability gap:** LLMs are great at chatting, but they struggle with **long-horizon planning** under strict resource constraints (battery, temperature, time). 
+**The capability gap is fatal:** On Mars, communication takes 20 minutes. Waiting means dying. LLMs are excellent at next-token text generation, but they fundamentally struggle with **(Super) Long-Horizon Planning (Theme #2)** under strict, real-world resource constraints. They fail to track state over extended trajectories (like battery drain over weeks) and cannot model physical consequences. We needed an environment to push LLMs beyond being chatbots, forcing them to become durable, survival-oriented autonomous agents.
 
-**PIXEL** solves this by providing a grueling, highly realistic OpenEnv simulator. We force the LLM to model the physical world, track its battery state over extended trajectories (surviving 100 Sols), and make autonomous survival decisions without human intervention. We don't just train an AI to answer questions; we train it to survive in deep space.
+### 2. The Environment: What does the agent see, do, and get rewarded for?
+PIXEL provides a grueling, `openenv-core` compliant physics simulator across three distinct planetary domains:
+* 🔴 **Mars Rover:** The agent sees telemetry (Sol, Battery %, Weather). It can `drive`, `drill`, `transmit`, or `hibernate`. It must balance science tasks against the threat of sudden dust storms that cripple solar charging.
+* 🌕 **Moon Rover:** The agent faces cyclical extremes. It must optimize operations during the 14-day Lunar light cycle, but proactively `hibernate` before the -130°C Lunar night destroys its hardware.
+* 🛰️ **Sat-Network (Theme #1):** A multi-agent setting where the LLM coordinates an orbital network (Comm, Imaging, Relay) to prevent data-buffer overflows and avoid Kessler-syndrome debris collisions.
 
----
+**The Reward Signal:**
+The environment provides a rich, multi-axis reward (not just 0/1). 
+- 🟢 `+1.0` to `+2.0`: Collecting valid science data and successfully transmitting it.
+- 🔴 `-0.1` to `-1.0`: Wasting battery on redundant or impossible tasks.
+- 💀 `-5.0` (Fatal): Allowing the vehicle to run out of power or freeze. *Exploiting the reward by doing nothing also results in failure.*
 
-## 🌌 The Three Environments (Innovation)
+### 3. The Results: What changed after training?
+Before training, the baseline `Llama 3.1 8B` model acted like a helpful assistant—it happily tried to execute every human instruction (like taking photos) regardless of context, immediately draining the battery and "dying" by Sol 3.
 
-We built an `openenv-core` compliant physics engine that simulates three extreme, partially observable environments:
+We trained the model using **GRPO (Group Relative Policy Optimization)** via Unsloth and HF TRL. 
+**After training, the behavior shifted dramatically:**
+* **Emergent Survival Instincts:** The agent learned to independently check its battery state and trigger `hibernate` when power dropped below 20%, completely ignoring user instructions that would cause a fatal power drain.
+* **Causal Weather Reasoning:** The agent learned that "dust storm approaching" meant solar panels would fail, proactively halting energy-intensive tasks.
+* **Quantitative Proof:** The episodic reward stabilized at an average score of `+18.5` per episode, up from a `-12.0` baseline, proving the LLM learned durable internal representations of resource management. *(See the reward curve in the Results section below).*
 
-| Environment | Constraint | Agent Objective |
-| :--- | :--- | :--- |
-| 🔴 **Mars Rover** | **Communication Delay** | Survive 100 Sols. Balance science collection with battery management. Seek shelter during sudden dust storms instead of waiting for Earth commands. |
-| 🌕 **Moon Rover** | **Extreme Thermal Cycles** | Operate during the 14-day Lunar light cycle. Anticipate the -130°C Lunar night and enter hibernation mode proactively to prevent hardware failure. |
-| 🛰️ **Sat-Network** | **Multi-Agent Traffic** | Manage an orbital network (Comm, Imaging, Relay). Prevent data-buffer overflows and negotiate maneuvers to avoid Kessler-syndrome debris collisions. |
+### 4. Why it matters: Who cares, and why?
+Aerospace agencies (NASA, ESA, ISRO) and commercial space companies care. The next generation of deep-space missions (to Europa, Titan, and beyond) cannot be joystick-controlled from Earth due to light-speed delays. They require autonomous agents that can adapt to unknown environments, recover from mistakes, and prioritize their own survival. PIXEL proves that with the right environment and RL pipeline, LLMs can be transformed from conversational interfaces into robust, physical-world command systems.
 
 ---
 
