@@ -15,8 +15,13 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
 
-from backend import satellite_service
+import sys
+import os
 
+# Add parent directory to path so it can be run from the backend folder
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from backend import satellite_service
 from backend.environment import PIXELEnvironment
 
 
@@ -402,7 +407,7 @@ async def satellites_above(radius: int = 70, category: int = 0):
 def main():
     """Run the PIXEL OpenEnv server."""
     port = int(os.getenv("PORT", "7860"))
-    uvicorn.run("pixel.server:app", host="0.0.0.0", port=port, log_level="info")
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=port, log_level="info")
 
 
 if __name__ == "__main__":

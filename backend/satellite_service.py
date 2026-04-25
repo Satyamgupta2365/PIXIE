@@ -33,7 +33,8 @@ async def fetch_celestrak_active():
     
     url = "https://celestrak.org/NORAD/elements/gp.php?GROUP=active&FORMAT=json"
     try:
-        async with httpx.AsyncClient(timeout=15.0) as client:
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        async with httpx.AsyncClient(timeout=15.0, headers=headers) as client:
             resp = await client.get(url)
             data = resp.json()
             CELESTRAK_CACHE = [
