@@ -22,7 +22,7 @@
 
 ## 📖 The PIXIE Story
 
-*(Directly addressing the OpenEnv Hackathon Judging Criteria for Storytelling, Theme #1: Multi-Agent Interactions & Theme #2: Super Long-Horizon Planning)*
+*(Directly addressing the OpenEnv Hackathon Judging Criteria for Storytelling: Theme #1, Theme #2, and Theme #4)*
 
 ### ❌ The Existing Problem
 Modern space infrastructure and deep-space exploration are facing unprecedented bottlenecks caused by **Manual Operations and Rigid Logic**.
@@ -32,10 +32,11 @@ Modern space infrastructure and deep-space exploration are facing unprecedented 
 ### ✅ Our Solution: PIXIE
 PIXIE solves this by bridging Large Language Models with **Self-Learning Reinforcement Learning (RL)**. We transform LLMs from simple chatbots into durable, survival-oriented multi-agent systems.
 
-PIXIE provides a grueling, `openenv-core` compliant physics simulator that allows AI agents to engage in self-learning across three domains:
-* 🛰️ **Sat-Network (Theme #1):** A multi-agent ecosystem where satellites self-learn to coordinate. Each satellite tracks position, velocity, and mission goals. Using RL, if two satellites risk collision, PIXIE autonomously negotiates which satellite should expend fuel to move, maximizing overall fleet bandwidth.
-* 🔴 **Mars Rover:** The agent is forced to process telemetry (Sol, Battery %, Weather). Through self-learning, it discovers how to balance science tasks against the threat of sudden dust storms, choosing to `hibernate` instead of draining its battery while waiting for Earth.
-* 🌕 **Moon Rover:** The agent faces cyclical 14-day extremes. The RL environment forces the LLM to optimize operations during the Lunar light cycle, proactively triggering hibernation before the freezing night destroys its hardware.
+PIXIE provides a grueling, `openenv-core` compliant physics simulator that allows AI agents to engage in self-learning across domains that directly solve the Hackathon Themes:
+
+* 🛰️ **Theme #1: Multi-Agent Interactions (Sat-Network):** A multi-agent ecosystem where satellites self-learn to coordinate. Each satellite tracks position, velocity, and mission goals. Using RL, if two satellites risk collision, PIXIE autonomously negotiates which satellite should expend fuel to move, modeling the beliefs and incentives of other agents to maximize overall fleet bandwidth.
+* 🔴 **Theme #2: (Super) Long-Horizon Planning (Mars/Moon Rovers):** Our rover environments force agents to track state over extended trajectories with delayed rewards. On Mars, the agent must survive 100 Sols, anticipating sudden dust storms and choosing to `hibernate` rather than wait for Earth. On the Moon, it must recover from early mistakes and optimize operations during a cyclical 14-day light cycle to survive the freezing -130°C night.
+* 📈 **Theme #4: Self-Improvement (Adaptive RL Curricula):** PIXIE is built for recursive skill amplification. Through our RL loop, the agent doesn't just solve a fixed task; it learns to drive its own capability growth by navigating escalating difficulties (e.g., transitioning from the `easy` task ID to the grueling `mars` setting) through self-play and trial-and-error.
 
 ---
 
