@@ -2,20 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SpaceBackground from '@/components/ui/space-background';
-import { Rocket, Satellite, Cpu, Radio, ChevronRight, Activity } from 'lucide-react';
+import { Satellite, Cpu, Radio, ChevronRight, Activity } from 'lucide-react';
 
 const operations = [
-  {
-    id: 'launch',
-    title: 'Orbital Launch',
-    subtitle: 'Ascent & Trajectory',
-    desc: 'Autonomous launch vehicle management. Pre-flight telemetry, ascent physics, and AI trajectory optimization.',
-    icon: Rocket,
-    color: 'from-orange-500/20 to-red-900/20',
-    border: 'group-hover:border-orange-500/50',
-    path: '/missions',
-    status: 'ACTIVE'
-  },
+
   {
     id: 'satellite',
     title: 'Satellite Network',
