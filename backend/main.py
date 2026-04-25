@@ -244,7 +244,80 @@ def root():
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "environment": "PIXEL", "version": "1.0.0"}
+    html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIXEL System Status</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --mars:#FF6B35;--green:#10B981;--blue:#60A5FA;--bg:#080A12;--panel:rgba(15,18,30,0.9);--text:#F0F0F0;--muted:#6B7280; }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{background:var(--bg);background-image:radial-gradient(ellipse at 15% 50%,rgba(255,107,53,.1),transparent 55%),radial-gradient(ellipse at 85% 20%,rgba(96,165,250,.07),transparent 55%);font-family:'Outfit',sans-serif;color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+        .card{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:3rem;max-width:640px;width:92%;backdrop-filter:blur(20px);box-shadow:0 40px 80px -20px rgba(0,0,0,.7);animation:rise .7s ease-out;}
+        @keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .header{display:flex;align-items:center;gap:1.2rem;margin-bottom:2rem;}
+        .logo{font-size:2.8rem;}
+        .title h1{font-size:1.8rem;font-weight:700;letter-spacing:-.5px;}
+        .title p{color:var(--muted);font-size:.9rem;font-family:'JetBrains Mono',monospace;}
+        .status-pill{display:inline-flex;align-items:center;gap:.5rem;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:var(--green);padding:.4rem 1rem;border-radius:50px;font-size:.8rem;font-weight:600;letter-spacing:1px;margin-bottom:2rem;}
+        .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.5s ease-in-out infinite;}
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+        .grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;}
+        .metric{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:1.2rem;}
+        .metric .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem;}
+        .metric .value{font-size:1.25rem;font-weight:600;font-family:'JetBrains Mono',monospace;}
+        .green{color:var(--green)}.orange{color:var(--mars)}.blue{color:var(--blue)}.purple{color:#a78bfa}
+        .envs{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:2rem;}
+        .env-tag{padding:.35rem .9rem;border-radius:8px;font-size:.8rem;font-weight:600;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.25);color:var(--mars);}
+        .env-tag.moon{background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.25);color:var(--blue);}
+        .env-tag.sat{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.25);color:var(--green);}
+        .links{display:flex;gap:.8rem;flex-wrap:wrap;}
+        a.btn{text-decoration:none;padding:.7rem 1.6rem;border-radius:12px;font-size:.9rem;font-weight:600;transition:all .2s;}
+        a.primary{background:linear-gradient(135deg,var(--mars),#c0392b);color:#fff;}
+        a.primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,107,53,.35);}
+        a.ghost{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--text);}
+        a.ghost:hover{background:rgba(255,255,255,.09);transform:translateY(-1px);}
+        .footer{margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--muted);}
+        .label-sm{font-size:.75rem;color:#6B7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:.7rem;}
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header">
+        <div class="logo">&#x1F534;</div>
+        <div class="title">
+            <h1>PIXEL Mission Control</h1>
+            <p>v1.0.0 &nbsp;&middot;&nbsp; OpenEnv Compatible</p>
+        </div>
+    </div>
+    <div class="status-pill"><div class="dot"></div> ALL SYSTEMS OPERATIONAL</div>
+    <div class="grid">
+        <div class="metric"><div class="label">API Status</div><div class="value green">&#x25CF; Online</div></div>
+        <div class="metric"><div class="label">Environments</div><div class="value orange">3 Active</div></div>
+        <div class="metric"><div class="label">Model</div><div class="value blue">Llama 3.1 8B</div></div>
+        <div class="metric"><div class="label">Framework</div><div class="value purple">GRPO + LoRA</div></div>
+    </div>
+    <div class="label-sm">Active Environments</div>
+    <div class="envs">
+        <span class="env-tag">&#x1F680; Mars Rover</span>
+        <span class="env-tag moon">&#x1F315; Moon Rover</span>
+        <span class="env-tag sat">&#x1F6F0;&#xFE0F; Satellite Network</span>
+    </div>
+    <div class="links">
+        <a href="/docs" class="btn primary">&#x1F4C4; API Docs</a>
+        <a href="/redoc" class="btn ghost">&#x1F4D8; ReDoc</a>
+        <a href="/state" class="btn ghost">&#x1F4E1; Live State</a>
+    </div>
+    <div class="footer">
+        <span>OpenEnv Hackathon 2025</span>
+        <span style="font-family:'JetBrains Mono',monospace;">{"status":"ok","version":"1.0.0"}</span>
+    </div>
+</div>
+</body>
+</html>"""
+    return HTMLResponse(content=html)
 
 
 # ── OpenEnv Core Endpoints ───────────────────────────────────────────────────
