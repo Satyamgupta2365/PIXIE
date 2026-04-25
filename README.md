@@ -1,3 +1,13 @@
+---
+title: PIXEL Dual-Rover Mission Control
+emoji: 🚀
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
 # 🔴 PIXEL: Dual-Rover & Satellite Mission Control 🚀
 
 <div align="center">
