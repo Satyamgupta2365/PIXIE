@@ -10,118 +10,120 @@ thumbnail: thumbnail.png
 ---
 
 <div align="center">
-  <img src="thumbnail.png" width="100%" alt="PIXEL Mars Rover">
-  
-  # 🔴 PIXEL: Autonomous Space Agent Framework 🚀
+  <img src="https://raw.githubusercontent.com/Satyamgupta2365/PIXIE/main/thumbnail.png" width="800" alt="PIXEL Space Exploration" style="border-radius: 12px; margin-bottom: 20px;">
 
-  <p><em>A production-ready OpenEnv simulation for training LLM agents in deep-space environments using GRPO Reinforcement Learning.</em></p>
+  # 🔴 PIXEL: Autonomous Space Agent Framework
+  
+  <h3>Teaching AI to survive Mars dust storms, freezing Lunar nights, and orbital traffic jams.</h3>
+
   <p>
     <a href="https://huggingface.co/spaces/satyampy/Pixie"><img src="https://img.shields.io/badge/Demo-HuggingFace_Space-yellow?style=for-the-badge&logo=huggingface" alt="HF Space"></a>
     <a href="https://hub.docker.com/r/satyamgpy/pixel-env"><img src="https://img.shields.io/badge/Docker-Live_Image-blue?style=for-the-badge&logo=docker" alt="Docker"></a>
-  </p>
-  <p>
-    <img src="https://img.shields.io/badge/Framework-OpenEnv-blue" alt="OpenEnv">
-    <img src="https://img.shields.io/badge/Model-Llama_3.1_8B-orange" alt="Llama 3.1">
-    <img src="https://img.shields.io/badge/Training-GRPO-purple" alt="GRPO">
-    <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
+    <img src="https://img.shields.io/badge/Framework-OpenEnv-indigo?style=for-the-badge" alt="OpenEnv">
+    <img src="https://img.shields.io/badge/Model-Llama_3.1_8B-orange?style=for-the-badge" alt="Llama 3.1">
   </p>
 </div>
 
----
+<br>
 
-## 🛑 The Autonomy Bottleneck
+## 🌌 Overview
 
-**Current space exploration autonomy is dangerously rigid.** 
-When a Mars rover encounters a severe dust storm, or a Moon rover faces an unexpected temperature drop, hardcoded legacy systems trigger "Safe Mode" and wait for Earth to intervene. 
+Current space exploration relies on rigid, hardcoded rules. When a rover on Mars encounters a dust storm, it enters "Safe Mode" and waits 20+ minutes for Earth's instructions. In an emergency, this delay is fatal.
 
-* On **Mars**, communication takes 20 minutes. A late decision can result in a total loss of the vehicle.
-* On the **Moon**, nightfall plunges temperatures to -130°C. Missing a hibernation window is fatal.
-* In **Orbit**, satellite networks must dynamically balance bandwidth, battery, and orbital collision risks.
-
-**We need agents, not algorithms.** We need AI that can adapt, reason, and survive.
+**PIXEL** solves this by bridging **Large Language Models** with **Reinforcement Learning**. We built an `openenv-core` compliant physics and logic engine that simulates three extreme environments. Using **GRPO** (Group Relative Policy Optimization), we successfully trained an LLM to override standard instructions, manage battery life, and survive autonomously.
 
 ---
 
-## 💡 The PIXEL Solution
+## 🚀 The Three Environments
 
-**PIXEL** is a multi-environment Reinforcement Learning suite that leverages the **OpenEnv standard** to train Large Language Models (LLMs) to master complex spatial-temporal domains:
-
-1. 🔴 **Mars Rover Env:** Deep autonomy constraint modeling. The agent must learn to **override** commands from Earth when local weather or hardware anomalies threaten its survival.
-2. 🌕 **Moon Rover Env:** Extreme cyclical survival. The agent must optimize scientific gathering during the 14-sol day, and proactively hibernate before the freezing lunar night.
-3. 🛰️ **Satellite Network Env:** Multi-agent coordination. The agent governs an orbital constellation to prevent data buffer overflows and avoid Kessler-syndrome collisions.
+| Environment | Constraint | Agent Objective |
+| :--- | :--- | :--- |
+| 🔴 **Mars Rover** | **Communication Delay** | Survive 100 Sols. Balance science collection with battery management. Seek shelter during sudden dust storms instead of waiting for Earth commands. |
+| 🌕 **Moon Rover** | **Extreme Thermal Cycles** | Operate during the 14-day Lunar light cycle. Anticipate the -130°C Lunar night and enter hibernation mode to prevent hardware failure. |
+| 🛰️ **Sat-Constellation** | **Multi-Agent Traffic** | Manage an orbital network (Comm, Imaging, Relay). Prevent data-buffer overflows and maneuver to avoid Kessler-syndrome debris collisions. |
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Technical Architecture
 
-PIXEL is built with a decoupled, production-grade architecture:
+PIXEL is a fully decoupled, production-ready full-stack application:
+
+1. **The Environment (Python/FastAPI):** An OpenEnv compliant backend that manages the physics, weather generation, battery depletion, and reward calculations.
+2. **The LLM (Llama 3.1 8B):** Quantized to 4-bit and trained via `unsloth` and `trl` using the GRPO reinforcement learning pipeline.
+3. **The UI (React/Vite):** A stunning, dark-mode Mission Control dashboard to view live telemetry and interact with the AI agent.
 
 ```mermaid
-graph TD
-    A[Llama 3.1 8B LLM] -->|Natural Language Actions| B(OpenEnv API Bridge)
-    B -->|POST /step| C{PIXEL Core Engine}
-    C --> D[Mars Physics Engine]
-    C --> E[Lunar Cycle Engine]
-    C --> F[Orbital Mechanics Engine]
-    D --> G[Reward Calculator]
-    E --> G
-    F --> G
-    G -->|State, Reward, Info| B
-    B -->|Observation Feedback| A
+flowchart LR
+    subgraph AI Agent
+    A[Llama 3.1 8B]
+    end
+
+    subgraph PIXEL Engine
+    B(OpenEnv API Bridge)
+    C{Physics Core}
+    D[Mars Env]
+    E[Moon Env]
+    F[Sat Env]
+    G[Reward Grader]
+    end
+
+    A -- Natural Language --> B
+    B -- Action --> C
+    C --> D & E & F
+    D & E & F --> G
+    G -- "State & Reward" --> B
+    B -- "Telemetry Text" --> A
 ```
+
+*(Note: If the diagram above does not render in your markdown viewer, it represents the cyclic data flow from the LLM, through the OpenEnv standard `step()` function, into the physics/reward engines, and back as text.)*
 
 ---
 
 ## 🧠 Reinforcement Learning (GRPO)
 
-PIXEL was used to train a `Llama 3.1 8B Instruct` model using **Group Relative Policy Optimization (GRPO)**. 
+We abandoned standard Supervised Fine-Tuning (SFT) in favor of **GRPO**.
 
-### How the Model Learns
-1. **Observation:** The environment feeds the LLM a plain-text telemetry readout. *(e.g., "Sol 12. Battery 45%. Dust storm approaching.")*
-2. **Exploration (GRPO):** Instead of one answer, the LLM generates 4 different strategic actions.
-3. **Reward Function:** PIXEL grades all 4 actions through a multi-axis rubric:
-   * `+1.0` for valid scientific data collection.
-   * `+2.0` for successful orbital data transmission.
-   * `-1.0` for battery wastage on redundant tasks.
-   * `-5.0` (Fatal) if the vehicle runs out of power.
-4. **Optimization:** The model updates its neural weights to heavily favor the thought process that led to the highest relative reward.
+### The Training Loop:
+1. **Prompt Generation:** The environment outputs: *"Sol 12. Battery 45%. Dust storm approaching."*
+2. **Exploration:** The LLM generates **4 different** actions.
+3. **Evaluation:** PIXEL runs all 4 actions and assigns scores:
+   - 🟢 `+1.0` (Valid Science)
+   - 🔴 `-1.0` (Wasted Battery)
+   - 💀 `-5.0` (Fatal Hardware Damage)
+4. **Optimization:** The model updates its LoRA weights to maximize the highest-scoring reasoning path.
 
 ---
 
-## 🚀 Quick Start (Docker)
+## 💻 Quick Start & Deployment
 
-PIXEL is fully containerized and available on Docker Hub. You can spin up the complete API and mission dashboard locally in seconds.
+PIXEL is fully containerized and hosted on the HuggingFace Spaces Docker infrastructure. 
 
+### Run Locally via Docker
 ```bash
-# Pull and run the latest image
+docker pull satyamgpy/pixel-env:latest
 docker run -p 7860:7860 satyamgpy/pixel-env:latest
 ```
 
-Once running, navigate to:
-- 🌐 **Mission Dashboard:** `http://localhost:7860/health`
-- 📄 **Swagger API Docs:** `http://localhost:7860/docs`
+### Accessing the Dashboard
+Once the container is running (locally or on HuggingFace), navigate to:
+* **Mission Dashboard:** `http://localhost:7860/health`
+* **Swagger API Docs:** `http://localhost:7860/docs`
 
 ---
 
-## 📡 API Reference (OpenEnv Standard)
+## 📡 OpenEnv API Standard
 
-PIXEL natively implements the `openenv-core` interface, making it universally plug-and-play with any standard RL framework.
+PIXEL complies exactly with the OpenEnv specification, meaning any RL framework can plug into it instantly.
 
-### `POST /reset/{task_id}`
-Initializes the simulation environment.
-* **`task_id` options:** `mars`, `moon`, `easy`
-* **Returns:** Initial observation text.
+**`POST /reset/{task_id}`**
+* `task_id`: mars, moon, or easy
+* *Returns the starting textual observation.*
 
-### `POST /step/{task_id}`
-Executes an agent action in the environment.
-* **Payload:** `{"action": "Drive to sector 4 and drill"}`
-* **Returns:** `observation`, `reward` (float), `done` (boolean), `info` (dict).
-
-### `GET /state`
-Returns raw JSON telemetry of the current active environment without advancing the simulation.
+**`POST /step/{task_id}`**
+* Payload: `{"action": "Hibernate to save power"}`
+* *Returns the next observation, float reward, and done status.*
 
 ---
-
 <div align="center">
-  <b>Built for the OpenEnv Hackathon 2025</b>
+  <b>Developed for the OpenEnv Hackathon 2025</b>
 </div>
