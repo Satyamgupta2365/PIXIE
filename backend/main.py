@@ -23,6 +23,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from backend import satellite_service
 from backend.environment import PIXELEnvironment
+from backend.nasa_client import get_realtime_environment_data
 
 
 # ── Pydantic models for API ──────────────────────────────────────────────────
@@ -85,23 +86,30 @@ app.add_middleware(
 
 # ── Active environment instances (keyed by task difficulty) ───────────────────
 
-_envs: Dict[str, PIXELEnvironment] = {}
+_envs: Dict[str, Any] = {}
 
 TASK_CONFIGS = {
+    "mars": {"description": "Mars Rover: Deep Autonomy & Comm Delay", "sol_limit": 100},
+    "moon": {"description": "Moon Rover: Extreme Day/Night Survival", "sol_limit": 100},
     "easy":   {"description": "Survive 100 sols with clear weather bias", "sol_limit": 100},
-    "medium": {"description": "Dust storms and anomalies — resource constrained", "sol_limit": 100},
-    "hard":   {"description": "Extreme conditions with frequent crises", "sol_limit": 100},
 }
 
 
-def get_env(task_id: str = "easy") -> PIXELEnvironment:
+def get_env(task_id: str = "mars") -> Any:
     if task_id not in TASK_CONFIGS:
         raise HTTPException(
             status_code=404,
             detail=f"Unknown task_id: {task_id}. Choose from: {list(TASK_CONFIGS.keys())}"
         )
     if task_id not in _envs:
-        _envs[task_id] = PIXELEnvironment()
+        if task_id == "mars":
+            from backend.mars_rover_env import MarsRoverEnv
+            _envs[task_id] = MarsRoverEnv()
+        elif task_id == "moon":
+            from backend.moon_rover_env import MoonRoverEnv
+            _envs[task_id] = MoonRoverEnv()
+        else:
+            _envs[task_id] = PIXELEnvironment()
     return _envs[task_id]
 
 
@@ -243,16 +251,16 @@ def health():
 
 @app.post("/reset", response_model=ResetResponse)
 def reset_default():
-    """Reset the default (easy) environment and return initial observation."""
-    return reset("easy")
+    """Reset the default (mars) environment and return initial observation."""
+    return reset("mars")
 
 
 @app.post("/reset/{task_id}", response_model=ResetResponse)
-def reset(task_id: str = "easy") -> ResetResponse:
+def reset(task_id: str = "mars") -> ResetResponse:
     """Reset the environment and return initial observation string."""
     if task_id not in TASK_CONFIGS:
         raise HTTPException(status_code=404, detail=f"Unknown task_id: {task_id}")
-    _envs[task_id] = PIXELEnvironment()
+    _envs[task_id] = get_env(task_id) # Ensure properly instantiated
     obs_str = _envs[task_id].reset()
     return ResetResponse(
         observation=obs_str,
@@ -262,8 +270,8 @@ def reset(task_id: str = "easy") -> ResetResponse:
 
 @app.post("/step", response_model=StepResponse)
 def step_default(action: ActionRequest):
-    """Execute one action on the default (easy) environment."""
-    return step("easy", action)
+    """Execute one action on the default (mars) environment."""
+    return step("mars", action)
 
 
 @app.post("/step/{task_id}", response_model=StepResponse)
@@ -276,12 +284,12 @@ def step(task_id: str, action: ActionRequest) -> StepResponse:
 
 @app.get("/state", response_model=StateResponse)
 def state_default():
-    """Return current state of the default (easy) environment."""
-    return state("easy")
+    """Return current state of the default (mars) environment."""
+    return state("mars")
 
 
 @app.get("/state/{task_id}", response_model=StateResponse)
-def state(task_id: str = "easy") -> StateResponse:
+def state(task_id: str = "mars") -> StateResponse:
     """Return the full environment state dictionary."""
     env = get_env(task_id)
     s = env.state()
@@ -337,6 +345,44 @@ def grader(task_id: str):
 def grader_default():
     """Grade the default (easy) task."""
     return grader("easy")
+
+
+@app.get("/telemetry/live")
+def telemetry_live():
+    """Get the true live telemetry from NASA APIs + Moon Simulation"""
+    try:
+        mars_data = get_realtime_environment_data()
+        
+        # Determine Mars hazard based on NASA real data
+        mars_hazard = "None"
+        if mars_data.get("dust_storm_active"):
+            mars_hazard = "Dust Storm Active"
+        elif not mars_data.get("comms_window_open"):
+            mars_hazard = "Signal Lost (Conjunction)"
+            
+        # Convert battery wh to percentage approx (0-100)
+        battery_pct = round((mars_data.get("estimated_battery_wh", 750) / 750) * 100, 1)
+            
+        return {
+            "mars": {
+                "sol": mars_data.get("current_sol", 1000),
+                "battery": battery_pct,
+                "temp": mars_data.get("temperature_low_c", -60),
+                "commDelay": f"{mars_data.get('signal_delay_minutes', 14)} min",
+                "hazard": mars_hazard,
+                "solar_efficiency": mars_data.get("solar_efficiency", 1.0)
+            },
+            "moon": {
+                "sol": 14,
+                "battery": 92,
+                "temp": -20,
+                "commDelay": "1.2s",
+                "hazard": "Sunset in 2 hours",
+                "solar_efficiency": 1.0
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ── Satellite Routes (N2YO) ───────────────────────────────────────────────────

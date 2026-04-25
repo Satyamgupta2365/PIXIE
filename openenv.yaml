@@ -1,41 +1,44 @@
-name: pixel-mars-rover
+name: pixel-dual-rover-system
 version: "1.0.0"
 description: >
-  PIXEL — An OpenEnv-compatible Mars Rover RL environment where an LLM agent
-  controls a rover using natural language, managing battery, science collection,
-  weather conditions, anomalies, and communication windows across 100 Martian sols.
+  PIXEL — An OpenEnv-compatible Dual Rover RL environment. Contains two distinct
+  environments: Mars Rover (deep autonomy, communication delay, long-horizon planning)
+  and Moon Rover (short-horizon, survival under extreme day/night cycle). Both
+  are controlled via natural language by an LLM agent.
 
 author: Satyam Gupta
 tags:
   - openenv
   - space
   - mars
+  - moon
   - reinforcement-learning
   - natural-language
   - resource-management
   - robotics
 
 tasks:
+  - id: mars
+    name: Mars Rover - Deep Autonomy
+    difficulty: hard
+    description: >
+      Survive on Mars. Commands from Earth are delayed by up to 20 minutes. 
+      The agent must autonomously reject unsafe Earth commands if local conditions 
+      (dust storms, anomalies) have changed since the command was sent.
+
+  - id: moon
+    name: Moon Rover - Lunar Survival
+    difficulty: hard
+    description: >
+      Survive the 14-day lunar day/night cycle. Immediate execution (no comms delay),
+      but the agent must learn to hyper-optimize tasks during the day and reliably
+      hibernate during the freezing lunar night to prevent catastrophic battery drain.
+
   - id: easy
     name: Standard Mars Mission
     difficulty: easy
     description: >
-      Survive 100 Martian sols with favorable conditions. Manage battery,
-      collect science, and handle occasional weather changes and anomalies.
-
-  - id: medium
-    name: Dust Storm Survival
-    difficulty: medium
-    description: >
-      Navigate through frequent dust storms that cut solar efficiency.
-      Battery management becomes critical. Prioritize survival and science.
-
-  - id: hard
-    name: Extreme Conditions Challenge
-    difficulty: hard
-    description: >
-      Survive extreme Mars conditions with frequent anomalies, dust storms,
-      and limited comm windows. Every decision counts.
+      Baseline Mars mission to survive 100 sols without comm delays.
 
 observation_space:
   sol: integer                          # Current Mars day (0-100)

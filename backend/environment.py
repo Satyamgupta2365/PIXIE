@@ -5,7 +5,7 @@ An OpenEnv-compatible environment where an LLM agent controls a Mars rover,
 making natural-language decisions about drilling, imaging, sampling, charging,
 and transmitting data across 100 Martian sols.
 
-Implements:
+Implements the OpenEnv Environment interface:
   - reset()  → initial observation string
   - step(action: str) → (observation, reward, done, info)
   - state()  → full state dict
@@ -14,6 +14,19 @@ Implements:
 import random
 import re
 from typing import Tuple, Dict, Any, List, Optional
+
+# ── OpenEnv base class import ────────────────────────────────────────────────
+# On HuggingFace Spaces (Linux/Docker), openenv-core installs normally.
+# On local Windows dev, it may fail due to numpy build issues — use fallback.
+try:
+    from openenv.core.env_server import Environment as _OpenEnvBase
+except ImportError:
+    # Fallback: define a minimal ABC that matches the OpenEnv interface
+    class _OpenEnvBase:
+        """Minimal OpenEnv Environment interface for local development."""
+        def reset(self): raise NotImplementedError
+        def step(self, action): raise NotImplementedError
+        def state(self): raise NotImplementedError
 
 from backend.world import (
     MarsWorldModel,
@@ -88,9 +101,9 @@ def parse_action(raw: str) -> str:
 
 # ── Environment ──────────────────────────────────────────────────────────────
 
-class PIXELEnvironment:
+class PIXELEnvironment(_OpenEnvBase):
     """
-    Mars Rover PIXEL Environment.
+    Mars Rover PIXEL Environment — extends OpenEnv's Environment base class.
 
     State schema:
         sol, battery, science_collected, tasks_available, weather,
