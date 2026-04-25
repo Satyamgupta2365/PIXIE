@@ -109,7 +109,3 @@ Initializes the simulation and returns the starting textual observation.
 **`POST /step/{task_id}`** 
 Accepts a natural language action and returns the next `observation`, `reward` (float), and `done` (boolean).
 
----
-<div align="center">
-  <b>Developed for the OpenEnv Hackathon 2025 (India)</b>
-</div>
