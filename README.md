@@ -1,14 +1,3 @@
----
-title: PIXEL Dual-Rover Mission Control
-emoji: 🚀
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-pinned: false
-app_port: 7860
-thumbnail: thumbnail.png
----
-
 <div align="center">
   <img src="https://raw.githubusercontent.com/Satyamgupta2365/PIXIE/main/thumbnail.png" width="800" alt="PIXEL Space Exploration" style="border-radius: 12px; margin-bottom: 20px;">
 
