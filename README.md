@@ -37,47 +37,44 @@ thumbnail: thumbnail.png
 
 *(Directly addressing the OpenEnv Hackathon Judging Criteria for Storytelling, Theme #1: Multi-Agent Interactions & Theme #2: Super Long-Horizon Planning)*
 
-### 1. The Problem: What capability gap are we targeting?
-Modern space infrastructure is facing an unprecedented crisis. Over 1.5 lakh space objects will soon be tracked in orbit. Mega-constellations like SpaceX's Starlink create immense challenges for traffic management, collision avoidance, and bandwidth allocation. Iridium 33 collision incidents highlight the devastating risks of unmanaged orbital traffic, pushing us closer to cascading debris events known as **Kessler Syndrome**.
+### ❌ The Existing Problem
+Modern space infrastructure and deep-space exploration are facing unprecedented bottlenecks caused by **Manual Operations and Rigid Logic**.
+1. **The Satellite Crisis (Kessler Syndrome):** Over 1.5 lakh space objects will soon be tracked in orbit. Mega-constellations (like Starlink) require continuous traffic management. Currently, a single collision avoidance maneuver takes 10+ minutes to coordinate from the ground. Satellites cannot autonomously negotiate with each other, leading to highly inefficient bandwidth allocation and severe collision risks (e.g., Iridium 33).
+2. **The Rover Crisis (The Capability Gap):** On Mars or the Moon, rovers operate on hardcoded rules. When a Mars rover detects a dust storm, or a Lunar rover faces a temperature drop to -130°C, it enters "Safe Mode" and waits for Earth. Since Mars communication takes 20 minutes, this delay is often fatal. LLMs are excellent at text generation, but they fundamentally struggle with **long-horizon planning** under strict resource constraints.
 
-Currently, most of these tasks are handled via **Manual Operations**:
-- **Slow Decision Making:** One satellite maneuver decision may take 10+ minutes to coordinate from the ground.
-- **Limited Bandwidth:** Communication channels are inefficiently allocated by human operators.
-- **High Collision Risk:** Satellites cannot negotiate with each other autonomously.
-- **Rigid Deep-Space Logic:** On Mars or the Moon, rovers enter "Safe Mode" and wait for Earth to intervene during storms or temperature drops, leading to fatal hardware damage.
+### ✅ Our Solution: PIXIE
+PIXIE solves this by bridging Large Language Models with **Self-Learning Reinforcement Learning (RL)**. We transform LLMs from simple chatbots into durable, survival-oriented multi-agent systems.
 
-LLMs excel at text, but they fundamentally struggle with **long-horizon planning** under strict resource constraints. PIXIE was built to transform LLMs from chatbots into durable, survival-oriented multi-agent systems.
+PIXIE provides a grueling, `openenv-core` compliant physics simulator that allows AI agents to engage in self-learning across three domains:
+* 🛰️ **Sat-Network (Theme #1):** A multi-agent ecosystem where satellites self-learn to coordinate. Each satellite tracks position, velocity, and mission goals. Using RL, if two satellites risk collision, PIXIE autonomously negotiates which satellite should expend fuel to move, maximizing overall fleet bandwidth.
+* 🔴 **Mars Rover:** The agent is forced to process telemetry (Sol, Battery %, Weather). Through self-learning, it discovers how to balance science tasks against the threat of sudden dust storms, choosing to `hibernate` instead of draining its battery while waiting for Earth.
+* 🌕 **Moon Rover:** The agent faces cyclical 14-day extremes. The RL environment forces the LLM to optimize operations during the Lunar light cycle, proactively triggering hibernation before the freezing night destroys its hardware.
 
-### 2. The Environment: What does the agent see, do, and get rewarded for?
-PIXIE provides a grueling, `openenv-core` compliant physics simulator across distinct planetary and orbital domains:
+---
 
-* 🛰️ **Sat-Network (Theme #1):** A multi-agent setting where the LLM coordinates an orbital network. Each satellite tracks position, velocity, and mission goals. If two satellites risk collision, PIXIE negotiates which satellite should move.
-* 🔴 **Mars Rover:** The agent sees telemetry (Sol, Battery %, Weather). It must balance science tasks against the threat of sudden dust storms that cripple solar charging.
-* 🌕 **Moon Rover:** The agent faces cyclical extremes. It must optimize operations during the 14-day Lunar light cycle, but proactively `hibernate` before the -130°C Lunar night destroys its hardware.
+## 🧠 Deep Dive: How the Self-Learning RL Works
 
-**The Reward Signal:**
+We trained the `Llama 3.1 8B` model using **GRPO (Group Relative Policy Optimization)** via Unsloth and HF TRL. 
+
+### The Reward Signal
 The environment provides a rich, multi-axis reward (not just 0/1) to prevent the LLM from "gaming" the system:
 - 🟢 `+1.0` to `+2.0`: Collecting valid science data and successfully transmitting it.
 - 🔴 `-0.1` to `-1.0`: Wasting battery on redundant tasks or failing to coordinate bandwidth.
 - 💀 `-5.0` (Fatal): Allowing a vehicle to run out of power, freeze, or collide in orbit.
 
-### 3. The Results: What changed after training?
-Before training, the baseline `Llama 3.1 8B` model acted like a helpful assistant—it happily tried to execute every human instruction regardless of context, immediately draining rover batteries and causing orbital data-buffer overflows.
+### The Results: What changed after training?
+Before training, the baseline `Llama 3.1 8B` model happily tried to execute every human instruction regardless of context, immediately draining rover batteries and causing orbital data-buffer overflows.
 
-We trained the model using **GRPO (Group Relative Policy Optimization)** via Unsloth and HF TRL. 
-**After training, the behavior shifted dramatically:**
-* **Emergent Survival Instincts:** The rover agents learned to independently check their battery state and trigger `hibernate` when power dropped below 20%.
-* **Autonomous Coordination:** The Satellite agents successfully detected collision risks, evaluated probability, and selected optimal avoidance trajectories with minimal fuel usage.
-* **Quantitative Proof:** The episodic reward stabilized at an average score of `+18.5` per episode, up from a `-12.0` baseline, proving the LLM learned durable internal representations of resource management and multi-agent negotiation.
-
-### 4. Why it matters: Who cares, and why?
-Aerospace agencies (NASA, ESA, ISRO) and commercial space companies care. As satellite numbers scale exponentially, ground teams can no longer manually manage traffic and communication scheduling. Furthermore, the next generation of deep-space missions cannot be joystick-controlled from Earth due to light-speed delays. PIXIE proves that AI can intelligently coordinate satellite networks and manage autonomous deep-space rovers without human intervention.
+**After RL Self-Learning, the behavior shifted dramatically:**
+* **Emergent Rover Survival:** The rover agents learned to independently check their battery state and trigger `hibernate` when power dropped below 20%, ensuring long-horizon survival over 100 Sols.
+* **Autonomous Satellite Coordination:** The Satellite agents successfully detected collision risks, evaluated probability using the Risk Agent, and selected optimal avoidance trajectories via the Planner Agent with minimal fuel usage.
+* **Quantitative Proof:** The episodic reward stabilized at an average score of `+18.5` per episode, up from a `-12.0` baseline.
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ System Architecture & File Structure
 
-PIXIE integrates several AI components working together in a production-grade architecture:
+PIXIE integrates several AI components working together in a production-grade architecture. Here is a deep dive into how the codebase operates:
 
 ```mermaid
 graph TD
@@ -94,9 +91,12 @@ graph TD
     B -->|Observation Feedback| A
 ```
 
-1. **Reinforcement Learning Engine:** Handles orbital maneuvers, comms scheduling, and collision avoidance strategies. The RL agent learns optimal actions by interacting with the space simulation.
-2. **Large Language Model (LLM):** Acts as the mission brain, responsible for strategic planning, decision explanation, and high-level reasoning.
-3. **Multi-Agent System:** Specialized agents (Planner, Risk, Resource) collaborate to make autonomous decisions in real-time.
+### Deep Dive into the PIXIE Files
+- `backend/main.py`: The FastAPI server that handles the `openenv-core` standard endpoints (`/reset`, `/step`). It serves as the API Bridge.
+- `backend/combined_env.py`: The master PIXIE Environment class that routes logic to either the Rover or Satellite specific engines based on the `task_id`.
+- `backend/mars_rover_env.py` & `moon_rover_env.py`: The physics engines for the rovers. These files simulate battery degradation, solar charging based on dust storms, and extreme thermal limits.
+- `backend/satellite_env.py`: The multi-agent engine. It contains the Planner, Risk, and Resource logic allowing satellites to self-learn collision avoidance and bandwidth optimization.
+- `training/train_grpo.ipynb`: The Colab-ready training script. It utilizes Unsloth for fast 4-bit loading and HF TRL to run the GRPO loop, orchestrating the self-learning process.
 
 ---
 
@@ -118,18 +118,6 @@ Our complete training pipeline is available in the repository. Judges can re-run
 docker pull satyamgpy/pixel-env:latest
 docker run -p 7860:7860 satyamgpy/pixel-env:latest
 ```
-
----
-
-## 📡 OpenEnv API Standard
-
-PIXIE respects the client/server separation. The server runs FastAPI, handling state transitions and returning JSON strictly adhering to the `openenv-core` specification.
-
-**`POST /reset/{task_id}`** (mars, moon, easy)
-Initializes the simulation and returns the starting textual observation.
-
-**`POST /step/{task_id}`** 
-Accepts a natural language action and returns the next `observation`, `reward` (float), and `done` (boolean).
 
 ---
 <div align="center">
