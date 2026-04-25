@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Cpu, Battery, Thermometer, Navigation, Activity, Shield, Zap, Radio, MapPin } from 'lucide-react';
 
-const ROVERS = [
+const INITIAL_ROVERS = [
   { id: 'perseverance', name: 'Perseverance',  color: '#f97316', sol: 1158, location: 'Jezero Crater',   battery: 87, temp: -63, status: 'Exploring' },
   { id: 'curiosity',    name: 'Curiosity',     color: '#3b82f6', sol: 4358, location: 'Gale Crater',     battery: 72, temp: -70, status: 'Sampling'  },
   { id: 'pixel',       name: 'PIXEL-1',        color: '#a855f7', sol: 22,   location: 'Isidis Planitia', battery: 94, temp: -55, status: 'Navigating'},
@@ -75,21 +75,63 @@ export default function RoverDashboard() {
   const navigate = useNavigate();
   const [selIdx, setSelIdx] = useState(0);
   const [logIdx, setLogIdx] = useState([0, 0, 0]);
-  const [metrics, setMetrics] = useState(ROVERS.map(r => ({ battery: r.battery, temp: r.temp, signal: 88 })));
+  const [rovers, setRovers] = useState(INITIAL_ROVERS);
+  const [metrics, setMetrics] = useState(INITIAL_ROVERS.map(r => ({ battery: r.battery, temp: r.temp, signal: 88 })));
 
   useEffect(() => {
+    // Mock simulation for NASA rovers
     const t = setInterval(() => {
       setLogIdx(prev => prev.map((v, i) => (i === selIdx ? (v + 1) % AI_ACTIONS[i].length : v)));
-      setMetrics(prev => prev.map(m => ({
-        battery: Math.max(40, Math.min(100, m.battery + (Math.random() * 2 - 1))),
-        temp:    Math.max(-90, Math.min(-40, m.temp + (Math.random() * 2 - 1))),
-        signal:  Math.max(60, Math.min(100, m.signal + (Math.random() * 4 - 2))),
-      })));
+      setMetrics(prev => prev.map((m, i) => {
+        if (i === 2) return m; // Skip PIXEL, it has real data
+        return {
+          battery: Math.max(40, Math.min(100, m.battery + (Math.random() * 2 - 1))),
+          temp:    Math.max(-90, Math.min(-40, m.temp + (Math.random() * 2 - 1))),
+          signal:  Math.max(60, Math.min(100, m.signal + (Math.random() * 4 - 2))),
+        };
+      }));
     }, 4000);
-    return () => clearInterval(t);
+
+    // Live backend connection for PIXEL
+    const fetchPixelData = async () => {
+      try {
+        const res = await fetch('/api/state');
+        if (res.ok) {
+          const data = await res.json();
+          setRovers(prev => {
+            const next = [...prev];
+            next[2] = {
+              ...next[2],
+              sol: data.sol,
+              status: data.anomaly_active ? 'Anomaly' : data.weather === 'dust_storm' ? 'Safe Mode' : 'Exploring'
+            };
+            return next;
+          });
+          setMetrics(prev => {
+            const next = [...prev];
+            next[2] = {
+              battery: data.battery,
+              temp: data.weather === 'dust_storm' ? -80 : -55,
+              signal: data.comm_window_open ? 98 : 12
+            };
+            return next;
+          });
+        }
+      } catch (e) {
+        console.error('Failed to connect to PIXEL backend', e);
+      }
+    };
+
+    fetchPixelData();
+    const pixelInterval = setInterval(fetchPixelData, 2000);
+
+    return () => {
+      clearInterval(t);
+      clearInterval(pixelInterval);
+    };
   }, [selIdx]);
 
-  const rover = ROVERS[selIdx];
+  const rover = rovers[selIdx];
   const cur = metrics[selIdx];
 
   return (
@@ -122,7 +164,7 @@ export default function RoverDashboard() {
             <Cpu className="w-3 h-3" /> Active Rovers
           </div>
 
-          {ROVERS.map((r, i) => (
+          {rovers.map((r, i) => (
             <button key={r.id} onClick={() => setSelIdx(i)}
               className={`w-full text-left p-4 rounded-2xl border transition-all ${selIdx === i ? 'border-opacity-60 bg-white/5' : 'border-white/10 hover:bg-white/5'}`}
               style={{ borderColor: selIdx === i ? r.color : undefined }}>
