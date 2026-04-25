@@ -7,6 +7,7 @@ import MissionDetailsDashboard from './pages/MissionDetailsDashboard';
 import LiveLaunchDashboard from './pages/LiveLaunchDashboard';
 import TrainingResultsPage from './pages/TrainingResultsPage';
 import PastLaunchesPage from './pages/PastLaunchesPage';
+import LaunchDetailsPage from './pages/LaunchDetailsPage';
 import OperationsHubPage from './pages/OperationsHubPage';
 import SatelliteDashboard from './pages/SatelliteDashboard';
 import RoverDashboard from './pages/RoverDashboard';
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/launch/:id" element={<LiveLaunchDashboard />} />
         <Route path="/training" element={<TrainingResultsPage />} />
         <Route path="/launches" element={<PastLaunchesPage />} />
+        <Route path="/launches/:id" element={<LaunchDetailsPage />} />
         <Route path="/satellites" element={<SatelliteDashboard />} />
         <Route path="/rovers" element={<RoverDashboard />} />
       </Routes>

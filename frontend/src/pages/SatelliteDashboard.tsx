@@ -3,29 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Satellite, Activity, Globe2, Shield, Radio, Zap, Signal, Thermometer, Battery, Crosshair, Search, Plus, Loader2 } from 'lucide-react';
 
-const INITIAL_SATELLITES = [
-  { key: 'iss',    id: 25544, name: 'ISS (ZARYA)',           orbit: 'LEO', type: 'Space Station', inclination: 51.6 },
-  { key: 'hubble', id: 20580, name: 'Hubble Telescope',      orbit: 'LEO', type: 'Space Telescope', inclination: 28.5 },
-  { key: 'noaa19', id: 33591, name: 'NOAA-19',               orbit: 'SSO', type: 'Weather Satellite', inclination: 99.0 },
+const RL_SATELLITES = [
+  { key: 'sat-a', id: 'SAT-A', name: 'SAT-A (Comm)', orbit: 'GEO', type: 'Communication', inclination: 0.0, lat: 0, lng: -45, battery: 75, bandwidth: 50 },
+  { key: 'sat-b', id: 'SAT-B', name: 'SAT-B (Imaging)', orbit: 'LEO', type: 'Imaging', inclination: 51.6, lat: 20, lng: 120, battery: 40, bandwidth: 120 },
+  { key: 'sat-c', id: 'SAT-C', name: 'SAT-C (Relay)', orbit: 'MEO', type: 'Relay', inclination: 45.0, lat: -40, lng: 10, battery: 90, bandwidth: 0 },
 ];
 
 const AI_LOGS = [
-  'Orbital decay negligible — no thrust compensation required.',
-  'Collision avoidance scan complete. Debris-free corridor confirmed.',
-  'Solar array efficiency at 98.4%. Thermal baseline stable.',
-  'Uplink signal at 12.3 Mb/s. Ground station handoff in T-8 min.',
-  'PIXEL Agent autonomously adjusting attitude for optimal solar angle.',
+  'SAT-B: Data buffer full. Requesting transmission window...',
+  'SAT-A: Bandwidth limited. Delaying SAT-B transmission.',
+  'PIXEL Decision: Routing SAT-B data via SAT-C (Relay).',
+  'SAT-C: Receiving data from SAT-B. Battery dropping to 85%.',
+  'SAT-A: Transmission to Earth successful. Reward +1.0',
 ];
 
 export default function SatelliteDashboard() {
   const navigate = useNavigate();
-  const [fleet, setFleet] = useState<any[]>(INITIAL_SATELLITES);
+  const [fleet, setFleet] = useState<any[]>(RL_SATELLITES);
   const [selIdx, setSelIdx] = useState(0);
-  const [cur, setCur] = useState<any>(null);
   const [passes, setPasses] = useState<any[]>([]);
-  const [history, setHistory] = useState<{ lat: number; lng: number }[]>([]);
   const [logIdx, setLogIdx] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -33,71 +31,26 @@ export default function SatelliteDashboard() {
 
   const sat = fleet[selIdx];
 
-  // Fetch initial popular fleet
+  // Simulate RL network orbital movement
   useEffect(() => {
-    fetch('/api/satellite/popular')
-      .then(r => r.json())
-      .then(data => {
-        if (data && data.length > 0) {
-          // ensure keys exist
-          const mapped = data.map((d: any) => ({
-            ...d,
-            key: d.key || `sat_${d.id}`,
-            orbit: d.orbit || 'LEO',
-            type: d.type || 'Satellite'
-          }));
-          setFleet(mapped);
+    const t = setInterval(() => {
+      setFleet(prev => prev.map(s => {
+        let newLng = s.lng + (s.orbit === 'LEO' ? 3 : s.orbit === 'MEO' ? 1.5 : 0.5);
+        if (newLng > 180) newLng -= 360;
+        
+        let newLat = s.lat;
+        if (s.orbit !== 'GEO') {
+           newLat = s.inclination * Math.sin(newLng * Math.PI / 180);
         }
-      })
-      .catch(console.error);
-  }, []);
 
-  // Fetch ACTIVE satellite position every 5s
-  useEffect(() => {
-    if (!sat) return;
-    const fetchPos = async () => {
-      try {
-        const res = await fetch(`/api/satellite/position/${sat.id}`);
-        if (res.ok) {
-          const data = await res.json();
-          setCur({ ...data, orbit: sat.orbit, type: sat.type });
-          if (data.latitude != null) {
-            setHistory(h => [...h.slice(-50), { lat: data.latitude, lng: data.longitude }]);
-          }
-        }
-        setLoading(false);
-      } catch (e) {
-        // fallback for ISS
-        if (sat.id === 25544) {
-          try {
-            const r2 = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
-            const d2 = await r2.json();
-            setCur({ latitude: d2.latitude, longitude: d2.longitude, altitude_km: d2.altitude, azimuth: 0, elevation: 0 });
-            setHistory(h => [...h.slice(-50), { lat: d2.latitude, lng: d2.longitude }]);
-          } catch {}
-        }
-        setLoading(false);
-      }
-    };
-    
-    // Clear history when switching satellites
-    setHistory([]);
-    setLoading(true);
-    setCur(null);
-    
-    fetchPos();
-    const t = setInterval(fetchPos, 5000);
+        // Simulate battery fluctuations
+        const newBat = Math.max(0, Math.min(100, s.battery + (Math.random() * 2 - 1)));
+
+        return { ...s, lat: newLat, lng: newLng, battery: newBat };
+      }));
+    }, 1000);
     return () => clearInterval(t);
-  }, [sat?.id]);
-
-  // Fetch visual passes on satellite change
-  useEffect(() => {
-    setPasses([]);
-    fetch(`/api/satellite/passes/${sat.id}?days=2&min_visibility=60`)
-      .then(r => r.json())
-      .then(d => setPasses(d.passes || []))
-      .catch(() => setPasses([]));
-  }, [sat.id]);
+  }, []);
 
   // Search effect
   useEffect(() => {
@@ -139,33 +92,16 @@ export default function SatelliteDashboard() {
     return () => clearInterval(t);
   }, []);
 
-  const mapX = cur ? ((cur.longitude + 180) / 360) * 100 : 50;
-  const mapY = cur ? ((90 - cur.latitude) / 180) * 100 : 50;
-
-  // Predict future orbital track mathematically for the visual effect
   const getPredictedTrack = () => {
-    if (!cur || cur.latitude == null) return '';
-    const incl = sat?.inclination || 50;
-    let ratio = cur.latitude / incl;
-    if (ratio > 1) ratio = 1;
-    if (ratio < -1) ratio = -1;
+    if (!sat || sat.lat == null) return '';
+    const incl = sat.inclination || 50;
     
-    let isAscending = true;
-    if (history.length > 1) {
-      const prev = history[history.length - 2];
-      if (cur.latitude < prev.lat) isAscending = false;
-    }
-
-    let angle = Math.asin(ratio) * (180 / Math.PI);
-    if (!isAscending) {
-      angle = 180 - angle;
-    }
-
-    const phase = cur.longitude - angle;
-
     const points = [];
     for (let lng = -180; lng <= 180; lng += 2) {
-      const lat = incl * Math.sin((lng - phase) * (Math.PI / 180));
+      let lat = sat.lat;
+      if (sat.orbit !== 'GEO') {
+        lat = incl * Math.sin(lng * Math.PI / 180);
+      }
       const px = ((lng + 180) / 360) * 1000;
       const py = ((90 - lat) / 180) * 500;
       points.push(`${px},${py}`);
@@ -186,6 +122,12 @@ export default function SatelliteDashboard() {
           <span className="text-xl font-black tracking-tighter">PIXEL <span className="text-blue-400">Orb-Net</span></span>
         </div>
         <div className="flex items-center gap-4">
+          <button 
+            onClick={() => navigate('/launches')}
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500/20 transition-all text-xs font-mono uppercase tracking-widest cursor-pointer"
+          >
+            Launch Archive
+          </button>
           <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-mono uppercase tracking-widest">
             <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
             N2YO Live Feed
@@ -261,14 +203,14 @@ export default function SatelliteDashboard() {
 
           {/* Telemetry */}
           <div className="text-[10px] text-white/30 uppercase tracking-widest px-1 flex items-center gap-2 mt-1">
-            <Activity className="w-3 h-3" /> Live Telemetry — N2YO
+            <Activity className="w-3 h-3" /> Live Telemetry — PIXEL RL
           </div>
           {[
-            { label: 'Altitude',   value: cur?.altitude_km?.toFixed(1)   ?? (loading ? '...' : 'N/A'), unit: 'km',   col: 'text-cyan-400' },
-            { label: 'Latitude',   value: cur?.latitude?.toFixed(4)      ?? '—',                        unit: '°',    col: 'text-purple-400' },
-            { label: 'Longitude',  value: cur?.longitude?.toFixed(4)     ?? '—',                        unit: '°',    col: 'text-purple-400' },
-            { label: 'Azimuth',    value: cur?.azimuth?.toFixed(1)       ?? '—',                        unit: '°',    col: 'text-yellow-400' },
-            { label: 'Elevation',  value: cur?.elevation?.toFixed(1)     ?? '—',                        unit: '°',    col: 'text-green-400' },
+            { label: 'Altitude',   value: sat.orbit === 'LEO' ? '400' : sat.orbit === 'MEO' ? '20,000' : '35,786', unit: 'km', col: 'text-cyan-400' },
+            { label: 'Latitude',   value: sat.lat?.toFixed(4) ?? '—', unit: '°', col: 'text-purple-400' },
+            { label: 'Longitude',  value: sat.lng?.toFixed(4) ?? '—', unit: '°', col: 'text-purple-400' },
+            { label: 'Battery',    value: sat.battery?.toFixed(1) ?? '—', unit: '%', col: 'text-green-400' },
+            { label: 'Bandwidth',  value: sat.bandwidth ?? '—', unit: 'Mb/s', col: 'text-yellow-400' },
           ].map((item) => (
             <div key={item.label} className="bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 flex items-center justify-between hover:border-white/20 transition-colors">
               <div>
@@ -338,63 +280,63 @@ export default function SatelliteDashboard() {
                 <line x1="0" y1="322" x2="1000" y2="322" stroke="rgba(59,130,246,0.12)" strokeWidth="0.5" strokeDasharray="4 6"/>
 
                 {/* Projected orbital track (sine wave) */}
-                {cur && (
-                  <polyline
-                    points={getPredictedTrack()}
-                    fill="none" stroke="rgba(34,211,238,0.2)" strokeWidth="1.5" strokeDasharray="10 5"
-                    strokeLinecap="round"
-                  />
-                )}
-
-                {/* Ground track trail (historical) */}
-                {history.length > 1 && (
-                  <polyline
-                    points={history.map(p => `${((p.lng+180)/360)*1000},${((90-p.lat)/180)*500}`).join(' ')}
-                    fill="none" stroke="rgba(34,211,238,0.8)" strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                )}
+                <polyline
+                  points={getPredictedTrack()}
+                  fill="none" stroke="rgba(34,211,238,0.2)" strokeWidth="1.5" strokeDasharray="10 5"
+                  strokeLinecap="round"
+                />
               </svg>
             </div>
 
-            {/* Satellite reticle — large, glowing, clearly visible */}
-            {cur && (
-              <motion.div
-                className="absolute z-30"
-                style={{ left: `${mapX}%`, top: `${mapY}%` }}
-                animate={{ left: `${mapX}%`, top: `${mapY}%` }}
-                transition={{ type: 'spring', stiffness: 40, damping: 20 }}
-              >
-                <div className="relative -translate-x-1/2 -translate-y-1/2">
-                  {/* Outer glow ring */}
-                  <div className="absolute -inset-6 rounded-full bg-cyan-400/10 animate-pulse" />
-                  {/* Pulsing ring 1 */}
-                  <div className="absolute -inset-5 rounded-full border-2 border-cyan-400/60 animate-ping" style={{ animationDuration: '1.5s' }} />
-                  {/* Pulsing ring 2 */}
-                  <div className="absolute -inset-3 rounded-full border border-cyan-400/40 animate-ping" style={{ animationDuration: '2s' }} />
-                  {/* Static crosshair lines */}
-                  <div className="absolute left-1/2 top-0 -translate-x-px w-px h-full bg-cyan-400/60 -translate-y-8" style={{ height: '70px', top: '-35px' }} />
-                  <div className="absolute top-1/2 left-0 -translate-y-px h-px w-full bg-cyan-400/60" style={{ width: '70px', left: '-35px' }} />
-                  {/* Satellite icon */}
-                  <div className="relative z-10 w-8 h-8 rounded-full bg-cyan-400/30 border-2 border-cyan-300 flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.8)]">
-                    <Satellite className="w-4 h-4 text-cyan-100" />
-                  </div>
-                  {/* Coordinates label */}
-                  <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm border border-cyan-500/60 px-3 py-1 rounded-lg text-[10px] font-mono text-cyan-300 whitespace-nowrap shadow-[0_0_10px_rgba(34,211,238,0.3)]">
-                    📡 {sat.name}<br/>
-                    <span className="text-white/70">{cur.latitude?.toFixed(3)}° / {cur.longitude?.toFixed(3)}°</span>
-                  </div>
-                </div>
-              </motion.div>
-            )}
+            {/* Render all satellites simultaneously */}
+            {fleet.map((s, i) => {
+              const mapX = ((s.lng + 180) / 360) * 100;
+              const mapY = ((90 - s.lat) / 180) * 100;
+              const isSelected = selIdx === i;
 
-            {/* Footprint */}
-            {cur && (
-              <div
-                className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-500/30 bg-cyan-500/5 pointer-events-none z-20"
-                style={{ left: `${mapX}%`, top: `${mapY}%`, width: '220px', height: '220px' }}
-              />
-            )}
+              return (
+                <motion.div
+                  key={s.id}
+                  className={`absolute z-30 ${isSelected ? '' : 'opacity-50 scale-75'}`}
+                  style={{ left: `${mapX}%`, top: `${mapY}%` }}
+                  animate={{ left: `${mapX}%`, top: `${mapY}%` }}
+                  transition={{ type: 'spring', stiffness: 40, damping: 20 }}
+                >
+                  <div className="relative -translate-x-1/2 -translate-y-1/2">
+                    {/* Outer glow ring */}
+                    {isSelected && <div className="absolute -inset-6 rounded-full bg-cyan-400/10 animate-pulse" />}
+                    <div className="absolute -inset-5 rounded-full border-2 border-cyan-400/60 animate-ping" style={{ animationDuration: '1.5s' }} />
+                    <div className="absolute -inset-3 rounded-full border border-cyan-400/40 animate-ping" style={{ animationDuration: '2s' }} />
+                    
+                    {isSelected && (
+                      <>
+                        <div className="absolute left-1/2 top-0 -translate-x-px w-px h-full bg-cyan-400/60 -translate-y-8" style={{ height: '70px', top: '-35px' }} />
+                        <div className="absolute top-1/2 left-0 -translate-y-px h-px w-full bg-cyan-400/60" style={{ width: '70px', left: '-35px' }} />
+                      </>
+                    )}
+                    
+                    <div className={`relative z-10 w-8 h-8 rounded-full ${isSelected ? 'bg-cyan-400/30 border-cyan-300' : 'bg-blue-500/20 border-blue-500/50'} border-2 flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.8)]`}>
+                      <Satellite className={`w-4 h-4 ${isSelected ? 'text-cyan-100' : 'text-blue-300'}`} />
+                    </div>
+                    
+                    {isSelected && (
+                      <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm border border-cyan-500/60 px-3 py-1 rounded-lg text-[10px] font-mono text-cyan-300 whitespace-nowrap shadow-[0_0_10px_rgba(34,211,238,0.3)]">
+                        📡 {s.name}<br/>
+                        <span className="text-white/70">{s.lat?.toFixed(3)}° / {s.lng?.toFixed(3)}°</span>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+
+            {/* Footprint of selected satellite */}
+            <motion.div
+              className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-500/30 bg-cyan-500/5 pointer-events-none z-20"
+              style={{ width: '220px', height: '220px' }}
+              animate={{ left: `${((sat.lng + 180) / 360) * 100}%`, top: `${((90 - sat.lat) / 180) * 100}%` }}
+              transition={{ type: 'spring', stiffness: 40, damping: 20 }}
+            />
 
             <div className="absolute bottom-4 left-6 right-6 flex items-center justify-between z-20">
               <div className="flex items-center gap-4 text-[9px] font-mono text-white/30">
@@ -411,7 +353,7 @@ export default function SatelliteDashboard() {
               <Shield className="w-4 h-4 text-blue-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-[9px] text-blue-400/60 uppercase tracking-widest mb-1 font-mono">PIXEL Ops Agent · N2YO Data Analysis</div>
+              <div className="text-[9px] text-blue-400/60 uppercase tracking-widest mb-1 font-mono">PIXEL Ops Agent · RL Network Analysis</div>
               <AnimatePresence mode="wait">
                 <motion.div key={logIdx} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
                   className="text-sm text-white/80 font-mono truncate">
