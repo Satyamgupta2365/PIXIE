@@ -73,11 +73,24 @@ Because PIXIE tracks metrics like "Forced Safe-Mode events," "Anomalies Survived
 
 We trained the `Llama 3.1 8B` model using **GRPO (Group Relative Policy Optimization)** via Unsloth and HF TRL. 
 
-### The Reward Signal
-The environment provides a rich, multi-axis reward (not just 0/1) to prevent the LLM from "gaming" the system:
-- 🟢 `+1.0` to `+2.0`: Collecting valid science data and successfully transmitting it.
-- 🔴 `-0.1` to `-1.0`: Wasting battery on redundant tasks or failing to coordinate bandwidth.
-- 💀 `-5.0` (Fatal): Allowing a vehicle to run out of power, freeze, or collide in orbit.
+### 🎯 The Reward Signal (Addressing the Judging Criteria)
+
+**1. Uses OpenEnv’s Rubric System Thoughtfully (Composable > Monolithic)**
+Instead of a giant, messy `if/else` block, PIXIE uses a pure, modular OpenEnv Rubric system (see `backend/rewards.py`). Every single step calculates four independent reward dimensions:
+*   `science_reward()`: Focuses strictly on data collection.
+*   `survival_reward()`: Focuses strictly on battery thresholds and anomaly survival.
+*   `efficiency_reward()`: Focuses on situational awareness (e.g., weather constraints).
+*   `coordination_reward()`: Focuses on multi-agent consensus.
+These are combined via a strict `WEIGHTS` dictionary into a single composite score, returning a beautiful, human-readable breakdown every step (e.g., `"science +2.00 (x0.35) | efficiency +0.30 (x0.15)"`).
+
+**2. Captures Something Hard to Measure in a Clever Way**
+The `coordination_reward()` is incredibly novel. Most environments only measure physical state (e.g., "Is the rover alive?"). PIXIE actually measures **Multi-Agent Alignment**. When the internal LLM Council debates an action, the reward function checks the *internal voting consensus*. If an anomaly is active, the environment expects the `RiskAgent` to overrule the `PlannerAgent`. If it does, the system issues a `+0.2` situational match bonus. **We are rewarding an LLM for trusting the correct sub-agent during a crisis!**
+
+**3. Provides a Rich, Informative Signal (Not just 0/1 at the end)**
+In deep-space operations (100 Sols), sparse end-of-episode rewards fail. PIXIE provides dense, continuous feedback on every step. If the agent executes a `drill` command, it doesn't just get points for drilling. It gets a `+0.3 efficiency bonus` if it specifically chose to drill while the *weather was clear and the comm window was open*. The RL algorithm learns exactly *why* its timing was perfect.
+
+**4. Is Hard to Game**
+LLMs are notorious for finding loopholes. If you only reward survival, an LLM will figure out it can just spam the `charge` command 100 times in a row and easily survive. **PIXIE prevents this.** In `efficiency_reward()`, if the agent attempts to `charge` when its battery is already above `70%`, it receives a **`-0.2 penalty` for wasteful idle behavior**. This prevents "camping" or "gaming" the survival metric, forcing the agent to take risks and conduct science to achieve a high net score.
 
 ### The Results: What changed after training?
 Before training, the baseline `Llama 3.1 8B` model happily tried to execute every human instruction regardless of context, immediately draining rover batteries and causing orbital data-buffer overflows.
