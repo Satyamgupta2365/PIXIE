@@ -54,6 +54,18 @@ While the AI community has thousands of chess bots, grid-world mazes, and 3D phy
 
 Because PIXIE tracks metrics like "Forced Safe-Mode events," "Anomalies Survived," and "Obsolete Commands Rejected," researchers get beautiful, quantifiable graphs showing exactly when an LLM shifts from being a "blind instruction follower" to a "truly autonomous agent."
 
+## 📚 Related Research
+
+| # | Paper | Venue | Relevance to PIXIE |
+|---|-------|-------|--------------------|
+| 1 | [OrbitZoo: Multi-Agent RL Environment for Orbital Dynamics](https://arxiv.org/abs/2504.04160) | NeurIPS 2025 | Nearest prior work to PIXIE's satellite env — but trains classical RL, not LLMs. |
+| 2 | [LLaMAR: Long-Horizon Planning for Multi-Agent Robots in Partially Observable Environments](https://arxiv.org/abs/2407.10031) | NeurIPS 2024 | Closest LLM planner for long-horizon tasks — but lacks resource-constrained survival (battery, dust storms). |
+| 3 | [Automating Satellite Collision Avoidance via Multi-Agent RL](https://dl.acm.org/doi/10.1145/3746709.3746927) | ACM CIBDA 2025 | Shows MARL is necessary for multi-satellite coordination — PIXIE extends this with LLM agents. |
+| 4 | [DeepSeekMath: Pushing the Limits with GRPO](https://arxiv.org/abs/2402.03300) | arXiv 2024 | Origin paper for GRPO — the exact RL algorithm used in PIXIE's self-improvement training loop. |
+| 5 | [LLMs Can Plan Only If We Tell Them](https://arxiv.org/abs/2501.13545) | ICLR 2025 | Proves LLMs fail in non-ergodic long-horizon tasks — PIXIE's 100-Sol Mars mission is the training environment that addresses this gap. |
+
+> **PIXIE's core novelty:** Every related work either uses RL without LLMs, or LLMs without a survival-constrained RL environment. PIXIE is the first OpenEnv-compatible framework to combine LLM agents + GRPO post-training + high-latency autonomous space operations in a single, publishable environment.
+
 ---
 
 ## 🧠 Deep Dive: How the Self-Learning RL Works
