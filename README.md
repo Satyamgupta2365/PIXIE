@@ -4,10 +4,9 @@
   <h3>An intelligent AI framework for autonomous satellite networking, rover operations, and multi-agent communication scheduling using RL and LLMs.</h3>
 
   <p>
-    <a href="https://huggingface.co/spaces/satyampy/Pixie"><img src="https://img.shields.io/badge/Demo-HuggingFace_Space-yellow?style=for-the-badge&logo=huggingface" alt="HF Space"></a>
-    <a href="https://hub.docker.com/r/satyamgpy/pixie-env"><img src="https://img.shields.io/badge/Docker-Live_Image-blue?style=for-the-badge&logo=docker" alt="Docker"></a>
-    <a href="#"><img src="https://img.shields.io/badge/Blog-HuggingFace_Post-red?style=for-the-badge&logo=huggingface" alt="HF Blog"></a>
-    <a href="#"><img src="https://img.shields.io/badge/Video-YouTube_Pitch-FF0000?style=for-the-badge&logo=youtube" alt="YouTube"></a>
+    <a href="https://pixie-flax-xi.vercel.app/"><img src="https://img.shields.io/badge/Frontend-Vercel_Live_Demo-black?style=for-the-badge&logo=vercel" alt="Vercel App"></a>
+    <a href="https://huggingface.co/spaces/satyampy/Pixie"><img src="https://img.shields.io/badge/Backend-HuggingFace_Space-yellow?style=for-the-badge&logo=huggingface" alt="HF Space"></a>
+    <a href="https://hub.docker.com/repository/docker/satyamgpy/pixel-env/general"><img src="https://img.shields.io/badge/Docker-Live_Image-blue?style=for-the-badge&logo=docker" alt="Docker"></a>
   </p>
   <p>
     <img src="https://img.shields.io/badge/Framework-OpenEnv-indigo?style=for-the-badge" alt="OpenEnv">
@@ -134,11 +133,12 @@ graph TD
 
 ## 💻 Quick Start & Evaluation
 
-PIXIE is fully containerized and hosted on the HuggingFace Spaces Docker infrastructure. 
+PIXIE is fully containerized and hosted across Vercel and HuggingFace Spaces.
 
-### 1. View the Live Dashboard
-* **Mission Dashboard:** [https://huggingface.co/spaces/satyampy/Pixie/health](https://huggingface.co/spaces/satyampy/Pixie/health)
-* **Swagger API Docs:** [https://huggingface.co/spaces/satyampy/Pixie/docs](https://huggingface.co/spaces/satyampy/Pixie/docs)
+### 1. View the Live Application
+* **Frontend UI (Vercel):** [https://pixie-flax-xi.vercel.app/](https://pixie-flax-xi.vercel.app/)
+* **Backend API Health Check:** [https://huggingface.co/spaces/satyampy/Pixie/health](https://huggingface.co/spaces/satyampy/Pixie/health)
+* **Backend API Docs (Swagger):** [https://huggingface.co/spaces/satyampy/Pixie/docs](https://huggingface.co/spaces/satyampy/Pixie/docs)
 
 ### 2. Run the Training Script
 Our complete training pipeline is available in the repository. Judges can re-run it directly:
@@ -147,6 +147,6 @@ Our complete training pipeline is available in the repository. Judges can re-run
 
 ### 3. Run Locally via Docker
 ```bash
-docker pull satyamgpy/pixie-env:latest
-docker run -p 7860:7860 satyamgpy/pixie-env:latest
+docker pull satyamgpy/pixel-env:latest
+docker run -p 7860:7860 satyamgpy/pixel-env:latest
 ```
