@@ -1,0 +1,61 @@
+{
+  "mission": {
+    "id": "starship-ift3",
+    "name": "Starship IFT-3",
+    "status": "PARTIAL FAILURE",
+    "vehicle": "Starship-Super Heavy",
+    "launch_date_utc": "2024-03-14T13:25:00Z",
+    "organization": "SpaceX",
+    "launch_site": {
+      "pad": "Orbital Pad A",
+      "location": "Starbase, TX"
+    },
+    "mission_type": "Suborbital Flight Test",
+    "destination": "Indian Ocean Splashdown"
+  },
+  "vehicle_specs": {
+    "total_height_m": 121.0,
+    "mass_at_liftoff_kg": 5000000
+  },
+  "weather_at_launch": {
+    "temperature_celsius": 26,
+    "humidity_percent": 80,
+    "wind_speed_kmh": 15,
+    "wind_direction": "SE"
+  },
+  "failure_investigation": {
+    "failure_window_duration_s": 12,
+    "telemetry_channels_analyzed": 14205,
+    "root_cause": "Roll control authority lost during atmospheric reentry due to blocked thruster valves, leading to unstable attitude and structural breakup under aerodynamic forces."
+  },
+  "flight_telemetry": [
+    { "time_s": 0, "altitude_km": 0.0, "velocity_kmh": 0, "status": "NOMINAL" },
+    { "time_s": 60, "altitude_km": 12.5, "velocity_kmh": 1800, "status": "NOMINAL" },
+    { "time_s": 165, "altitude_km": 72.0, "velocity_kmh": 5900, "status": "NOMINAL" },
+    { "time_s": 500, "altitude_km": 234.0, "velocity_kmh": 26000, "status": "NOMINAL" },
+    { "time_s": 2700, "altitude_km": 110.0, "velocity_kmh": 26000, "status": "WARNING" },
+    { "time_s": 2900, "altitude_km": 65.0, "velocity_kmh": 25000, "status": "ANOMALY" },
+    { "time_s": 2950, "altitude_km": 65.0, "velocity_kmh": 25000, "status": "MISSION LOSS" }
+  ],
+  "ai_analysis": {
+    "planner_agent": {
+      "assessment": "Ascent phase executed flawlessly. Coast phase objectives met. Reentry attitude diverged from planned trajectory at T+2700s.",
+      "trajectory_score": 0.65
+    },
+    "resource_agent": {
+      "assessment": "Propellant transfer demo completed successfully. Thruster propellant lines experienced unexpected thermal conditions.",
+      "fuel_efficiency_score": 0.88
+    },
+    "risk_agent": {
+      "assessment": "Loss of roll control detected at upper atmosphere boundary. Aerodynamic forces exceeded structural limits during uncontrolled spin.",
+      "risk_score": 0.95
+    },
+    "what_pixie_would_have_done": "PIXIE would have detected early signs of valve blockage via thermal signatures at T+2500s and commanded an immediate switch to redundant cold-gas thrusters to stabilize the roll rate before entering the thicker atmosphere."
+  },
+  "major_events": [
+    { "time_s": 0, "label": "LIFTOFF", "description": "All 33 Raptor engines ignited." },
+    { "time_s": 165, "label": "HOT STAGING", "description": "Successful stage separation." },
+    { "time_s": 1400, "label": "PAYLOAD DOOR", "description": "Peanut-dispenser payload door opened." },
+    { "time_s": 2950, "label": "LOSS OF SIGNAL", "description": "Telemetry lost during reentry phase." }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "mission": {
+    "id": "crs-7",
+    "name": "SpaceX CRS-7 (SpX-7)",
+    "designation": "SpaceX CRS-7",
+    "status": "FAILURE",
+    "failure_time_s": 139,
+    "organization": "NASA / SpaceX",
+    "vehicle": "Falcon 9 v1.1",
+    "spacecraft": "Dragon 1 (C109)",
+    "booster": "B1018",
+    "mission_type": "ISS Commercial Resupply Service",
+    "objective": "Deliver 1,952 kg (4,303 lbs) of cargo to the International Space Station including the International Docking Adapter (IDA-1), science experiments, food, water, and station hardware.",
+    "destination": "International Space Station (ISS)",
+    "target_orbit": "~400 km circular Low Earth Orbit (LEO)",
+    "crew": [],
+    "launch_date_utc": "2015-06-28T14:21:11Z",
+    "launch_date_local": "2015-06-28T10:21:11-04:00",
+    "launch_site": {
+      "name": "Cape Canaveral Air Force Station",
+      "pad": "Space Launch Complex 40 (SLC-40)",
+      "location": "Cape Canaveral, Florida, USA",
+      "latitude": 28.5623,
+      "longitude": -80.5774
+    },
+    "landing": {
+      "booster_landing": false,
+      "planned_landing_type": "Autonomous Spaceport Drone Ship",
+      "planned_ship_name": "Of Course I Still Love You",
+      "result": "NOT ATTEMPTED — Vehicle destroyed at T+139s"
+    },
+    "cargo_manifest": {
+      "total_mass_kg": 1952,
+      "pressurized_kg": 1399,
+      "unpressurized_kg": 553,
+      "key_items": [
+        {
+          "item": "International Docking Adapter (IDA-1)",
+          "mass_kg": 467,
+          "description": "Critical adapter to allow future U.S. crewed spacecraft (Crew Dragon, Starliner) to dock with the ISS using the NASA Docking System standard.",
+          "loss_impact": "HIGH — Delayed commercial crew program. Replacement IDA-1R was flown on CRS-9 in July 2016."
+        },
+        {
+          "item": "Meteor Composition Determination Experiment",
+          "mass_kg": 22,
+          "description": "HD camera and spectrograph system to observe meteors entering Earth's atmosphere from the ISS."
+        },
+        {
+          "item": "Cloud-Aerosol Transport System (CATS)",
+          "mass_kg": 494,
+          "description": "LIDAR instrument for measuring atmospheric aerosols and cloud properties."
+        },
+        {
+          "item": "Student Experiments (30+ investigations)",
+          "mass_kg": 35,
+          "description": "Including studies on pollination in microgravity and sunlight-blocking plastic evaluation."
+        },
+        {
+          "item": "Crew provisions, food, water",
+          "mass_kg": 434,
+          "description": "Standard resupply provisions for ISS crew."
+        }
+      ]
+    }
+  },
+
+  "weather_at_launch": {
+    "temperature_celsius": 29.4,
+    "temperature_fahrenheit": 85,
+    "humidity_percent": 78,
+    "wind_speed_kmh": 11.2,
+    "wind_direction": "SW",
+    "cloud_coverage_percent": 35,
+    "precipitation_probability_percent": 30,
+    "visibility_km": 16,
+    "sea_state": "Calm",
+    "pressure_hpa": 1017.8,
+    "go_no_go": "GO",
+    "notes": "Weather was favorable for launch. No weather-related concerns. Go for launch was confirmed by 45th Weather Squadron."
+  },
+
+  "vehicle_specs": {
+    "total_height_m": 68.4,
+    "diameter_m": 3.7,
+    "mass_at_liftoff_kg": 506000,
+    "first_stage": {
+      "engines": 9,
+      "engine_type": "Merlin 1D",
+      "thrust_sea_level_kn": 5885,
+      "thrust_vacuum_kn": 6440,
+      "propellant": "RP-1 / LOX",
+      "burn_time_s": 180,
+      "fuel_mass_kg": 395700
+    },
+    "second_stage": {
+      "engines": 1,
+      "engine_type": "Merlin 1D Vacuum",
+      "thrust_vacuum_kn": 801,
+      "propellant": "RP-1 / LOX",
+      "burn_time_s": 372,
+      "fuel_mass_kg": 92670,
+      "helium_copv_count": 3,
+      "copv_strut_design": "Steel strut holding COPV in LOX tank — 2-foot long, rated for 10,000 lbs force",
+      "defect": "STRUT MATERIAL DEFECT — Failed at approximately 2,000 lbs under 3.2G flight load (80% below rated capacity)"
+    },
+    "fairing_type": "Dragon trunk + nosecone"
+  },
+
+  "pre_launch_timeline": [
+    { "time": "T-06:00:00", "event": "Launch countdown operations begin", "status": "NOMINAL" },
+    { "time": "T-04:30:00", "event": "Dragon spacecraft power-up", "status": "NOMINAL" },
+    { "time": "T-03:30:00", "event": "RP-1 loading begins on Stage 1", "status": "NOMINAL" },
+    { "time": "T-02:00:00", "event": "All systems checkout nominal", "status": "NOMINAL" },
+    { "time": "T-01:10:00", "event": "LOX loading begins on Stage 1", "status": "NOMINAL" },
+    { "time": "T-00:50:00", "event": "LOX loading begins on Stage 2", "status": "NOMINAL" },
+    { "time": "T-00:30:00", "event": "Propellant loading near complete, tank pressurization begins", "status": "NOMINAL" },
+    { "time": "T-00:20:00", "event": "Flight termination system armed", "status": "NOMINAL" },
+    { "time": "T-00:10:00", "event": "All stations confirm GO for launch", "status": "GO" },
+    { "time": "T-00:07:00", "event": "Engine chill sequence begins", "status": "NOMINAL" },
+    { "time": "T-00:05:00", "event": "SpaceX Launch Director final GO", "status": "GO" },
+    { "time": "T-00:03:00", "event": "NASA Launch Director final GO", "status": "GO" },
+    { "time": "T-00:01:00", "event": "Terminal count, pressurization to flight levels", "status": "NOMINAL" },
+    { "time": "T-00:00:10", "event": "Strongback retract", "status": "NOMINAL" },
+    { "time": "T-00:00:03", "event": "Engine ignition sequence", "status": "NOMINAL" },
+    { "time": "T-00:00:00", "event": "LIFTOFF from SLC-40", "status": "NOMINAL" }
+  ],
+
+  "flight_telemetry": [
+    { "time_s": 0, "event": "Liftoff", "altitude_km": 0.0, "velocity_kmh": 0, "acceleration_g": 1.0, "downrange_km": 0.0, "fuel_percent": 100.0, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 0, "temperature_ext_c": 29, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 10, "event": "Pitch program", "altitude_km": 0.3, "velocity_kmh": 162, "acceleration_g": 1.2, "downrange_km": 0.02, "fuel_percent": 98.9, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 1.8, "temperature_ext_c": 27, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 20, "event": "Roll program complete", "altitude_km": 1.0, "velocity_kmh": 396, "acceleration_g": 1.4, "downrange_km": 0.08, "fuel_percent": 97.7, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 7.2, "temperature_ext_c": 21, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 30, "event": "Nominal ascent", "altitude_km": 2.2, "velocity_kmh": 680, "acceleration_g": 1.6, "downrange_km": 0.3, "fuel_percent": 96.5, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 14.5, "temperature_ext_c": 12, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 40, "event": "Approaching transonic", "altitude_km": 4.0, "velocity_kmh": 990, "acceleration_g": 1.8, "downrange_km": 0.7, "fuel_percent": 95.2, "phase": "ASCENT", "thrust_kn": 5600, "dynamic_pressure_kpa": 22.0, "temperature_ext_c": -1, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 50, "event": "Transonic regime", "altitude_km": 6.2, "velocity_kmh": 1180, "acceleration_g": 1.9, "downrange_km": 1.2, "fuel_percent": 94.0, "phase": "ASCENT", "thrust_kn": 5300, "dynamic_pressure_kpa": 28.8, "temperature_ext_c": -14, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 58, "event": "Mach 1 — Supersonic", "altitude_km": 7.8, "velocity_kmh": 1224, "acceleration_g": 2.0, "downrange_km": 1.8, "fuel_percent": 93.0, "phase": "ASCENT", "thrust_kn": 5100, "dynamic_pressure_kpa": 32.4, "temperature_ext_c": -24, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 65, "event": "MAX-Q — Maximum Dynamic Pressure", "altitude_km": 10.5, "velocity_kmh": 1440, "acceleration_g": 2.0, "downrange_km": 2.8, "fuel_percent": 91.8, "phase": "MAX-Q", "thrust_kn": 4800, "dynamic_pressure_kpa": 34.2, "temperature_ext_c": -32, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 70, "event": "Post Max-Q throttle-up", "altitude_km": 12.5, "velocity_kmh": 1620, "acceleration_g": 2.2, "downrange_km": 3.5, "fuel_percent": 91.0, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 27.5, "temperature_ext_c": -38, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 80, "event": "Nominal — all telemetry green", "altitude_km": 17.0, "velocity_kmh": 2070, "acceleration_g": 2.4, "downrange_km": 5.5, "fuel_percent": 89.2, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 15.8, "temperature_ext_c": -50, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 90, "event": "Entering upper atmosphere", "altitude_km": 22.5, "velocity_kmh": 2610, "acceleration_g": 2.6, "downrange_km": 9.0, "fuel_percent": 87.0, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 7.2, "temperature_ext_c": -55, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 100, "event": "Stratosphere nominal", "altitude_km": 28.0, "velocity_kmh": 3150, "acceleration_g": 2.8, "downrange_km": 14.0, "fuel_percent": 84.8, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 2.5, "temperature_ext_c": -44, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 110, "event": "G-loads increasing — all nominal", "altitude_km": 34.5, "velocity_kmh": 3780, "acceleration_g": 3.0, "downrange_km": 20.0, "fuel_percent": 82.5, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 0.9, "temperature_ext_c": -28, "helium_copv_pressure_psi": 5500, "status": "NOMINAL" },
+    { "time_s": 120, "event": "Acceleration 3.1G — strut stress building", "altitude_km": 42.0, "velocity_kmh": 4500, "acceleration_g": 3.1, "downrange_km": 28.0, "fuel_percent": 80.2, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 0.2, "temperature_ext_c": -8, "helium_copv_pressure_psi": 5510, "status": "NOMINAL" },
+    { "time_s": 130, "event": "Acceleration 3.2G — strut at material limit", "altitude_km": 50.0, "velocity_kmh": 5200, "acceleration_g": 3.2, "downrange_km": 36.0, "fuel_percent": 77.5, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 0.04, "temperature_ext_c": 2, "helium_copv_pressure_psi": 5520, "status": "CAUTION" },
+    { "time_s": 135, "event": "Strut approaching failure threshold — micro-fractures propagating", "altitude_km": 53.0, "velocity_kmh": 5500, "acceleration_g": 3.2, "downrange_km": 39.0, "fuel_percent": 76.5, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 0.02, "temperature_ext_c": 5, "helium_copv_pressure_psi": 5540, "status": "WARNING" },
+    { "time_s": 138, "event": "COPV strut fracture imminent — ~2000 lbs load on 10000 lb-rated part", "altitude_km": 55.0, "velocity_kmh": 5650, "acceleration_g": 3.2, "downrange_km": 41.0, "fuel_percent": 75.8, "phase": "ASCENT", "thrust_kn": 5885, "dynamic_pressure_kpa": 0.01, "temperature_ext_c": 7, "helium_copv_pressure_psi": 5560, "status": "CRITICAL" },
+    { "time_s": 138.893, "event": "STRUT FAILURE — COPV breaks free inside LOX tank", "altitude_km": 55.2, "velocity_kmh": 5660, "acceleration_g": 3.2, "downrange_km": 41.2, "fuel_percent": 75.7, "phase": "ANOMALY", "thrust_kn": 5885, "dynamic_pressure_kpa": 0.01, "temperature_ext_c": 7, "helium_copv_pressure_psi": 9999, "status": "ANOMALY" },
+    { "time_s": 139.0, "event": "Helium breach in LOX tank — overpressure event", "altitude_km": 55.2, "velocity_kmh": 5660, "acceleration_g": 0, "downrange_km": 41.2, "fuel_percent": 0, "phase": "FAILURE", "thrust_kn": 0, "dynamic_pressure_kpa": 0, "temperature_ext_c": null, "helium_copv_pressure_psi": null, "status": "LOV — LOSS OF VEHICLE" },
+    { "time_s": 139.5, "event": "Second stage structural failure — vehicle breakup", "altitude_km": 55.3, "velocity_kmh": 5200, "acceleration_g": null, "downrange_km": 41.3, "fuel_percent": 0, "phase": "FAILURE", "thrust_kn": null, "dynamic_pressure_kpa": null, "temperature_ext_c": null, "helium_copv_pressure_psi": null, "status": "LOV — VEHICLE DESTROYED" },
+    { "time_s": 140, "event": "First stage continues firing momentarily — Dragon capsule separates from debris", "altitude_km": 55.5, "velocity_kmh": 4800, "acceleration_g": null, "downrange_km": 41.5, "fuel_percent": null, "phase": "DEBRIS", "thrust_kn": null, "dynamic_pressure_kpa": null, "temperature_ext_c": null, "helium_copv_pressure_psi": null, "status": "LOV — DRAGON INTACT" },
+    { "time_s": 155, "event": "Dragon transmits telemetry from freefall — parachutes NOT deployed (no abort software on cargo variant)", "altitude_km": 48.0, "velocity_kmh": null, "acceleration_g": null, "downrange_km": 42.0, "fuel_percent": null, "phase": "DEBRIS", "thrust_kn": null, "dynamic_pressure_kpa": null, "temperature_ext_c": null, "helium_copv_pressure_psi": null, "status": "LOV — DRAGON SIGNAL ACTIVE" },
+    { "time_s": 300, "event": "Dragon impact with Atlantic Ocean — signal lost", "altitude_km": 0.0, "velocity_kmh": null, "acceleration_g": null, "downrange_km": 44.0, "fuel_percent": null, "phase": "IMPACT", "thrust_kn": null, "dynamic_pressure_kpa": null, "temperature_ext_c": null, "helium_copv_pressure_psi": null, "status": "MISSION LOSS" }
+  ],
+
+  "major_events": [
+    { "time_s": 0, "label": "LIFTOFF", "description": "All 9 Merlin 1D engines ignite. Falcon 9 v1.1 lifts off from SLC-40." },
+    { "time_s": 65, "label": "MAX-Q", "description": "Maximum aerodynamic pressure. Engines throttle down. Vehicle structural loads nominal." },
+    { "time_s": 130, "label": "STRESS BUILDUP", "description": "Vehicle acceleration reaches 3.2G. Unknown defective strut holding helium COPV in Stage 2 LOX tank approaches material failure point." },
+    { "time_s": 138.893, "label": "STRUT FAILURE", "description": "A 2-foot stainless steel strut fails at ~2,000 lbs — only 20% of its 10,000 lb rating. The helium COPV breaks free inside the LOX tank." },
+    { "time_s": 139, "label": "LOV — LOSS OF VEHICLE", "description": "Released helium rapidly overpressurizes the LOX tank. Tank ruptures. Second stage disintegrates. First stage continues firing briefly before breaking apart." },
+    { "time_s": 140, "label": "DRAGON SURVIVES BREAKUP", "description": "Dragon capsule separates from debris and continues transmitting telemetry. However, the cargo Dragon software did not include parachute deployment for abort scenarios." },
+    { "time_s": 300, "label": "DRAGON IMPACT", "description": "Dragon capsule impacts the Atlantic Ocean. Signal lost. No recovery." }
+  ],
+
+  "failure_investigation": {
+    "investigating_bodies": ["SpaceX", "NASA", "FAA", "U.S. Air Force"],
+    "telemetry_channels_analyzed": 3000,
+    "failure_window_duration_s": 0.893,
+    "root_cause": "A 2-foot-long stainless steel strut used to secure a Composite Overwrapped Pressure Vessel (COPV) containing high-pressure helium within the second stage liquid oxygen (LOX) tank failed under flight loads.",
+    "strut_rated_force_lbs": 10000,
+    "strut_failure_force_lbs": 2000,
+    "flight_load_at_failure_g": 3.2,
+    "cause_classification": "Material defect / Quality control failure",
+    "details": "The strut was procured from a third-party supplier and was rated for 10,000 lbs of force. However, due to a material defect, the strut failed at approximately 2,000 lbs — only 20% of its rated capacity. When the strut snapped, the helium COPV broke free inside the LOX tank, causing a helium breach that rapidly overpressurized the tank and destroyed the vehicle in under 1 second.",
+    "corrective_actions": [
+      "SpaceX discontinued use of this strut design from the supplier.",
+      "All struts are now individually proof-load tested before flight use.",
+      "Enhanced quality inspection protocols implemented for all flight-critical hardware.",
+      "COPV mounting redesigned with higher safety margins.",
+      "SpaceX updated Dragon software to include parachute deployment capability during in-flight anomalies."
+    ],
+    "return_to_flight": "December 21, 2015 — Falcon 9 Flight 20 (Orbcomm-2). First successful orbital flight and first successful booster landing."
+  },
+
+  "ai_analysis": {
+    "pixie_assessment": "MISSION FAILURE — Catastrophic structural defect in Stage 2. Failure was not predictable from external telemetry alone but was preventable through enhanced material inspection.",
+    "planner_agent": {
+      "trajectory_score": 0.91,
+      "assessment": "Trajectory was nominal until T+139s. All flight parameters were within expected bounds. The failure was not trajectory-related.",
+      "recommendation": "No trajectory correction would have prevented this failure. Root cause was structural."
+    },
+    "resource_agent": {
+      "fuel_efficiency_score": 0.88,
+      "assessment": "Propellant consumption was nominal throughout the 139-second flight. No fuel anomalies detected. The catastrophic loss was caused by helium system breach, not propellant management.",
+      "recommendation": "PIXIE would have flagged the anomalous helium pressure spike at T+138.893s — 107ms before total vehicle loss. In an autonomous system, this 107ms window could have triggered an emergency engine shutdown and Dragon separation command."
+    },
+    "risk_agent": {
+      "risk_score": 0.95,
+      "assessment": "CRITICAL FAILURE. The defective strut was a latent risk invisible to flight telemetry. The strut failed at 20% of its rated capacity, indicating a severe material defect that should have been caught during quality assurance.",
+      "recommendation": "PIXIE's Risk Agent would have required individual proof-load certification for every structural component. The agent's pre-flight inspection protocol mandates 100% component testing, not statistical sampling. This single policy would have prevented the CRS-7 failure entirely."
+    },
+    "overall_verdict": "PREVENTABLE FAILURE — Manufacturing quality escape",
+    "what_pixie_would_have_done": {
+      "pre_flight": "PIXIE's Risk Agent operates on a zero-tolerance policy for structural components. Every strut, bolt, and pressure vessel mount would undergo individual proof-load testing at 1.5x rated capacity before flight qualification. The defective strut (which failed at 2,000 lbs vs. its 10,000 lb rating) would have been immediately rejected during this mandatory pre-flight protocol, preventing it from ever being installed on the vehicle.",
+      "during_flight": "Had the defective strut still made it to flight, PIXIE's real-time telemetry monitoring would have detected the micro-vibration signature of the strut fracture propagation beginning at approximately T+130s. The Risk Agent would have elevated the threat level to CRITICAL and recommended an emergency abort. At T+138.893s, when the helium COPV pressure spiked, PIXIE would have had 107ms to execute an emergency Dragon separation command — theoretically possible but extremely tight. The primary defense was always the pre-flight inspection.",
+      "post_flight": "PIXIE would have automatically generated a full failure tree analysis within 24 hours, correlated the COPV pressure anomaly with the strut failure, and issued a fleet-wide grounding recommendation until every strut in inventory was individually proof-tested. This matches SpaceX's actual corrective action but would have been initiated autonomously within hours instead of weeks."
+    }
+  }
+}

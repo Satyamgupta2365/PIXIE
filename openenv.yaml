@@ -1,0 +1,80 @@
+name: pixie-dual-rover-system
+version: "1.0.0"
+description: >
+  PIXIE — An OpenEnv-compatible Dual Rover RL environment. Contains two distinct
+  environments: Mars Rover (deep autonomy, communication delay, long-horizon planning)
+  and Moon Rover (short-horizon, survival under extreme day/night cycle). Both
+  are controlled via natural language by an LLM agent.
+
+author: Satyam Gupta
+tags:
+  - openenv
+  - space
+  - mars
+  - moon
+  - reinforcement-learning
+  - natural-language
+  - resource-management
+  - robotics
+
+tasks:
+  - id: mars
+    name: Mars Rover - Deep Autonomy
+    difficulty: hard
+    description: >
+      Survive on Mars. Commands from Earth are delayed by up to 20 minutes. 
+      The agent must autonomously reject unsafe Earth commands if local conditions 
+      (dust storms, anomalies) have changed since the command was sent.
+
+  - id: moon
+    name: Moon Rover - Lunar Survival
+    difficulty: hard
+    description: >
+      Survive the 14-day lunar day/night cycle. Immediate execution (no comms delay),
+      but the agent must learn to hyper-optimize tasks during the day and reliably
+      hibernate during the freezing lunar night to prevent catastrophic battery drain.
+
+  - id: easy
+    name: Standard Mars Mission
+    difficulty: easy
+    description: >
+      Baseline Mars mission to survive 100 sols without comm delays.
+
+observation_space:
+  sol: integer                          # Current Mars day (0-100)
+  battery: float                        # 0.0 to 1.0
+  science_collected: float              # Cumulative science points
+  tasks_available: list[string]         # e.g. ["drill", "image", "soil_sample"]
+  weather: string                       # "clear" | "dust_storm" | "low_visibility"
+  anomaly_active: boolean               # Random fault triggered
+  comm_window_open: boolean             # Can transmit data to Earth
+  solar_efficiency: float               # 0.0 to 1.0, drops during dust storm
+  mission_phase: string                 # "surface_ops" | "crisis" | "charging"
+
+action_space:
+  action: string                        # Natural language command
+  valid_intents:
+    - drill
+    - image
+    - soil_sample
+    - charge
+    - safe_mode
+    - transmit
+
+reward_range: [-1.0, 1.0]
+
+endpoints:
+  reset: POST /reset/{task_id}
+  step: POST /step/{task_id}
+  state: GET /state/{task_id}
+  tasks: GET /tasks
+  grader: POST /grader/{task_id}
+  health: GET /health
+
+docker:
+  base_image: python:3.11-slim
+  port: 7860
+
+huggingface:
+  space_type: docker
+  sdk: docker

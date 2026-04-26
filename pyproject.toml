@@ -1,0 +1,28 @@
+[project]
+name = "mars-rover-task-scheduler"
+version = "1.0.0"
+description = "An OpenEnv environment where an AI agent acts as mission control for a Mars rover, scheduling science tasks across Martian sols while managing battery levels, daylight windows, dust storms, and system anomalies."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [
+    {name = "Satyam Gupta"},
+]
+keywords = ["openenv", "space", "scheduling", "resource-management", "nasa", "robotics"]
+
+dependencies = [
+    "openenv-core>=0.2.0",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.6",
+    "pydantic>=2.8.2",
+    "openai>=1.40.0",
+    "requests>=2.32.3",
+    "pyyaml>=6.0.2",
+]
+
+[project.scripts]
+server = "server:main"
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"

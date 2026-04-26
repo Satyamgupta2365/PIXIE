@@ -1,0 +1,56 @@
+{
+  "mission": {
+    "id": "artemis-1",
+    "name": "Artemis I",
+    "status": "SUCCESS",
+    "vehicle": "SLS Block 1",
+    "launch_date_utc": "2022-11-16T06:47:44Z",
+    "organization": "NASA",
+    "launch_site": {
+      "pad": "LC-39B",
+      "location": "Kennedy Space Center, FL"
+    },
+    "mission_type": "Uncrewed Lunar Orbit",
+    "destination": "Moon (Retrograde Orbit)"
+  },
+  "vehicle_specs": {
+    "total_height_m": 98.0,
+    "mass_at_liftoff_kg": 2608000
+  },
+  "weather_at_launch": {
+    "temperature_celsius": 22,
+    "humidity_percent": 88,
+    "wind_speed_kmh": 12,
+    "wind_direction": "NE"
+  },
+  "flight_telemetry": [
+    { "time_s": 0, "altitude_km": 0.0, "velocity_kmh": 0, "status": "NOMINAL" },
+    { "time_s": 60, "altitude_km": 15.2, "velocity_kmh": 2100, "status": "NOMINAL" },
+    { "time_s": 120, "altitude_km": 45.1, "velocity_kmh": 5800, "status": "NOMINAL" },
+    { "time_s": 180, "altitude_km": 88.0, "velocity_kmh": 10500, "status": "NOMINAL" },
+    { "time_s": 240, "altitude_km": 140.5, "velocity_kmh": 15000, "status": "NOMINAL" },
+    { "time_s": 300, "altitude_km": 180.2, "velocity_kmh": 20000, "status": "NOMINAL" },
+    { "time_s": 480, "altitude_km": 210.0, "velocity_kmh": 28000, "status": "NOMINAL" }
+  ],
+  "ai_analysis": {
+    "planner_agent": {
+      "assessment": "Trajectory nominal. MECO and Core Stage separation performed optimally. TLI window correctly achieved.",
+      "trajectory_score": 0.98
+    },
+    "resource_agent": {
+      "assessment": "Cryogenic fuel levels stable throughout ascent. Boil-off was within expected parameters.",
+      "fuel_efficiency_score": 0.95
+    },
+    "risk_agent": {
+      "assessment": "No significant structural stress deviations. Hydrogen leak signatures monitored but remained below safety thresholds.",
+      "risk_score": 0.12
+    },
+    "what_pixie_would_have_done": "PIXIE would have maintained this nominal flight path, though potentially optimizing the roll program timing by 0.4 seconds to marginally reduce aerodynamic load on the core stage."
+  },
+  "major_events": [
+    { "time_s": 0, "label": "LIFTOFF", "description": "Ignition of RS-25 engines and SRBs." },
+    { "time_s": 126, "label": "SRB SEPARATION", "description": "Solid Rocket Boosters separated successfully." },
+    { "time_s": 191, "label": "LAS JETTISON", "description": "Launch Abort System jettisoned." },
+    { "time_s": 483, "label": "MECO", "description": "Main Engine Cutoff." }
+  ]
+}
