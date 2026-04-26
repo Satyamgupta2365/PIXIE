@@ -161,7 +161,6 @@ PIXIE is fully containerized and hosted across Vercel and HuggingFace Spaces.
 *   📝 **Technical Blog (Rovers):** [Mars Rover RL Deep Dive](https://huggingface.co/spaces/shreyags2007/mars-rover-rl/blob/main/README.md)
 *   📝 **Technical Blog (Satellites):** [Satellite Collision RL Deep Dive](https://huggingface.co/spaces/shreyags2007/satellite-rl-collision/blob/main/README.md)
 *   📓 **Training Notebook:** [Unsloth + GRPO Training on Colab](https://github.com/Satyamgupta2365/PIXIE/blob/main/training/train_grpo.ipynb)
-*   📊 **Presentation/Slides:** [Included in the repository docs folder]
 
 
 ### 2. Run the Training Script
