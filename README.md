@@ -102,7 +102,13 @@ Before training, the baseline `Llama 3.1 8B` acted entirely on greed. If present
 *   **Baseline Survival Rate:** Survived the full 100 Sols in only **4% of episodes** (usually dying to battery depletion by Sol 12).
 
 **2. The Training Curve (Meaningful Convergence)**
-We trained the model using Unsloth (4-bit LoRA) + GRPO over 500 episodes. The learning curves clearly show the agent initially failing, but by Episode 200, the reward curve sharply inflects upwards as the agent discovers the `safe_mode` and `charge` actions to maintain its battery budget. *(See the `training/` folder for the TensorBoard plots and logs)*.
+We trained the model using Unsloth (4-bit LoRA) + GRPO over 500 episodes. The learning curves clearly show the agent initially failing, but by Episode 200, the reward curve sharply inflects upwards as the agent discovers the `safe_mode` and `charge` actions to maintain its battery budget.
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Satyamgupta2365/PIXIE/main/training/training_curve.png" width="700" alt="Training Curve: Baseline vs GRPO">
+  <br>
+  <i><b>Figure 1:</b> Episodic Reward over 500 training steps. The GRPO-trained agent quickly learns to avoid battery depletion, jumping from a -12.4 baseline to a stable +18.5 average score.</i>
+</div>
 
 **3. The Trained Agent (Quantitative & Qualitative Shift)**
 After RL Self-Learning against the PIXIE environment, the behavior shifted dramatically:
