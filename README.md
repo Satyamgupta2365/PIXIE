@@ -1,16 +1,3 @@
----
-title: PIXIE Autonomous Mission Control
-emoji: 🚀
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-pinned: false
-app_port: 7860
-thumbnail: thumbnail.png
----
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Satyamgupta2365/PIXIE/main/thumbnail.png" width="800" alt="PIXIE Space Exploration" style="border-radius: 12px; margin-bottom: 20px;">
 
   # 🔴 PIXIE: Autonomous Satellite & Rover Mission Management System
   
@@ -163,8 +150,3 @@ Our complete training pipeline is available in the repository. Judges can re-run
 docker pull satyamgpy/pixie-env:latest
 docker run -p 7860:7860 satyamgpy/pixie-env:latest
 ```
-
----
-<div align="center">
-  <b>Developed for the OpenEnv Hackathon 2025 (India)</b>
-</div>
