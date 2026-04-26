@@ -15,18 +15,7 @@ import random
 import re
 from typing import Tuple, Dict, Any, List, Optional
 
-# ── OpenEnv base class import ────────────────────────────────────────────────
-# On HuggingFace Spaces (Linux/Docker), openenv-core installs normally.
-# On local Windows dev, it may fail due to numpy build issues — use fallback.
-try:
-    from openenv.core.env_server import Environment as _OpenEnvBase
-except ImportError:
-    # Fallback: define a minimal ABC that matches the OpenEnv interface
-    class _OpenEnvBase:
-        """Minimal OpenEnv Environment interface for local development."""
-        def reset(self): raise NotImplementedError
-        def step(self, action): raise NotImplementedError
-        def state(self): raise NotImplementedError
+from openenv import Environment as _OpenEnvBase
 
 from backend.world import (
     MarsWorldModel,
