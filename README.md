@@ -1,5 +1,14 @@
+---
+title: PIXIE Autonomous Mission Control
+emoji: 🚀
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+app_port: 7860
+---
 
-  # 🔴 PIXIE: Autonomous Satellite & Rover Mission Management System
+# 🔴 PIXIE: Autonomous Satellite & Rover Mission Management System
   
   <h3>An intelligent AI framework for autonomous satellite networking, rover operations, and multi-agent communication scheduling using RL and LLMs.</h3>
 
