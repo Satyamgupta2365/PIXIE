@@ -73,6 +73,7 @@ endpoints:
   health: GET /health
 
 docker:
+  image: "satyamgpy/pixel-env:latest"
   base_image: python:3.11-slim
   port: 7860
 
