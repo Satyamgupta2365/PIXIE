@@ -7,6 +7,7 @@
     <a href="https://pixie-flax-xi.vercel.app/"><img src="https://img.shields.io/badge/Frontend-Vercel_Live_Demo-black?style=for-the-badge&logo=vercel" alt="Vercel App"></a>
     <a href="https://huggingface.co/spaces/satyampy/Pixie"><img src="https://img.shields.io/badge/Backend-HuggingFace_Space-yellow?style=for-the-badge&logo=huggingface" alt="HF Space"></a>
     <a href="https://hub.docker.com/repository/docker/satyamgpy/pixel-env/general"><img src="https://img.shields.io/badge/Docker-Live_Image-blue?style=for-the-badge&logo=docker" alt="Docker"></a>
+    <a href="#-deep-dive-blogs"><img src="https://img.shields.io/badge/Writeups-Technical_Blogs-red?style=for-the-badge&logo=huggingface" alt="Blogs"></a>
   </p>
   <p>
     <img src="https://img.shields.io/badge/Framework-OpenEnv-indigo?style=for-the-badge" alt="OpenEnv">
@@ -141,10 +142,15 @@ Explore our detailed technical write-ups for each mission component:
 
 PIXIE is fully containerized and hosted across Vercel and HuggingFace Spaces.
 
-### 1. View the Live Application
-* **Frontend UI (Vercel):** [https://pixie-flax-xi.vercel.app/](https://pixie-flax-xi.vercel.app/)
-* **Backend API Health Check:** [https://huggingface.co/spaces/satyampy/Pixie/health](https://huggingface.co/spaces/satyampy/Pixie/health)
-* **Backend API Docs (Swagger):** [https://huggingface.co/spaces/satyampy/Pixie/docs](https://huggingface.co/spaces/satyampy/Pixie/docs)
+### 1. Project Deliverables & References
+*   🌐 **Interactive Frontend (Vercel):** [https://pixie-flax-xi.vercel.app/](https://pixie-flax-xi.vercel.app/)
+*   🚀 **OpenEnv Backend (HuggingFace):** [https://huggingface.co/spaces/satyampy/Pixie](https://huggingface.co/spaces/satyampy/Pixie)
+*   🐳 **Docker Hub Image:** [satyamgpy/pixel-env:latest](https://hub.docker.com/repository/docker/satyamgpy/pixel-env/general)
+*   📝 **Technical Blog (Rovers):** [Mars Rover RL Deep Dive](https://huggingface.co/spaces/shreyags2007/mars-rover-rl/blob/main/README.md)
+*   📝 **Technical Blog (Satellites):** [Satellite Collision RL Deep Dive](https://huggingface.co/spaces/shreyags2007/satellite-rl-collision/blob/main/README.md)
+*   📓 **Training Notebook:** [Unsloth + GRPO Training on Colab](https://github.com/Satyamgupta2365/PIXIE/blob/main/training/train_grpo.ipynb)
+*   📊 **Presentation/Slides:** [Included in the repository docs folder]
+
 
 ### 2. Run the Training Script
 Our complete training pipeline is available in the repository. Judges can re-run it directly:
