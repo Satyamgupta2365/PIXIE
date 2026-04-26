@@ -129,6 +129,12 @@ graph TD
 - `backend/satellite_env.py`: The multi-agent engine. It contains the Planner, Risk, and Resource logic allowing satellites to self-learn collision avoidance and bandwidth optimization.
 - `training/train_grpo.ipynb`: The Colab-ready training script. It utilizes Unsloth for fast 4-bit loading and HF TRL to run the GRPO loop, orchestrating the self-learning process.
 
+## 📝 Deep Dive Blogs
+Explore our detailed technical write-ups for each mission component:
+
+*   **Mars Rover Autonomy:** [https://huggingface.co/spaces/shreyags2007/mars-rover-rl/blob/main/README.md](https://huggingface.co/spaces/shreyags2007/mars-rover-rl/blob/main/README.md)
+*   **Satellite Collision Avoidance:** [https://huggingface.co/spaces/shreyags2007/satellite-rl-collision/blob/main/README.md](https://huggingface.co/spaces/shreyags2007/satellite-rl-collision/blob/main/README.md)
+
 ---
 
 ## 💻 Quick Start & Evaluation
