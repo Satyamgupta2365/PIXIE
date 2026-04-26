@@ -244,7 +244,7 @@ export default function RoverDashboard() {
             </div>
 
             <div className="absolute inset-0 pt-12">
-              <svg viewBox="0 0 600 340" className="w-full h-full" preserveAspectRatio="none">
+              <svg viewBox="0 0 600 340" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
                 <defs>
                   <radialGradient id="mars-bg" cx="50%" cy="50%" r="80%">
                     <stop offset="0%" stopColor={selIdx === 0 ? "#3d1a06" : "#1a1c23"} />
