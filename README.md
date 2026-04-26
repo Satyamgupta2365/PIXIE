@@ -146,6 +146,8 @@ Our complete training pipeline is available in the repository. Judges can re-run
 * Uses Unsloth for fast 4-bit loading and HF TRL for the GRPO loop.
 
 ### 3. Run Locally via Docker
+* **Docker Hub Repository:** [https://hub.docker.com/repository/docker/satyamgpy/pixel-env/general](https://hub.docker.com/repository/docker/satyamgpy/pixel-env/general)
+
 ```bash
 docker pull satyamgpy/pixel-env:latest
 docker run -p 7860:7860 satyamgpy/pixel-env:latest
