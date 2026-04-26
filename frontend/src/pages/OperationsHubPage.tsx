@@ -27,6 +27,17 @@ const operations = [
     border: 'group-hover:border-purple-500/50',
     path: '/rovers',
     status: 'INITIALIZING'
+  },
+  {
+    id: 'archive',
+    title: 'Mission Archive',
+    subtitle: 'Collision History',
+    desc: 'Diagnostic logs and AI analysis of past mission anomalies, including satellite collisions and rocket strut failures.',
+    icon: Shield,
+    color: 'from-red-500/20 to-orange-900/20',
+    border: 'group-hover:border-red-500/50',
+    path: '/launches',
+    status: 'COMPLETED'
   }
 ];
 

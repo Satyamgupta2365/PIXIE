@@ -122,7 +122,12 @@ export default function SatelliteDashboard() {
           <span className="text-xl font-black tracking-tighter">PIXIE <span className="text-blue-400">Orb-Net</span></span>
         </div>
         <div className="flex items-center gap-4">
-
+          <button 
+            onClick={() => navigate('/launches')}
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500/20 transition-all text-xs font-mono uppercase tracking-widest cursor-pointer"
+          >
+            Mission Archive
+          </button>
           <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-mono uppercase tracking-widest">
             <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
             N2YO Live Feed
