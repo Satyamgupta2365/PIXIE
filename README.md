@@ -147,6 +147,7 @@ Explore our detailed technical write-ups for each mission component:
 
 *   **Mars Rover Autonomy:** [https://huggingface.co/spaces/shreyags2007/mars-rover-rl/blob/main/README.md](https://huggingface.co/spaces/shreyags2007/mars-rover-rl/blob/main/README.md)
 *   **Satellite Collision Avoidance:** [https://huggingface.co/spaces/shreyags2007/satellite-rl-collision/blob/main/README.md](https://huggingface.co/spaces/shreyags2007/satellite-rl-collision/blob/main/README.md)
+*   **Full Project Master Blog:** [https://huggingface.co/spaces/shreyags2007/mars-rover-satellite-rl/blob/main/README.md](https://huggingface.co/spaces/shreyags2007/mars-rover-satellite-rl/blob/main/README.md)
 
 ---
 
@@ -158,6 +159,7 @@ PIXIE is fully containerized and hosted across Vercel and HuggingFace Spaces.
 *   🌐 **Interactive Frontend (Vercel):** [https://pixie-flax-xi.vercel.app/](https://pixie-flax-xi.vercel.app/)
 *   🚀 **OpenEnv Backend (HuggingFace):** [https://huggingface.co/spaces/satyampy/Pixie](https://huggingface.co/spaces/satyampy/Pixie)
 *   🐳 **Docker Hub Image:** [satyamgpy/pixel-env:latest](https://hub.docker.com/repository/docker/satyamgpy/pixel-env/general)
+*   📝 **Full Project Master Blog:** [HuggingFace Technical Writeup](https://huggingface.co/spaces/shreyags2007/mars-rover-satellite-rl/blob/main/README.md)
 *   📝 **Technical Blog (Rovers):** [Mars Rover RL Deep Dive](https://huggingface.co/spaces/shreyags2007/mars-rover-rl/blob/main/README.md)
 *   📝 **Technical Blog (Satellites):** [Satellite Collision RL Deep Dive](https://huggingface.co/spaces/shreyags2007/satellite-rl-collision/blob/main/README.md)
 *   📓 **Training Notebook:** [Unsloth + GRPO Training on Colab](https://github.com/Satyamgupta2365/PIXIE/blob/main/training/train_grpo.ipynb)
