@@ -123,7 +123,7 @@ def root():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>PIXIE — Mars Rover RL Environment</title>
+        <title>PIXIE — Autonomous Mission Control</title>
         <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
         <style>
             :root {
@@ -226,8 +226,8 @@ def root():
             <div class="badge">● ONLINE</div>
             <h1>🔴 PIXIE</h1>
             <p class="subtitle">
-                Mars Rover RL Environment — OpenEnv compatible.<br>
-                Control a rover with natural language. Manage battery, science, weather, and anomalies across 100 Martian sols.
+                Autonomous Satellite & Rover Mission Management — OpenEnv compatible.<br>
+                Control a multi-agent satellite network and deep-space rovers using Reinforcement Learning.
             </p>
             <div class="btns">
                 <a href="/docs" class="btn primary">📄 API Docs</a>
