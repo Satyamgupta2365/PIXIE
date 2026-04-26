@@ -38,7 +38,7 @@ PIXIE provides a grueling, `openenv-core` compliant physics simulator that allow
 * 🔴 **Theme #2: (Super) Long-Horizon Planning (Mars/Moon Rovers):** Our rover environments force agents to track state over extended trajectories with delayed rewards. On Mars, the agent must survive 100 Sols, anticipating sudden dust storms and choosing to `hibernate` rather than wait for Earth. On the Moon, it must recover from early mistakes and optimize operations during a cyclical 14-day light cycle to survive the freezing -130°C night.
 * 📈 **Theme #4: Self-Improvement (Adaptive RL Curricula):** PIXIE is built for recursive skill amplification. Through our RL loop, the agent doesn't just solve a fixed task; it learns to drive its own capability growth by navigating escalating difficulties (e.g., transitioning from the `easy` task ID to the grueling `mars` setting) through self-play and trial-and-error.
 
-### 🌟 Innovation & Ambition (Addressing the Judging Criteria)
+### 🌟 Innovation & Ambition 
 
 **1. Does this environment exist to teach an LLM something it currently can’t do well?**  
 **Yes: "Defiant Survival" and Long-Horizon Planning under Latency.**  
@@ -60,7 +60,7 @@ Because PIXIE tracks metrics like "Forced Safe-Mode events," "Anomalies Survived
 
 We trained the `Llama 3.1 8B` model using **GRPO (Group Relative Policy Optimization)** via Unsloth and HF TRL. 
 
-### 🎯 The Reward Signal (Addressing the Judging Criteria)
+### 🎯 The Reward Signal 
 
 **1. Uses OpenEnv’s Rubric System Thoughtfully (Composable > Monolithic)**
 Instead of a giant, messy `if/else` block, PIXIE uses a pure, modular OpenEnv Rubric system (see `backend/rewards.py`). Every single step calculates four independent reward dimensions:
