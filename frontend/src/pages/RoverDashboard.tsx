@@ -55,7 +55,6 @@ export default function RoverDashboard() {
   const [logIdx, setLogIdx] = useState([0, 0]);
   const [liveData, setLiveData] = useState<{mars: any, moon: any} | null>(null);
 
-  // Fetch real-time telemetry from NASA via backend
   useEffect(() => {
     const fetchTelemetry = async () => {
       try {
@@ -64,17 +63,13 @@ export default function RoverDashboard() {
           const data = await res.json();
           setLiveData(data);
         }
-      } catch (err) {
-        console.error("Failed to fetch live telemetry:", err);
-      }
+      } catch (err) {}
     };
-    
     fetchTelemetry();
-    const telemetryInterval = setInterval(fetchTelemetry, 30000); // refresh every 30s
+    const telemetryInterval = setInterval(fetchTelemetry, 30000); 
     return () => clearInterval(telemetryInterval);
   }, []);
 
-  // Simulate streaming logs
   useEffect(() => {
     const t = setInterval(() => {
       setLogIdx(prev => prev.map((v, i) => (i === selIdx ? Math.min(v + 1, ROVERS[i].logs.length - 1) : v)));
@@ -82,7 +77,6 @@ export default function RoverDashboard() {
     return () => clearInterval(t);
   }, [selIdx]);
 
-  // Reset log stream when switching rovers
   useEffect(() => {
     setLogIdx(prev => {
       const next = [...prev];
@@ -91,14 +85,9 @@ export default function RoverDashboard() {
     });
   }, [selIdx]);
 
-  // Merge live NASA data into the rovers array
   const rovers = ROVERS.map(r => {
-    if (liveData && r.id === 'mars' && liveData.mars) {
-      return { ...r, ...liveData.mars };
-    }
-    if (liveData && r.id === 'moon' && liveData.moon) {
-      return { ...r, ...liveData.moon };
-    }
+    if (liveData && r.id === 'mars' && liveData.mars) return { ...r, ...liveData.mars };
+    if (liveData && r.id === 'moon' && liveData.moon) return { ...r, ...liveData.moon };
     return r;
   });
 
@@ -233,6 +222,13 @@ export default function RoverDashboard() {
               </div>
             </div>
 
+            {/* RL Perception Overlay Toggle */}
+            <div className="absolute top-5 right-6 z-10 flex gap-2">
+              <div className="text-[9px] font-mono uppercase tracking-widest text-white bg-white/10 px-3 py-1.5 rounded-md border border-white/20 flex items-center gap-2 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                <Target className="w-3 h-3" /> RL VALUE MAP ACTIVE
+              </div>
+            </div>
+
             {/* Simulated HUD elements */}
             <div className="absolute inset-0 pointer-events-none z-20">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
@@ -258,8 +254,21 @@ export default function RoverDashboard() {
                     <feGaussianBlur stdDeviation="4" result="blur" />
                     <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                   </filter>
+                  <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor={rover.color} stopOpacity="0.8" />
+                    <stop offset="100%" stopColor={rover.color} stopOpacity="0" />
+                  </linearGradient>
                 </defs>
                 <rect width="600" height="340" fill="url(#mars-bg)" />
+
+                {/* Topographical Contour Lines */}
+                <g opacity="0.08">
+                  <path d="M0,50 Q150,80 300,40 T600,100" fill="none" stroke="white" strokeWidth="1" />
+                  <path d="M0,100 Q150,150 300,90 T600,180" fill="none" stroke="white" strokeWidth="1" />
+                  <path d="M0,150 Q150,220 300,140 T600,260" fill="none" stroke="white" strokeWidth="1" />
+                  <path d="M0,200 Q150,290 300,190 T600,340" fill="none" stroke="white" strokeWidth="1" />
+                  <path d="M0,250 Q150,330 300,280 T600,390" fill="none" stroke="white" strokeWidth="1" />
+                </g>
 
                 {/* Grid */}
                 <g opacity="0.15">
@@ -267,22 +276,34 @@ export default function RoverDashboard() {
                   {[85, 170, 255].map(y => <line key={y} x1="0" y1={y} x2="600" y2={y} stroke={rover.color} strokeWidth="1" strokeDasharray="4 4" />)}
                 </g>
 
+                {/* Hazard zones calculated by RL */}
+                <path d="M420,180 Q470,130 520,180 T470,230 Z" fill="rgba(239,68,68,0.05)" stroke="rgba(239,68,68,0.2)" strokeDasharray="4 4" />
+                <text x="435" y="180" fill="rgba(239,68,68,0.4)" fontSize="7" fontFamily="monospace">RL HAZARD: ROUGH TERRAIN</text>
+                
+                <path d="M80,240 Q130,190 180,240 T130,290 Z" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.2)" strokeDasharray="4 4" />
+                <text x="100" y="240" fill="rgba(59,130,246,0.4)" fontSize="7" fontFamily="monospace">RL TARGET: HIGH REWARD</text>
+
                 {/* Current position */}
                 <g transform="translate(300, 170)">
+                  {/* RL Value Heatmap approximation around rover */}
+                  <circle cx="0" cy="0" r="100" fill={`url(#pathGrad)`} opacity="0.1" />
                   <circle cx="0" cy="0" r="45" fill={`${rover.color}10`} />
                   <circle cx="0" cy="0" r="25" fill={`${rover.color}20`} className="animate-ping" style={{ animationDuration: '3s' }} />
                   <circle cx="0" cy="0" r="8" fill={rover.color} filter="url(#glow)" />
                   <line x1="-50" y1="0" x2="50" y2="0" stroke={rover.color} strokeWidth="1" opacity="0.4" />
                   <line x1="0" y1="-50" x2="0" y2="50" stroke={rover.color} strokeWidth="1" opacity="0.4" />
                   
-                  {/* Waypoint arc */}
-                  <path d="M 15,-15 Q 40,-40 80,-20" fill="none" stroke={rover.color} strokeWidth="2" strokeDasharray="6 4" opacity="0.8" />
-                  <circle cx="80" cy="-20" r="4" fill="none" stroke={rover.color} strokeWidth="2" />
+                  {/* Planned RL Path */}
+                  <path d="M 0,0 Q 40,-40 80,-20 T 140,-50" fill="none" stroke={rover.color} strokeWidth="2" strokeDasharray="6 4" opacity="0.8" />
+                  <circle cx="80" cy="-20" r="3" fill={rover.color} opacity="0.6" />
+                  <circle cx="140" cy="-50" r="4" fill="none" stroke={rover.color} strokeWidth="2" />
+                  <text x="148" y="-47" fill={rover.color} fontSize="8" fontFamily="monospace" opacity="0.8">OPTIONAL GOAL (R: +10)</text>
+                  <text x="85" y="-12" fill={rover.color} fontSize="7" fontFamily="monospace" opacity="0.6">STEP N+1</text>
                 </g>
 
                 {/* Rover info box */}
-                <rect x="20" y="270" width="130" height="50" rx="6" fill="rgba(0,0,0,0.7)" stroke={`${rover.color}40`} strokeWidth="1" />
-                <text x="30" y="290" fill={rover.color} fontSize="8" fontFamily="monospace" fontWeight="bold">SOL {rover.sol}</text>
+                <rect x="20" y="270" width="165" height="50" rx="6" fill="rgba(0,0,0,0.7)" stroke={`${rover.color}40`} strokeWidth="1" />
+                <text x="30" y="290" fill={rover.color} fontSize="8" fontFamily="monospace" fontWeight="bold">SOL {rover.sol} · RL STATE: NOMINAL</text>
                 <text x="30" y="305" fill="rgba(255,255,255,0.6)" fontSize="7" fontFamily="monospace">LOC: {rover.location}</text>
               </svg>
               
@@ -295,74 +316,123 @@ export default function RoverDashboard() {
             </div>
           </div>
 
-          {/* AI Agent Log - EXTREMELY PROMINENT */}
-          <div className="border rounded-2xl p-6 bg-black/60 backdrop-blur-xl flex-shrink-0 relative overflow-hidden shadow-2xl"
+          {/* AI Agent Log & RL Visualizer */}
+          <div className="border rounded-2xl p-6 bg-black/60 backdrop-blur-xl flex-shrink-0 relative overflow-hidden shadow-2xl flex gap-6"
             style={{ borderColor: `${rover.color}40` }}>
             <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
             
-            <div className="relative z-10 flex items-center justify-between mb-5 pb-5 border-b border-white/10">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-lg"
-                  style={{ background: `linear-gradient(135deg, ${rover.color}40, transparent)`, border: `1px solid ${rover.color}60` }}>
-                  <Brain className="w-5 h-5" style={{ color: rover.color }} />
+            <div className="flex-1 flex flex-col">
+              <div className="relative z-10 flex items-center justify-between mb-5 pb-5 border-b border-white/10 shrink-0">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-lg"
+                    style={{ background: `linear-gradient(135deg, ${rover.color}40, transparent)`, border: `1px solid ${rover.color}60` }}>
+                    <Brain className="w-5 h-5" style={{ color: rover.color }} />
+                  </div>
+                  <div>
+                    <div className="text-[10px] uppercase tracking-widest font-mono text-white/50 mb-0.5">
+                      Autonomy Engine
+                    </div>
+                    <div className="text-base font-black tracking-widest uppercase" style={{ color: rover.color }}>
+                      PIXIE RL Policy Feed
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-[10px] uppercase tracking-widest font-mono text-white/50 mb-0.5">
-                    Autonomy Engine
-                  </div>
-                  <div className="text-base font-black tracking-widest uppercase" style={{ color: rover.color }}>
-                    RL Decision Stream
-                  </div>
+                <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 shadow-inner">
+                  <Clock className="w-3.5 h-3.5 text-white/40" />
+                  <span className="text-[10px] font-mono text-white/60 font-semibold tracking-wider">Delay: {rover.commDelay}</span>
                 </div>
               </div>
-              <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 shadow-inner">
-                <Clock className="w-3.5 h-3.5 text-white/40" />
-                <span className="text-[10px] font-mono text-white/60 font-semibold tracking-wider">Delay: {rover.commDelay}</span>
+
+              <div className="relative z-10 space-y-3 flex-1 flex flex-col justify-end min-h-[160px]">
+                <AnimatePresence>
+                  {rover.logs.slice(0, activeLogCount).map((log, i) => {
+                    let logStyles = '';
+                    let icon = null;
+
+                    if (log.type === 'cmd') {
+                      logStyles = 'bg-white/5 border-white/10 text-white/70';
+                      icon = <Radio className="w-4 h-4 text-white/40" />;
+                    } else if (log.type === 'hazard') {
+                      logStyles = 'bg-red-500/10 border-red-500/30 text-red-300 shadow-[0_0_15px_rgba(239,68,68,0.1)]';
+                      icon = <AlertTriangle className="w-4 h-4 text-red-400" />;
+                    } else if (log.type === 'reject') {
+                      logStyles = 'bg-orange-500/10 border-orange-500/30 text-orange-300 font-bold';
+                      icon = <Shield className="w-4 h-4 text-orange-400" />;
+                    } else if (log.type === 'action') {
+                      logStyles = `bg-white/10 text-white font-bold shadow-[0_0_20px_${rover.color}15]`;
+                      icon = <Cpu className="w-4 h-4" style={{ color: rover.color }} />;
+                    } else if (log.type === 'reward') {
+                      logStyles = 'bg-green-500/10 border-green-500/30 text-green-300';
+                      icon = <Zap className="w-4 h-4 text-green-400" />;
+                    }
+
+                    return (
+                      <motion.div 
+                        key={i}
+                        initial={{ opacity: 0, x: -20, scale: 0.95 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                        className={`flex gap-4 items-center p-3 rounded-xl border backdrop-blur-sm ${logStyles}`}
+                        style={log.type === 'action' ? { borderColor: `${rover.color}40`, backgroundColor: `${rover.color}15` } : {}}
+                      >
+                        <div className="flex items-center gap-3 w-24 shrink-0 border-r border-white/10 pr-3">
+                          {icon}
+                          <div className="text-[10px] font-mono opacity-60 tracking-wider">{log.time}</div>
+                        </div>
+                        <div className="text-sm font-mono tracking-wide flex-1">
+                          {log.text}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
               </div>
             </div>
 
-            <div className="relative z-10 space-y-3 min-h-[180px] flex flex-col justify-end">
-              <AnimatePresence>
-                {rover.logs.slice(0, activeLogCount).map((log, i) => {
-                  let logStyles = '';
-                  let icon = null;
-
-                  if (log.type === 'cmd') {
-                    logStyles = 'bg-white/5 border-white/10 text-white/70';
-                    icon = <Radio className="w-4 h-4 text-white/40" />;
-                  } else if (log.type === 'hazard') {
-                    logStyles = 'bg-red-500/10 border-red-500/30 text-red-300 shadow-[0_0_15px_rgba(239,68,68,0.1)]';
-                    icon = <AlertTriangle className="w-4 h-4 text-red-400" />;
-                  } else if (log.type === 'reject') {
-                    logStyles = 'bg-orange-500/10 border-orange-500/30 text-orange-300 font-bold';
-                    icon = <Shield className="w-4 h-4 text-orange-400" />;
-                  } else if (log.type === 'action') {
-                    logStyles = `bg-[${rover.color}]/10 border-[${rover.color}]/40 text-white font-bold shadow-[0_0_20px_${rover.color}15]`;
-                    icon = <Cpu className="w-4 h-4" style={{ color: rover.color }} />;
-                  } else if (log.type === 'reward') {
-                    logStyles = 'bg-green-500/10 border-green-500/30 text-green-300';
-                    icon = <Zap className="w-4 h-4 text-green-400" />;
-                  }
-
-                  return (
-                    <motion.div 
-                      key={i}
-                      initial={{ opacity: 0, x: -20, scale: 0.95 }}
-                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                      className={`flex gap-4 items-center p-3.5 rounded-xl border backdrop-blur-sm ${logStyles}`}
-                    >
-                      <div className="flex items-center gap-3 w-24 shrink-0 border-r border-white/10 pr-3">
-                        {icon}
-                        <div className="text-[10px] font-mono opacity-60 tracking-wider">{log.time}</div>
+            {/* RL State Space visualization */}
+            <div className="w-64 shrink-0 relative z-10 border-l border-white/10 pl-6 flex flex-col justify-between py-2 hidden xl:flex">
+              <div>
+                <div className="text-[10px] uppercase tracking-widest font-mono text-white/50 mb-3 flex items-center gap-2">
+                  <Activity className="w-3 h-3" /> State Vector ($S_t$)
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { label: 'BATTERY_LVL', val: `${rover.battery}%`, norm: (rover.battery/100).toFixed(2), col: rover.battery < 50 ? 'text-red-400' : 'text-green-400' },
+                    { label: 'THERMAL_GRAD', val: `${rover.temp}°C`, norm: Math.max(0, (rover.temp + 100)/200).toFixed(2), col: 'text-blue-400' },
+                    { label: 'TERRAIN_ROUGH', val: selIdx === 0 ? '0.85' : '0.20', norm: selIdx === 0 ? '0.85' : '0.20', col: selIdx === 0 ? 'text-orange-400' : 'text-green-400' },
+                    { label: 'SOLAR_IRRAD', val: selIdx === 0 ? 'LOW' : 'HIGH', norm: selIdx === 0 ? '0.15' : '0.90', col: selIdx === 0 ? 'text-red-400' : 'text-yellow-400' },
+                  ].map(s => (
+                    <div key={s.label} className="flex items-center justify-between">
+                      <span className="text-[9px] font-mono text-white/40">{s.label}</span>
+                      <div className="flex items-center gap-2">
+                         <span className="text-[9px] font-mono bg-white/5 px-1.5 py-0.5 rounded text-white/60 w-12 text-right">{s.val}</span>
+                         <span className={`text-[9px] font-mono font-bold ${s.col} w-10 text-right`}>[{s.norm}]</span>
                       </div>
-                      <div className="text-sm font-mono tracking-wide flex-1">
-                        {log.text}
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <div className="text-[10px] uppercase tracking-widest font-mono text-white/50 mb-3 flex items-center gap-2">
+                  <Network className="w-3 h-3" /> Action Probabilities ($\pi_\theta$)
+                </div>
+                <div className="flex justify-between items-end h-[60px] gap-2">
+                   {[
+                     { action: 'DRIVE', p: selIdx === 0 ? 0.05 : 0.82, h: selIdx === 0 ? '5%' : '82%', active: selIdx !== 0 },
+                     { action: 'DRILL', p: selIdx === 0 ? 0.02 : 0.10, h: selIdx === 0 ? '2%' : '10%', active: false },
+                     { action: 'SAFE', p: selIdx === 0 ? 0.90 : 0.01, h: selIdx === 0 ? '90%' : '1%', active: selIdx === 0 },
+                     { action: 'COMM', p: selIdx === 0 ? 0.03 : 0.07, h: selIdx === 0 ? '3%' : '7%', active: false },
+                   ].map(a => (
+                     <div key={a.action} className="flex flex-col items-center flex-1">
+                       <span className={`text-[8px] font-mono mb-1 ${a.active ? '' : 'text-white/30'}`} style={{ color: a.active ? rover.color : undefined }}>{a.p.toFixed(2)}</span>
+                       <div className="w-full bg-white/5 rounded-t-sm relative flex items-end justify-center" style={{ height: '40px' }}>
+                          <motion.div className="w-full rounded-t-sm" style={{ height: a.h, backgroundColor: a.active ? rover.color : 'rgba(255,255,255,0.2)' }} />
+                       </div>
+                       <span className={`text-[8px] font-mono mt-1 tracking-wider ${a.active ? 'text-white font-bold' : 'text-white/40'}`}>{a.action}</span>
+                     </div>
+                   ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

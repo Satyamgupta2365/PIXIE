@@ -342,46 +342,47 @@ export default function GlobeScrollDemo() {
   const demoSections = [
     {
       id: "hero",
-      badge: "The Future of Exploration",
-      title: "PIXIE",
-      subtitle: "Autonomous Spaceflight",
-      description: "Experience the next leap in deep space exploration. PIXIE is an advanced, fully autonomous system designed to navigate, survive, and thrive on the Martian surface without human intervention.",
+      badge: "The Future of Autonomy",
+      title: "PIXIE Core",
+      subtitle: "Dual-System Spaceflight",
+      description: "Experience the next leap in deep space operations. PIXIE is an advanced, fully autonomous reinforcement learning system that simultaneously governs active orbital satellite networks and multi-agent surface rover fleets.",
       align: "left" as const,
       actions: [
         { label: "Enter Operations Hub", variant: "primary" as const, onClick: () => navigate("/operations") },
-        { label: "View Specs", variant: "secondary" as const, onClick: () => navigate("/operations") },
+        { label: "View Architecture", variant: "secondary" as const, onClick: () => navigate("/operations") },
       ]
     },
     {
       id: "problem",
       badge: "The Challenge",
-      title: "Beyond the Delay",
-      description: "With communication delays spanning millions of miles, Earth can no longer joystick the future. PIXIE empowers spacecraft to make split-second, critical decisions lightyears from home, ensuring mission survival in unforgiving environments.",
+      title: "Beyond The Delay",
+      subtitle: "Real-Time Threats",
+      description: "With extreme communication delays to Mars and thousands of fast-moving debris objects in orbit, Earth can no longer joystick the future. PIXIE empowers spacecraft to make split-second collision avoidance maneuvers and critical survival decisions lightyears from home.",
       align: "center" as const,
     },
     {
       id: "solution",
       badge: "The Innovation",
       title: "Cognitive Control",
-      subtitle: "A Council of Minds",
-      description: "Powered by an advanced intelligence framework, PIXIE continually analyzes planetary dynamics, predicts weather patterns, and perfectly balances power consumption with scientific discovery.",
+      subtitle: "Reinforcement Learning",
+      description: "Powered by a deep neural policy framework, PIXIE continually analyzes orbital trajectories, predicts planetary weather hazards, and executes optimal maneuvers to protect billion-dollar assets without human intervention.",
       align: "left" as const,
       features: [
-        { title: "Strategic Planning", description: "Maximizing scientific yield through autonomous sampling and imaging." },
-        { title: "Resource Management", description: "Preserving critical energy across 100-day continuous missions." },
-        { title: "Risk Mitigation", description: "Instantly adapting to hostile conditions and severe dust storms." }
+        { title: "Orbital Defense", description: "Real-time conjunction analysis and autonomous delta-v collision avoidance for satellite fleets." },
+        { title: "Surface Autonomy", description: "Multi-agent rover swarms predicting terrain hazards, managing thermal loads, and surviving dust storms." },
+        { title: "Reward Optimization", description: "A sophisticated reward function perfectly balancing power consumption, scientific yield, and mission survival." }
       ]
     },
     {
       id: "training",
       badge: "The Horizon",
       title: "Ready for Launch",
-      subtitle: "Simulated for Reality",
-      description: "Before it ever touches the stars, PIXIE undergoes millions of simulated mission lifecycles, evolving into the most resilient and capable artificial astronaut ever created.",
+      subtitle: "Trained in the Matrix",
+      description: "Before ever touching the stars, PIXIE's neural networks undergo millions of simulated episodes across diverse physics environments, evolving into the most resilient artificial astronaut ever created.",
       align: "center" as const,
       actions: [
-        { label: "Enter Simulation", variant: "primary" as const, onClick: () => navigate("/training") },
-        { label: "Explore Data", variant: "secondary" as const, onClick: () => navigate("/missions") }
+        { label: "View RL Training Data", variant: "primary" as const, onClick: () => navigate("/training") },
+        { label: "Enter Command Center", variant: "secondary" as const, onClick: () => navigate("/operations") }
       ]
     }
   ];
