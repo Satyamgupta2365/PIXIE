@@ -1,5 +1,5 @@
 """
-PIXEL Satellite Service
+PIXIE Satellite Service
 =======================
 Wraps N2YO REST API v1 to provide real-time satellite telemetry.
 API Key: 6J75QX-QN6GA4-EYQY2X-5Q5E

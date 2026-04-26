@@ -1,5 +1,5 @@
 """
-PIXEL — Mars Rover RL Environment (Core Logic)
+PIXIE — Mars Rover RL Environment (Core Logic)
 ===============================================
 An OpenEnv-compatible environment where an LLM agent controls a Mars rover,
 making natural-language decisions about drilling, imaging, sampling, charging,
@@ -101,9 +101,9 @@ def parse_action(raw: str) -> str:
 
 # ── Environment ──────────────────────────────────────────────────────────────
 
-class PIXELEnvironment(_OpenEnvBase):
+class PIXIEEnvironment(_OpenEnvBase):
     """
-    Mars Rover PIXEL Environment — extends OpenEnv's Environment base class.
+    Mars Rover PIXIE Environment — extends OpenEnv's Environment base class.
 
     State schema:
         sol, battery, science_collected, tasks_available, weather,
@@ -142,7 +142,7 @@ class PIXELEnvironment(_OpenEnvBase):
         self._done = False
         self._step_count = 0
 
-        return self._build_observation_str(event="Mission initialized. You are the Mars rover PIXEL.")
+        return self._build_observation_str(event="Mission initialized. You are the Mars rover PIXIE.")
 
     # ── step ──────────────────────────────────────────────────────────────────
 
@@ -313,7 +313,7 @@ class PIXELEnvironment(_OpenEnvBase):
         ws = self._world.get_state()
         sol = self._clock.sol
         lines = [
-            f"═══ PIXEL Mars Rover — Sol {sol}/{MAX_SOL} ═══",
+            f"═══ PIXIE Mars Rover — Sol {sol}/{MAX_SOL} ═══",
             f"Event: {event}" if event else "",
             f"Battery: {self._battery:.0%}",
             f"Science collected: {self._science_collected:.2f} pts",

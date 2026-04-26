@@ -1,13 +1,13 @@
 """
-PIXEL — Mars Rover RL Environment (Deep Autonomy + Delayed Comm)
+PIXIE — Mars Rover RL Environment (Deep Autonomy + Delayed Comm)
 ================================================================
 Simulates communication delays and forces the rover to make autonomous decisions.
 """
 import random
 from typing import Tuple, Dict, Any
-from backend.environment import PIXELEnvironment, parse_action
+from backend.environment import PIXIEEnvironment, parse_action
 
-class MarsRoverEnv(PIXELEnvironment):
+class MarsRoverEnv(PIXIEEnvironment):
     def __init__(self):
         super().__init__()
         self.command_queue = []  # Queue for delayed commands from Earth

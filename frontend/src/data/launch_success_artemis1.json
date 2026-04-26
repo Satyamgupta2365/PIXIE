@@ -45,7 +45,7 @@
       "assessment": "No significant structural stress deviations. Hydrogen leak signatures monitored but remained below safety thresholds.",
       "risk_score": 0.12
     },
-    "what_pixel_would_have_done": "PIXEL would have maintained this nominal flight path, though potentially optimizing the roll program timing by 0.4 seconds to marginally reduce aerodynamic load on the core stage."
+    "what_pixie_would_have_done": "PIXIE would have maintained this nominal flight path, though potentially optimizing the roll program timing by 0.4 seconds to marginally reduce aerodynamic load on the core stage."
   },
   "major_events": [
     { "time_s": 0, "label": "LIFTOFF", "description": "Ignition of RS-25 engines and SRBs." },

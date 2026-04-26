@@ -5,7 +5,7 @@
 
   <p>
     <a href="https://huggingface.co/spaces/satyampy/Pixie"><img src="https://img.shields.io/badge/Demo-HuggingFace_Space-yellow?style=for-the-badge&logo=huggingface" alt="HF Space"></a>
-    <a href="https://hub.docker.com/r/satyamgpy/pixel-env"><img src="https://img.shields.io/badge/Docker-Live_Image-blue?style=for-the-badge&logo=docker" alt="Docker"></a>
+    <a href="https://hub.docker.com/r/satyamgpy/pixie-env"><img src="https://img.shields.io/badge/Docker-Live_Image-blue?style=for-the-badge&logo=docker" alt="Docker"></a>
     <a href="#"><img src="https://img.shields.io/badge/Blog-HuggingFace_Post-red?style=for-the-badge&logo=huggingface" alt="HF Blog"></a>
     <a href="#"><img src="https://img.shields.io/badge/Video-YouTube_Pitch-FF0000?style=for-the-badge&logo=youtube" alt="YouTube"></a>
   </p>
@@ -103,7 +103,7 @@ Our complete training pipeline is available in the repository. Judges can re-run
 
 ### 3. Run Locally via Docker
 ```bash
-docker pull satyamgpy/pixel-env:latest
-docker run -p 7860:7860 satyamgpy/pixel-env:latest
+docker pull satyamgpy/pixie-env:latest
+docker run -p 7860:7860 satyamgpy/pixie-env:latest
 ```
 

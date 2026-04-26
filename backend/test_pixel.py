@@ -1,5 +1,5 @@
 """
-Comprehensive test for the PIXEL composable reward system.
+Comprehensive test for the PIXIE composable reward system.
 Tests each reward component, the composite function, the EpisodeTracker,
 and full integration with the environment's step() function.
 """
@@ -14,7 +14,7 @@ from backend.rewards import (
     EpisodeTracker,
     WEIGHTS,
 )
-from backend.environment import PIXELEnvironment
+from backend.environment import PIXIEEnvironment
 
 
 def pp(label, obj):
@@ -335,7 +335,7 @@ print("\n" + "=" * 60)
 print("  7. ENVIRONMENT INTEGRATION")
 print("=" * 60)
 
-env = PIXELEnvironment()
+env = PIXIEEnvironment()
 env.reset()
 
 tracker = EpisodeTracker()

@@ -1,4 +1,4 @@
-# 🚀 PIXEL-MARS BACKEND ARCHITECTURE
+# 🚀 PIXIE-MARS BACKEND ARCHITECTURE
 
 ## 🧩 1. HIGH-LEVEL ARCHITECTURE (BIG PICTURE)
 
@@ -24,7 +24,7 @@ World Simulation + Reward System
 ## 🏗️ 2. FOLDER STRUCTURE
 
 ```text
-pixel-mars/
+pixie-mars/
 │
 ├── app/
 │   ├── main.py              # API entry point

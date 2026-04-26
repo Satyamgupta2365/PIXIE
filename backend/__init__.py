@@ -1,1 +1,1 @@
-"""PIXEL — Mars Rover RL Environment for OpenEnv."""
+"""PIXIE — Mars Rover RL Environment for OpenEnv."""

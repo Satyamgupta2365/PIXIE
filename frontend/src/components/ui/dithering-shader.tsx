@@ -130,16 +130,16 @@ void main() {
   vec2 uv = gl_FragCoord.xy / u_resolution.xy;
   uv -= .5;
   
-  // Apply pixelization
+  // Apply pixieization
   float pxSize = u_pxSize;
   vec2 pxSizeUv = gl_FragCoord.xy;
   pxSizeUv -= .5 * u_resolution;
   pxSizeUv /= pxSize;
-  vec2 pixelizedUv = floor(pxSizeUv) * pxSize / u_resolution.xy;
-  pixelizedUv += .5;
-  pixelizedUv -= .5;
+  vec2 pixieizedUv = floor(pxSizeUv) * pxSize / u_resolution.xy;
+  pixieizedUv += .5;
+  pixieizedUv -= .5;
   
-  vec2 shape_uv = pixelizedUv;
+  vec2 shape_uv = pixieizedUv;
   vec2 dithering_uv = pxSizeUv;
   vec2 ditheringNoise_uv = uv * u_resolution;
 

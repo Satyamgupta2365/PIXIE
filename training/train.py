@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-PIXEL Mars Rover — GRPO Training Script
+PIXIE Mars Rover — GRPO Training Script
 ========================================
-Trains unsloth/meta-llama-3.1-8b-instruct using TRL's GRPOTrainer on the PIXEL OpenEnv
+Trains unsloth/meta-llama-3.1-8b-instruct using TRL's GRPOTrainer on the PIXIE OpenEnv
 Mars rover environment with Unsloth for memory-efficient 4-bit LoRA training.
 
 Usage (standalone):
-    python pixel/train_grpo.py
+    python pixie/train_grpo.py
 
 Usage (Colab):
-    Upload the pixel/ directory, then run each section sequentially.
-    See pixel/train_grpo.ipynb for the notebook version.
+    Upload the pixie/ directory, then run each section sequentially.
+    See pixie/train_grpo.ipynb for the notebook version.
 """
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -41,7 +41,7 @@ WANDB_ENABLED = os.getenv("WANDB_API_KEY") is not None
 
 if WANDB_ENABLED:
     import wandb
-    wandb.init(project="pixel-mars-rover", name="grpo-qwen3-1.7b")
+    wandb.init(project="pixie-mars-rover", name="grpo-qwen3-1.7b")
     REPORT_TO = "wandb"
 else:
     REPORT_TO = "none"
@@ -89,11 +89,11 @@ print(f"[OK] LoRA adapters applied (r=16, alpha=16)\n")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-#  Section 3 — PIXEL Environment & Prompt Generation
+#  Section 3 — PIXIE Environment & Prompt Generation
 # ═══════════════════════════════════════════════════════════════════════════════
 
 print("=" * 60)
-print("  Building prompt dataset from PIXEL environment")
+print("  Building prompt dataset from PIXIE environment")
 print("=" * 60)
 
 import sys
@@ -102,13 +102,13 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from backend.environment import PIXELEnvironment, parse_action
+from backend.environment import PIXIEEnvironment, parse_action
 from backend.rewards import EpisodeTracker
 from backend.agents import run_agent_council
 
 # ── System prompt for the Mars rover agent ────────────────────────────────────
 
-SYSTEM_PROMPT = """You are PIXEL, an autonomous Mars rover AI controller.
+SYSTEM_PROMPT = """You are PIXIE, an autonomous Mars rover AI controller.
 Your mission: maximize science collection over 100 Martian sols while
 managing battery, surviving dust storms, and handling anomalies.
 
@@ -138,7 +138,7 @@ def build_prompt_dataset(
     random_actions = ["drill", "image", "soil_sample", "charge", "safe_mode", "transmit"]
 
     for ep in range(n_episodes):
-        env = PIXELEnvironment()
+        env = PIXIEEnvironment()
         obs = env.reset()
 
         # Collect the reset observation as a prompt
@@ -188,7 +188,7 @@ print("=" * 60)
 
 def parse_observation_to_state(obs_text: str) -> Dict[str, Any]:
     """
-    Extract a state dict from the PIXEL observation string so the
+    Extract a state dict from the PIXIE observation string so the
     reward function can score actions without a live environment.
     """
     state = {
@@ -262,7 +262,7 @@ def extract_action_from_completion(completion: str) -> str:
 
 # ── Reward function for GRPO ─────────────────────────────────────────────────
 
-def pixel_reward_function(prompts: list, completions: list, **kwargs) -> list:
+def pixie_reward_function(prompts: list, completions: list, **kwargs) -> list:
     """
     GRPO reward function. For each (prompt, completion) pair:
     1. Parse state from the observation in the prompt
@@ -295,7 +295,7 @@ def pixel_reward_function(prompts: list, completions: list, **kwargs) -> list:
         action = extract_action_from_completion(completion_text)
 
         # Simulate: create env, step, compute reward
-        env = PIXELEnvironment()
+        env = PIXIEEnvironment()
         env.reset()
 
         # Inject parsed state into the fresh environment
@@ -343,7 +343,7 @@ print("=" * 60)
 
 from trl import GRPOTrainer, GRPOConfig
 
-OUTPUT_DIR = os.path.join(PROJECT_ROOT, "pixel-trained-model")
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, "pixie-trained-model")
 
 grpo_config = GRPOConfig(
     # Training parameters
@@ -389,7 +389,7 @@ print("=" * 60)
 
 trainer = GRPOTrainer(
     model=model,
-    reward_funcs=pixel_reward_function,
+    reward_funcs=pixie_reward_function,
     args=grpo_config,
     train_dataset=train_dataset,
     processing_class=tokenizer,
@@ -417,7 +417,7 @@ print("=" * 60)
 
 
 def run_evaluation_episode(
-    env: PIXELEnvironment,
+    env: PIXIEEnvironment,
     model_fn,
     max_steps: int = 100,
 ) -> Dict[str, Any]:
@@ -495,7 +495,7 @@ N_EVAL_EPISODES = 20
 print(f"\nRunning {N_EVAL_EPISODES} episodes with random baseline...")
 random_results = []
 for i in range(N_EVAL_EPISODES):
-    env = PIXELEnvironment()
+    env = PIXIEEnvironment()
     result = run_evaluation_episode(env, random_action_fn)
     random_results.append(result)
     if (i + 1) % 5 == 0:
@@ -505,7 +505,7 @@ print(f"\nRunning {N_EVAL_EPISODES} episodes with trained model...")
 trained_action_fn = make_model_action_fn(model, tokenizer)
 trained_results = []
 for i in range(N_EVAL_EPISODES):
-    env = PIXELEnvironment()
+    env = PIXIEEnvironment()
     result = run_evaluation_episode(env, trained_action_fn)
     trained_results.append(result)
     if (i + 1) % 5 == 0:
@@ -536,7 +536,7 @@ print(f"{'='*60}\n")
 
 # ── Plot: Reward Curve ───────────────────────────────────────────────────────
 
-PLOT_DIR = os.path.join(PROJECT_ROOT, "pixel")
+PLOT_DIR = os.path.join(PROJECT_ROOT, "pixie")
 
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.set_facecolor("#0A0C15")
@@ -559,7 +559,7 @@ ax.fill_between(episodes, trained_rewards, alpha=0.15, color="#FF6B35")
 
 ax.set_xlabel("Episode", fontsize=13, color="#F0F0F0", labelpad=10)
 ax.set_ylabel("Total Reward", fontsize=13, color="#F0F0F0", labelpad=10)
-ax.set_title("PIXEL Mars Rover — Reward Curve (GRPO Training)",
+ax.set_title("PIXIE Mars Rover — Reward Curve (GRPO Training)",
              fontsize=15, color="#F0F0F0", fontweight="bold", pad=15)
 ax.legend(fontsize=11, facecolor="#141623", edgecolor="#333",
           labelcolor="#F0F0F0", loc="upper left")
@@ -568,7 +568,7 @@ ax.grid(True, alpha=0.15, color="#8A94A6")
 for spine in ax.spines.values():
     spine.set_color("#333")
 
-reward_plot_path = os.path.join(PLOT_DIR, "pixel_reward_curve.png")
+reward_plot_path = os.path.join(PLOT_DIR, "pixie_reward_curve.png")
 plt.tight_layout()
 plt.savefig(reward_plot_path, dpi=150, facecolor="#0A0C15", bbox_inches="tight")
 plt.close()
@@ -590,7 +590,7 @@ ax.axhline(y=avg_trained_science, color="#10B981", linestyle="--", alpha=0.4)
 
 ax.set_xlabel("Episode", fontsize=13, color="#F0F0F0", labelpad=10)
 ax.set_ylabel("Science Collected (pts)", fontsize=13, color="#F0F0F0", labelpad=10)
-ax.set_title("PIXEL Mars Rover — Science Collection (GRPO Training)",
+ax.set_title("PIXIE Mars Rover — Science Collection (GRPO Training)",
              fontsize=15, color="#F0F0F0", fontweight="bold", pad=15)
 ax.legend(fontsize=11, facecolor="#141623", edgecolor="#333",
           labelcolor="#F0F0F0", loc="upper left")
@@ -599,7 +599,7 @@ ax.grid(True, alpha=0.15, color="#8A94A6", axis="y")
 for spine in ax.spines.values():
     spine.set_color("#333")
 
-science_plot_path = os.path.join(PLOT_DIR, "pixel_science_curve.png")
+science_plot_path = os.path.join(PLOT_DIR, "pixie_science_curve.png")
 plt.tight_layout()
 plt.savefig(science_plot_path, dpi=150, facecolor="#0A0C15", bbox_inches="tight")
 plt.close()
@@ -614,7 +614,7 @@ print(f"\n{'='*60}")
 print("  Push to HuggingFace Hub")
 print(f"{'='*60}")
 
-HF_REPO = os.getenv("HF_REPO", "your-username/pixel-mars-rover")
+HF_REPO = os.getenv("HF_REPO", "your-username/pixie-mars-rover")
 HF_TOKEN = os.getenv("HF_TOKEN", None)
 
 if HF_TOKEN:
@@ -634,7 +634,7 @@ if WANDB_ENABLED:
     wandb.finish()
 
 print(f"\n{'='*60}")
-print("  PIXEL GRPO Training Pipeline Complete!")
+print("  PIXIE GRPO Training Pipeline Complete!")
 print(f"{'='*60}")
 print(f"  Model:          {MODEL_NAME}")
 print(f"  Trained epochs:  {grpo_config.num_train_epochs}")

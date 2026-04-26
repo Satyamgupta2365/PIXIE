@@ -1,13 +1,13 @@
 """
-PIXEL — Moon Rover RL Environment (Short-term Ops + Energy Survival)
+PIXIE — Moon Rover RL Environment (Short-term Ops + Energy Survival)
 ====================================================================
 Simulates low-latency but extreme day/night cycle constraints.
 """
 import random
 from typing import Tuple, Dict, Any
-from backend.environment import PIXELEnvironment, parse_action
+from backend.environment import PIXIEEnvironment, parse_action
 
-class MoonRoverEnv(PIXELEnvironment):
+class MoonRoverEnv(PIXIEEnvironment):
     def __init__(self):
         super().__init__()
         self.daylight_remaining = 14 # 14 steps of daylight

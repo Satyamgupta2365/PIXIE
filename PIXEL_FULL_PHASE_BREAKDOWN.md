@@ -1,6 +1,6 @@
-# 🚀 PROJECT PIXEL — FULL PHASE BREAKDOWN
+# 🚀 PROJECT PIXIE — FULL PHASE BREAKDOWN
 
-> **"PIXEL operates as a phase-based autonomous mission system, where each phase models a real segment of a space mission and is controlled by specialized AI agents."**
+> **"PIXIE operates as a phase-based autonomous mission system, where each phase models a real segment of a space mission and is controlled by specialized AI agents."**
 
 ---
 
@@ -21,7 +21,7 @@
 *   **🤖 Agents Involved:** Launch Agent, Risk Analysis Agent, Meta Agent (past learning)
 *   **🧠 Decisions:** Launch now / delay, Adjust trajectory, Abort if unsafe
 *   **📊 Reward Logic:** + success launch, − delay cost, − failure risk
-*   **🎤 Say:** *"Instead of fixed rules, PIXEL evaluates multiple launch scenarios and selects the safest optimal strategy."*
+*   **🎤 Say:** *"Instead of fixed rules, PIXIE evaluates multiple launch scenarios and selects the safest optimal strategy."*
 
 ---
 
@@ -102,7 +102,7 @@
 *   **🤖 Agent:** Meta-Learning Agent
 *   **🧠 Actions:** Update reward weights, Adjust strategies, Learn from mistakes
 *   **🔥 Example:** If battery failures → increase energy priority. If missed science → adjust planning.
-*   **🎤 Say:** *"PIXEL continuously improves — it doesn’t repeat mistakes."*
+*   **🎤 Say:** *"PIXIE continuously improves — it doesn’t repeat mistakes."*
 
 ---
 
@@ -118,11 +118,11 @@
 ## 🧠 SUMMARY & PITCH STRATEGY
 
 👉 **Say this line:**
-> *"PIXEL models the entire space mission lifecycle across 9 phases — from launch to learning — with each phase handled by intelligent agents operating under real-world constraints."*
+> *"PIXIE models the entire space mission lifecycle across 9 phases — from launch to learning — with each phase handled by intelligent agents operating under real-world constraints."*
 
 ⚡ **PRO TIP (TO IMPRESS JUDGES)**
 While explaining, draw or present this flow:
 `Launch → Orbit → Transfer → Landing → Rover → Crisis → Learning`
 
 Then say:
-> *"Most systems solve one part. PIXEL connects all of them into a single continuous, autonomous intelligence pipeline."*
+> *"Most systems solve one part. PIXIE connects all of them into a single continuous, autonomous intelligence pipeline."*

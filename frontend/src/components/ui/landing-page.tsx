@@ -343,9 +343,9 @@ export default function GlobeScrollDemo() {
     {
       id: "hero",
       badge: "The Future of Exploration",
-      title: "PIXEL",
+      title: "PIXIE",
       subtitle: "Autonomous Spaceflight",
-      description: "Experience the next leap in deep space exploration. PIXEL is an advanced, fully autonomous system designed to navigate, survive, and thrive on the Martian surface without human intervention.",
+      description: "Experience the next leap in deep space exploration. PIXIE is an advanced, fully autonomous system designed to navigate, survive, and thrive on the Martian surface without human intervention.",
       align: "left" as const,
       actions: [
         { label: "Enter Operations Hub", variant: "primary" as const, onClick: () => navigate("/operations") },
@@ -356,7 +356,7 @@ export default function GlobeScrollDemo() {
       id: "problem",
       badge: "The Challenge",
       title: "Beyond the Delay",
-      description: "With communication delays spanning millions of miles, Earth can no longer joystick the future. PIXEL empowers spacecraft to make split-second, critical decisions lightyears from home, ensuring mission survival in unforgiving environments.",
+      description: "With communication delays spanning millions of miles, Earth can no longer joystick the future. PIXIE empowers spacecraft to make split-second, critical decisions lightyears from home, ensuring mission survival in unforgiving environments.",
       align: "center" as const,
     },
     {
@@ -364,7 +364,7 @@ export default function GlobeScrollDemo() {
       badge: "The Innovation",
       title: "Cognitive Control",
       subtitle: "A Council of Minds",
-      description: "Powered by an advanced intelligence framework, PIXEL continually analyzes planetary dynamics, predicts weather patterns, and perfectly balances power consumption with scientific discovery.",
+      description: "Powered by an advanced intelligence framework, PIXIE continually analyzes planetary dynamics, predicts weather patterns, and perfectly balances power consumption with scientific discovery.",
       align: "left" as const,
       features: [
         { title: "Strategic Planning", description: "Maximizing scientific yield through autonomous sampling and imaging." },
@@ -377,7 +377,7 @@ export default function GlobeScrollDemo() {
       badge: "The Horizon",
       title: "Ready for Launch",
       subtitle: "Simulated for Reality",
-      description: "Before it ever touches the stars, PIXEL undergoes millions of simulated mission lifecycles, evolving into the most resilient and capable artificial astronaut ever created.",
+      description: "Before it ever touches the stars, PIXIE undergoes millions of simulated mission lifecycles, evolving into the most resilient and capable artificial astronaut ever created.",
       align: "center" as const,
       actions: [
         { label: "Enter Simulation", variant: "primary" as const, onClick: () => navigate("/training") },

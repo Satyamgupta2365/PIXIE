@@ -3,7 +3,7 @@ from typing import Dict, Any, Tuple
 
 class SatelliteEnv:
     """
-    PIXEL Satellite Network Environment
+    PIXIE Satellite Network Environment
     Simulates a multi-agent satellite system (SAT-A, SAT-B, SAT-C) coordinating
     communication, energy, and orbital decisions under real-world constraints.
     """

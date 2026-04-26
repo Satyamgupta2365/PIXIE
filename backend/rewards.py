@@ -1,5 +1,5 @@
 """
-PIXEL — Composable Reward System (OpenEnv Rubric)
+PIXIE — Composable Reward System (OpenEnv Rubric)
 ==================================================
 A modular reward pipeline where each reward component is a pure function
 scoring one dimension of rover performance.  ``compute_total_reward``

@@ -1,5 +1,5 @@
 """
-PIXEL — Multi-Agent Decision Council
+PIXIE — Multi-Agent Decision Council
 =====================================
 Four independent specialist agents analyze the Mars rover state and vote on
 the best action.  A NegotiationEngine resolves conflicts using priority-weighted
@@ -379,7 +379,7 @@ def run_agent_council(state: Dict[str, Any]) -> Dict[str, Any]:
     Parameters
     ----------
     state : dict
-        The environment state dict (from PIXELEnvironment.state()).
+        The environment state dict (from PIXIEEnvironment.state()).
 
     Returns
     -------

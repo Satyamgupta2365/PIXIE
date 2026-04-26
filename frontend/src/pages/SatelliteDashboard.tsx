@@ -12,7 +12,7 @@ const RL_SATELLITES = [
 const AI_LOGS = [
   'SAT-B: Data buffer full. Requesting transmission window...',
   'SAT-A: Bandwidth limited. Delaying SAT-B transmission.',
-  'PIXEL Decision: Routing SAT-B data via SAT-C (Relay).',
+  'PIXIE Decision: Routing SAT-B data via SAT-C (Relay).',
   'SAT-C: Receiving data from SAT-B. Battery dropping to 85%.',
   'SAT-A: Transmission to Earth successful. Reward +1.0',
 ];
@@ -119,7 +119,7 @@ export default function SatelliteDashboard() {
             <ArrowLeft className="w-4 h-4" /> Hub
           </button>
           <div className="w-px h-5 bg-white/10" />
-          <span className="text-xl font-black tracking-tighter">PIXEL <span className="text-blue-400">Orb-Net</span></span>
+          <span className="text-xl font-black tracking-tighter">PIXIE <span className="text-blue-400">Orb-Net</span></span>
         </div>
         <div className="flex items-center gap-4">
 
@@ -198,7 +198,7 @@ export default function SatelliteDashboard() {
 
           {/* Telemetry */}
           <div className="text-[10px] text-white/30 uppercase tracking-widest px-1 flex items-center gap-2 mt-1">
-            <Activity className="w-3 h-3" /> Live Telemetry — PIXEL RL
+            <Activity className="w-3 h-3" /> Live Telemetry — PIXIE RL
           </div>
           {[
             { label: 'Altitude',   value: sat.orbit === 'LEO' ? '400' : sat.orbit === 'MEO' ? '20,000' : '35,786', unit: 'km', col: 'text-cyan-400' },
@@ -348,7 +348,7 @@ export default function SatelliteDashboard() {
               <Shield className="w-4 h-4 text-blue-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-[9px] text-blue-400/60 uppercase tracking-widest mb-1 font-mono">PIXEL Ops Agent · RL Network Analysis</div>
+              <div className="text-[9px] text-blue-400/60 uppercase tracking-widest mb-1 font-mono">PIXIE Ops Agent · RL Network Analysis</div>
               <AnimatePresence mode="wait">
                 <motion.div key={logIdx} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
                   className="text-sm text-white/80 font-mono truncate">

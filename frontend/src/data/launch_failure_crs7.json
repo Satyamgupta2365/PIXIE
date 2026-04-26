@@ -182,7 +182,7 @@
   },
 
   "ai_analysis": {
-    "pixel_assessment": "MISSION FAILURE — Catastrophic structural defect in Stage 2. Failure was not predictable from external telemetry alone but was preventable through enhanced material inspection.",
+    "pixie_assessment": "MISSION FAILURE — Catastrophic structural defect in Stage 2. Failure was not predictable from external telemetry alone but was preventable through enhanced material inspection.",
     "planner_agent": {
       "trajectory_score": 0.91,
       "assessment": "Trajectory was nominal until T+139s. All flight parameters were within expected bounds. The failure was not trajectory-related.",
@@ -191,18 +191,18 @@
     "resource_agent": {
       "fuel_efficiency_score": 0.88,
       "assessment": "Propellant consumption was nominal throughout the 139-second flight. No fuel anomalies detected. The catastrophic loss was caused by helium system breach, not propellant management.",
-      "recommendation": "PIXEL would have flagged the anomalous helium pressure spike at T+138.893s — 107ms before total vehicle loss. In an autonomous system, this 107ms window could have triggered an emergency engine shutdown and Dragon separation command."
+      "recommendation": "PIXIE would have flagged the anomalous helium pressure spike at T+138.893s — 107ms before total vehicle loss. In an autonomous system, this 107ms window could have triggered an emergency engine shutdown and Dragon separation command."
     },
     "risk_agent": {
       "risk_score": 0.95,
       "assessment": "CRITICAL FAILURE. The defective strut was a latent risk invisible to flight telemetry. The strut failed at 20% of its rated capacity, indicating a severe material defect that should have been caught during quality assurance.",
-      "recommendation": "PIXEL's Risk Agent would have required individual proof-load certification for every structural component. The agent's pre-flight inspection protocol mandates 100% component testing, not statistical sampling. This single policy would have prevented the CRS-7 failure entirely."
+      "recommendation": "PIXIE's Risk Agent would have required individual proof-load certification for every structural component. The agent's pre-flight inspection protocol mandates 100% component testing, not statistical sampling. This single policy would have prevented the CRS-7 failure entirely."
     },
     "overall_verdict": "PREVENTABLE FAILURE — Manufacturing quality escape",
-    "what_pixel_would_have_done": {
-      "pre_flight": "PIXEL's Risk Agent operates on a zero-tolerance policy for structural components. Every strut, bolt, and pressure vessel mount would undergo individual proof-load testing at 1.5x rated capacity before flight qualification. The defective strut (which failed at 2,000 lbs vs. its 10,000 lb rating) would have been immediately rejected during this mandatory pre-flight protocol, preventing it from ever being installed on the vehicle.",
-      "during_flight": "Had the defective strut still made it to flight, PIXEL's real-time telemetry monitoring would have detected the micro-vibration signature of the strut fracture propagation beginning at approximately T+130s. The Risk Agent would have elevated the threat level to CRITICAL and recommended an emergency abort. At T+138.893s, when the helium COPV pressure spiked, PIXEL would have had 107ms to execute an emergency Dragon separation command — theoretically possible but extremely tight. The primary defense was always the pre-flight inspection.",
-      "post_flight": "PIXEL would have automatically generated a full failure tree analysis within 24 hours, correlated the COPV pressure anomaly with the strut failure, and issued a fleet-wide grounding recommendation until every strut in inventory was individually proof-tested. This matches SpaceX's actual corrective action but would have been initiated autonomously within hours instead of weeks."
+    "what_pixie_would_have_done": {
+      "pre_flight": "PIXIE's Risk Agent operates on a zero-tolerance policy for structural components. Every strut, bolt, and pressure vessel mount would undergo individual proof-load testing at 1.5x rated capacity before flight qualification. The defective strut (which failed at 2,000 lbs vs. its 10,000 lb rating) would have been immediately rejected during this mandatory pre-flight protocol, preventing it from ever being installed on the vehicle.",
+      "during_flight": "Had the defective strut still made it to flight, PIXIE's real-time telemetry monitoring would have detected the micro-vibration signature of the strut fracture propagation beginning at approximately T+130s. The Risk Agent would have elevated the threat level to CRITICAL and recommended an emergency abort. At T+138.893s, when the helium COPV pressure spiked, PIXIE would have had 107ms to execute an emergency Dragon separation command — theoretically possible but extremely tight. The primary defense was always the pre-flight inspection.",
+      "post_flight": "PIXIE would have automatically generated a full failure tree analysis within 24 hours, correlated the COPV pressure anomaly with the strut failure, and issued a fleet-wide grounding recommendation until every strut in inventory was individually proof-tested. This matches SpaceX's actual corrective action but would have been initiated autonomously within hours instead of weeks."
     }
   }
 }

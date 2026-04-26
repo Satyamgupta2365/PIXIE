@@ -1,13 +1,13 @@
-# 🔴 PIXEL Dual-Rover & Satellite Mission Control 🚀
+# 🔴 PIXIE Dual-Rover & Satellite Mission Control 🚀
 
-**PIXEL** is a highly realistic, OpenEnv-compatible multi-agent space exploration environment. It simulates the challenges of operating Mars rovers, Lunar rovers, and Satellite networks, requiring AI agents to manage battery life, conduct science, avoid anomalies, and optimize communication windows.
+**PIXIE** is a highly realistic, OpenEnv-compatible multi-agent space exploration environment. It simulates the challenges of operating Mars rovers, Lunar rovers, and Satellite networks, requiring AI agents to manage battery life, conduct science, avoid anomalies, and optimize communication windows.
 
 ## 🌟 Quick Start
 
 Run the environment locally with a single command:
 
 ```bash
-docker run -p 7860:7860 satyamgpy/pixel-env:latest
+docker run -p 7860:7860 satyamgpy/pixie-env:latest
 ```
 
 Once running, the backend API and Mission Control dashboard are available at:

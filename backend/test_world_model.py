@@ -352,9 +352,9 @@ print("\n" + "=" * 60)
 print("  10. ENVIRONMENT INTEGRATION")
 print("=" * 60)
 
-from backend.environment import PIXELEnvironment
+from backend.environment import PIXIEEnvironment
 
-env = PIXELEnvironment()
+env = PIXIEEnvironment()
 env.reset()
 
 for i in range(5):

@@ -7,7 +7,7 @@ import SpaceBackground from '@/components/ui/space-background';
 const ROVERS = [
   { 
     id: 'mars', 
-    name: 'PIXEL Mars', 
+    name: 'PIXIE Mars', 
     type: 'Deep Autonomy', 
     color: '#f97316', 
     sol: 1820, 
@@ -28,7 +28,7 @@ const ROVERS = [
   },
   { 
     id: 'moon', 
-    name: 'PIXEL Moon', 
+    name: 'PIXIE Moon', 
     type: 'Short-Horizon', 
     color: '#3b82f6', 
     sol: 14, 
@@ -126,7 +126,7 @@ export default function RoverDashboard() {
               <Network className="w-4 h-4 text-white" />
             </div>
             <div>
-              <div className="text-xl font-black tracking-tighter leading-none">PIXEL <span style={{ color: rover.color }}>Dual-System Fleet</span></div>
+              <div className="text-xl font-black tracking-tighter leading-none">PIXIE <span style={{ color: rover.color }}>Dual-System Fleet</span></div>
               <div className="text-[9px] font-mono text-white/40 uppercase tracking-widest mt-1">Multi-Agent RL Control</div>
             </div>
           </div>

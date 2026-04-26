@@ -1,7 +1,7 @@
-name: pixel-dual-rover-system
+name: pixie-dual-rover-system
 version: "1.0.0"
 description: >
-  PIXEL — An OpenEnv-compatible Dual Rover RL environment. Contains two distinct
+  PIXIE — An OpenEnv-compatible Dual Rover RL environment. Contains two distinct
   environments: Mars Rover (deep autonomy, communication delay, long-horizon planning)
   and Moon Rover (short-horizon, survival under extreme day/night cycle). Both
   are controlled via natural language by an LLM agent.

@@ -50,7 +50,7 @@ export default function OperationsHubPage() {
             Command <span className="text-blue-500">Center</span>
           </h1>
           <p className="text-white/60 text-lg max-w-2xl mx-auto font-light">
-            Select an operational domain. All systems are governed by PIXEL's reinforcement learning core.
+            Select an operational domain. All systems are governed by PIXIE's reinforcement learning core.
           </p>
         </motion.div>
 

@@ -1,5 +1,5 @@
 """
-PIXEL World Model — Mars Environmental Dynamics
+PIXIE World Model — Mars Environmental Dynamics
 ================================================
 Manages all stochastic world state that evolves each Martian sol:
 

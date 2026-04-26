@@ -1,7 +1,7 @@
 """
-PIXEL — OpenEnv Server
+PIXIE — OpenEnv Server
 ======================
-FastAPI server that wraps the PIXEL Mars Rover environment with the
+FastAPI server that wraps the PIXIE Mars Rover environment with the
 standard OpenEnv endpoints:  POST /reset, POST /step, GET /state
 
 Also includes /health, /tasks, /grader, and a landing page.
@@ -22,7 +22,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from backend import satellite_service
-from backend.environment import PIXELEnvironment
+from backend.environment import PIXIEEnvironment
 from backend.nasa_client import get_realtime_environment_data
 
 
@@ -67,7 +67,7 @@ class GraderResponse(BaseModel):
 # ── App ───────────────────────────────────────────────────────────────────────
 
 app = FastAPI(
-    title="PIXEL — Mars Rover RL Environment",
+    title="PIXIE — Mars Rover RL Environment",
     description=(
         "An OpenEnv-compatible Mars Rover environment where an LLM agent "
         "makes natural-language decisions to manage battery, conduct science, "
@@ -109,7 +109,7 @@ def get_env(task_id: str = "mars") -> Any:
             from backend.moon_rover_env import MoonRoverEnv
             _envs[task_id] = MoonRoverEnv()
         else:
-            _envs[task_id] = PIXELEnvironment()
+            _envs[task_id] = PIXIEEnvironment()
     return _envs[task_id]
 
 
@@ -123,7 +123,7 @@ def root():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>PIXEL — Mars Rover RL Environment</title>
+        <title>PIXIE — Mars Rover RL Environment</title>
         <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
         <style>
             :root {
@@ -224,7 +224,7 @@ def root():
     <body>
         <div class="panel">
             <div class="badge">● ONLINE</div>
-            <h1>🔴 PIXEL</h1>
+            <h1>🔴 PIXIE</h1>
             <p class="subtitle">
                 Mars Rover RL Environment — OpenEnv compatible.<br>
                 Control a rover with natural language. Manage battery, science, weather, and anomalies across 100 Martian sols.
@@ -249,7 +249,7 @@ def health():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIXEL System Status</title>
+    <title>PIXIE System Status</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root { --mars:#FF6B35;--green:#10B981;--blue:#60A5FA;--bg:#080A12;--panel:rgba(15,18,30,0.9);--text:#F0F0F0;--muted:#6B7280; }
@@ -288,7 +288,7 @@ def health():
     <div class="header">
         <div class="logo">&#x1F534;</div>
         <div class="title">
-            <h1>PIXEL Mission Control</h1>
+            <h1>PIXIE Mission Control</h1>
             <p>v1.0.0 &nbsp;&middot;&nbsp; OpenEnv Compatible</p>
         </div>
     </div>
@@ -524,7 +524,7 @@ async def satellites_above(radius: int = 70, category: int = 0):
 # ── Entry point ──────────────────────────────────────────────────────────────
 
 def main():
-    """Run the PIXEL OpenEnv server."""
+    """Run the PIXIE OpenEnv server."""
     port = int(os.getenv("PORT", "7860"))
     uvicorn.run("backend.main:app", host="0.0.0.0", port=port, log_level="info")
 

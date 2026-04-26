@@ -50,7 +50,7 @@
       "assessment": "Loss of roll control detected at upper atmosphere boundary. Aerodynamic forces exceeded structural limits during uncontrolled spin.",
       "risk_score": 0.95
     },
-    "what_pixel_would_have_done": "PIXEL would have detected early signs of valve blockage via thermal signatures at T+2500s and commanded an immediate switch to redundant cold-gas thrusters to stabilize the roll rate before entering the thicker atmosphere."
+    "what_pixie_would_have_done": "PIXIE would have detected early signs of valve blockage via thermal signatures at T+2500s and commanded an immediate switch to redundant cold-gas thrusters to stabilize the roll rate before entering the thicker atmosphere."
   },
   "major_events": [
     { "time_s": 0, "label": "LIFTOFF", "description": "All 33 Raptor engines ignited." },

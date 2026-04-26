@@ -100,7 +100,7 @@ export default function TrainingResultsPage() {
         >
           <p className="text-xl md:text-2xl font-light leading-relaxed text-white/90">
             The multi-agent intelligence council learns to balance competing objectives. 
-            Over time, <span className="font-bold text-white">PIXEL</span> effectively learns to make safer and more optimal decisions, maximizing mission success.
+            Over time, <span className="font-bold text-white">PIXIE</span> effectively learns to make safer and more optimal decisions, maximizing mission success.
           </p>
           <div className="flex justify-center gap-6 mt-8">
             <div className="flex items-center gap-2 text-white/50 text-sm"><Shield className="w-4 h-4 text-green-400" /> Increased Survival</div>

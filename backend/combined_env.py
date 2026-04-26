@@ -1,15 +1,15 @@
 from typing import Dict, Any, Tuple
-from backend.environment import PIXELEnvironment
+from backend.environment import PIXIEEnvironment
 from backend.satellite_env import SatelliteEnv
 
 class CombinedEnv:
     """
-    Combined PIXEL Environment
-    Integrates the Mars Rover (PIXELEnvironment) and the Satellite Network (SatelliteEnv)
+    Combined PIXIE Environment
+    Integrates the Mars Rover (PIXIEEnvironment) and the Satellite Network (SatelliteEnv)
     to form a complete Mission Control RL environment.
     """
     def __init__(self):
-        self.rover_env = PIXELEnvironment()
+        self.rover_env = PIXIEEnvironment()
         self.satellite_env = SatelliteEnv()
         self.step_count = 0
 
